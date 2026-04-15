@@ -94,7 +94,7 @@ ONE SCREEN. Steady mode only. Mobile-first responsive web.
 Max-width 390px, centered on desktop.
 Single HTML file — inline CSS in <style>, inline JS in <script>.
 
-THREE TABS: Notes · Session (default active) · Output
+THREE TABS: Notes · Chat (default active) · Output
 
 ---
 
@@ -120,44 +120,82 @@ Footer: "Notes stay on this device only · not logged without confirmation"
 
 ---
 
-## Tab 2 — Session (default active tab)
+## Tab 2 — Chat (default active tab)
 
-Section label: LOGGED SO FAR — tap any item
+Primary surface during a live session. The CBO types what they
+heard from the person; the system categorizes and confirms. Each
+turn is a CBO message followed by a tappable system card that
+opens the side panel for context.
 
-HARDCODED LOG ITEMS (load on start, in this order):
+LAYOUT (top to bottom):
+- Scrollable message thread (fills available space)
+- Persistent suggestion row (above input)
+- Input bar (text field + send button)
+- Sticky footer: "No names or status stored · session builds barrier profile only"
+
+TURN PATTERN:
+
+CBO message bubble
+  Right-aligned. Subtle background. Plain text, weight 400.
+  Max-width ~78% of thread. No dot, no category — this is
+  the raw observation.
+
+System card (appears directly below each CBO message)
+  Left-aligned. White card with:
+  - Color dot (barrier red / need green / household purple /
+    consideration gray)
+  - Category label (e.g., "barrier · data fear")
+  - Quiet confirmation text: "logged"
+  - Right chevron ›
+  Tappable — opens side panel with the matching content
+  variation. The system card IS the confirmation; no toast.
+
+OPENING STATE:
+
+The chat loads with five pre-existing turns, rendered as if the
+CBO had logged them earlier in the same session. These use the
+turn pattern above.
+
 1. "Scared to share information"
-   barrier · data fear · red dot · visual tag
+   → barrier · data fear · red dot
 2. "Works nights, can't do daytime"
-   barrier · scheduling · red dot · visual tag
+   → barrier · scheduling · red dot
 3. "Needs rent help after storm"
-   need · rent/housing · green dot · visual tag
+   → need · rent/housing · green dot
 4. "Two kids, born in US"
-   household · citizen children · purple dot · visual tag
+   → household · citizen children · purple dot
 5. "Seemed nervous when org was mentioned"
-   consideration · gray dot · context tag
+   → consideration · gray dot
 
-Each item shows:
-- Color dot
-- Item text
-- Category label below in smaller text
-- Visual tag (blue) or context tag (gray)
-- Right arrow › on the right edge
-- Tappable — opens side panel
+Below the five turns, a left-aligned system prompt (no card,
+quiet text — reads as gentle ambient guidance):
+  "What else did you hear? Tap a suggestion below or type
+   what they said."
 
-FREE INPUT:
-Text input + Add button
-Keyword map auto-categorizes on add (see keyword map below)
-Toast shows "Added to log" on add
+SUGGESTIONS (persistent row above input):
 
-QUICK-ADD BUTTONS:
+Tapping a chip sends its preset text as if the CBO had typed it.
+
 "Has WhatsApp" → "Has WhatsApp, checks regularly"
-  household · purple dot · visual
+  household · purple dot
 "Spanish" → "Prefers Spanish"
-  household · purple dot · visual
+  household · purple dot
 "Eviction urgency" → "Worried about eviction timeline"
-  barrier · scheduling · red dot · visual
+  barrier · scheduling · red dot
 
-Footer: "No names or status stored · session builds barrier profile only"
+INPUT BAR:
+
+Text field + send button. Enter or send adds a CBO message
+bubble followed by the auto-categorized system card. Thread
+auto-scrolls to the newest turn. Keyword map (see below)
+drives categorization. Each new turn increments Output tab
+match confidence by 3–5 points.
+
+FEEDBACK MODEL:
+
+The system card replaces the previous "Added to log" toast.
+Toasts still fire for WhatsApp copy, session log, and discard
+actions in the Output tab.
 
 ---
 

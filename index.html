@@ -324,51 +324,10 @@
     }
 
     /* ============================================================
-       SESSION TAB
+       CHAT TAB
     ============================================================ */
 
-    /* Section label */
-    .section-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--color-text-tertiary);
-      padding: 0 2px;
-    }
-
-    /* Log item list */
-    .log-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      background: var(--color-background-primary);
-      border-radius: 8px;
-      border: 1px solid var(--color-border-tertiary);
-      overflow: hidden;
-    }
-
-    .log-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 12px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--color-border-tertiary);
-      background: var(--color-background-primary);
-      transition: background 0.1s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .log-item:last-child {
-      border-bottom: none;
-    }
-
-    .log-item:active {
-      background: var(--color-background-secondary);
-    }
-
-    /* Color dot */
+    /* Color dot — shared by chat cards and side panel badges */
     .log-dot {
       width: 8px;
       height: 8px;
@@ -381,132 +340,169 @@
     .log-dot--household     { background: var(--color-dot-household); }
     .log-dot--consideration { background: var(--color-dot-consideration); }
 
-    /* Item content */
-    .log-item__body {
+    /* Chat thread — the scrollable message area */
+    .chat-thread {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 14px 14px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    /* CBO message bubble — right-aligned */
+    .chat-msg {
+      align-self: flex-end;
+      max-width: 78%;
+      padding: 8px 12px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: 14px 14px 4px 14px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--color-text-primary);
+      word-wrap: break-word;
+    }
+
+    /* System card — left-aligned, tappable, confirms categorization */
+    .chat-card {
+      align-self: flex-start;
+      max-width: 86%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px 8px 12px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: 4px 14px 14px 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      margin-top: -4px;
+    }
+
+    .chat-card:active {
+      background: var(--color-background-secondary);
+    }
+
+    .chat-card__category {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-primary);
       flex: 1;
       min-width: 0;
     }
 
-    .log-item__text {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--color-text-primary);
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .log-item__meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 3px;
-    }
-
-    .log-item__category {
-      font-size: 11px;
-      color: var(--color-text-tertiary);
-    }
-
-    /* Visual / context tag pill */
-    .log-tag {
+    .chat-card__confirm {
       font-size: 10px;
-      font-weight: 500;
-      padding: 1px 6px;
-      border-radius: 10px;
+      color: var(--color-text-tertiary);
       letter-spacing: 0.02em;
+      flex-shrink: 0;
     }
 
-    .log-tag--visual {
-      background: var(--color-tag-visual-bg);
-      color: var(--color-tag-visual-text);
-    }
-
-    .log-tag--context {
-      background: var(--color-tag-context-bg);
-      color: var(--color-tag-context-text);
-    }
-
-    /* Right chevron */
-    .log-item__arrow {
+    .chat-card__arrow {
       font-size: 16px;
+      line-height: 1;
       color: var(--color-text-tertiary);
       flex-shrink: 0;
-      line-height: 1;
     }
 
-    /* Free input row */
-    .free-input {
+    /* System prompt — quiet left-aligned guidance text, no card */
+    .chat-prompt {
+      align-self: flex-start;
+      max-width: 86%;
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      line-height: 1.5;
+      padding: 4px 4px 2px;
+      font-style: italic;
+    }
+
+    /* Suggestions — persistent horizontal row above composer */
+    .chat-suggestions {
+      flex-shrink: 0;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 8px 14px;
+      background: var(--color-background-primary);
+      border-top: 1px solid var(--color-border-tertiary);
+      scrollbar-width: none;
+    }
+
+    .chat-suggestions::-webkit-scrollbar { display: none; }
+
+    .chat-suggestion {
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 14px;
+      border: 1px solid var(--color-border-secondary);
+      background: var(--color-background-primary);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .chat-suggestion:active {
+      background: var(--color-background-secondary);
+    }
+
+    /* Composer — input + send button */
+    .chat-composer {
+      flex-shrink: 0;
       display: flex;
       gap: 8px;
+      padding: 8px 14px 10px;
+      background: var(--color-background-primary);
+      border-top: 1px solid var(--color-border-tertiary);
     }
 
-    .free-input__field {
+    .chat-composer__input {
       flex: 1;
-      height: 40px;
-      padding: 0 12px;
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-secondary);
-      border-radius: 8px;
+      height: 38px;
+      padding: 0 13px;
+      background: var(--color-background-secondary);
+      border: 1px solid transparent;
+      border-radius: 19px;
       font-size: 13px;
       color: var(--color-text-primary);
       outline: none;
     }
 
-    .free-input__field::placeholder {
+    .chat-composer__input::placeholder {
       color: var(--color-text-tertiary);
     }
 
-    .free-input__field:focus {
-      border-color: var(--color-text-tertiary);
+    .chat-composer__input:focus {
+      border-color: var(--color-border-secondary);
     }
 
-    .free-input__btn {
-      height: 40px;
-      padding: 0 16px;
+    .chat-composer__send {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
       background: var(--color-text-primary);
       color: var(--color-background-primary);
-      border-radius: 8px;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      line-height: 1;
       transition: opacity 0.1s;
     }
 
-    .free-input__btn:active {
-      opacity: 0.75;
-    }
-
-    /* Quick-add buttons */
-    .quick-add {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .quick-add__chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-    .quick-add__chip {
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 12px;
-      border-radius: 16px;
-      border: 1px solid var(--color-border-secondary);
-      background: var(--color-background-primary);
-      color: var(--color-text-secondary);
-      cursor: pointer;
-      transition: background 0.1s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .quick-add__chip:active {
-      background: var(--color-background-secondary);
-    }
+    .chat-composer__send:active { opacity: 0.75; }
+    .chat-composer__send:disabled { opacity: 0.35; pointer-events: none; }
 
     /* Toast */
     .toast {
@@ -1198,7 +1194,7 @@
       <button class="tab-btn" role="tab" aria-selected="false"
               aria-controls="tab-notes" data-tab="notes">Notes</button>
       <button class="tab-btn active" role="tab" aria-selected="true"
-              aria-controls="tab-session" data-tab="session">Session</button>
+              aria-controls="tab-chat" data-tab="chat">Chat</button>
       <button class="tab-btn" role="tab" aria-selected="false"
               aria-controls="tab-output" data-tab="output">Output</button>
     </nav>
@@ -1237,111 +1233,87 @@
       <div class="tab-footer">Notes stay on this device only · not logged without confirmation</div>
     </div>
 
-    <!-- TAB CONTENT: SESSION (default active) -->
-    <div class="tab-content active" id="tab-session" role="tabpanel">
-      <div class="tab-content__inner">
+    <!-- TAB CONTENT: CHAT (default active) -->
+    <div class="tab-content active" id="tab-chat" role="tabpanel">
 
-        <!-- Section label -->
-        <span class="section-label">Logged so far — tap any item</span>
+      <!-- Scrollable message thread -->
+      <div class="chat-thread" id="chat-thread">
 
-        <!-- Hardcoded log items -->
-        <div class="log-list" id="log-list">
+        <!-- Turn 1: Scared to share information -->
+        <div class="chat-msg">Scared to share information</div>
+        <button class="chat-card" data-panel="data-fear">
+          <span class="log-dot log-dot--barrier"></span>
+          <span class="chat-card__category">barrier · data fear</span>
+          <span class="chat-card__confirm">logged</span>
+          <span class="chat-card__arrow">›</span>
+        </button>
 
-          <div class="log-item" data-panel="data-fear">
-            <span class="log-dot log-dot--barrier"></span>
-            <div class="log-item__body">
-              <span class="log-item__text">Scared to share information</span>
-              <div class="log-item__meta">
-                <span class="log-item__category">barrier · data fear</span>
-                <span class="log-tag log-tag--visual">visual</span>
-              </div>
-            </div>
-            <span class="log-item__arrow">›</span>
-          </div>
+        <!-- Turn 2: Works nights, can't do daytime -->
+        <div class="chat-msg">Works nights, can't do daytime</div>
+        <button class="chat-card" data-panel="scheduling">
+          <span class="log-dot log-dot--barrier"></span>
+          <span class="chat-card__category">barrier · scheduling</span>
+          <span class="chat-card__confirm">logged</span>
+          <span class="chat-card__arrow">›</span>
+        </button>
 
-          <div class="log-item" data-panel="scheduling">
-            <span class="log-dot log-dot--barrier"></span>
-            <div class="log-item__body">
-              <span class="log-item__text">Works nights, can't do daytime</span>
-              <div class="log-item__meta">
-                <span class="log-item__category">barrier · scheduling</span>
-                <span class="log-tag log-tag--visual">visual</span>
-              </div>
-            </div>
-            <span class="log-item__arrow">›</span>
-          </div>
+        <!-- Turn 3: Needs rent help after storm -->
+        <div class="chat-msg">Needs rent help after storm</div>
+        <button class="chat-card" data-panel="rent">
+          <span class="log-dot log-dot--need"></span>
+          <span class="chat-card__category">need · rent/housing</span>
+          <span class="chat-card__confirm">logged</span>
+          <span class="chat-card__arrow">›</span>
+        </button>
 
-          <div class="log-item" data-panel="rent">
-            <span class="log-dot log-dot--need"></span>
-            <div class="log-item__body">
-              <span class="log-item__text">Needs rent help after storm</span>
-              <div class="log-item__meta">
-                <span class="log-item__category">need · rent/housing</span>
-                <span class="log-tag log-tag--visual">visual</span>
-              </div>
-            </div>
-            <span class="log-item__arrow">›</span>
-          </div>
+        <!-- Turn 4: Two kids, born in US -->
+        <div class="chat-msg">Two kids, born in US</div>
+        <button class="chat-card" data-panel="citizen-children">
+          <span class="log-dot log-dot--household"></span>
+          <span class="chat-card__category">household · citizen children</span>
+          <span class="chat-card__confirm">logged</span>
+          <span class="chat-card__arrow">›</span>
+        </button>
 
-          <div class="log-item" data-panel="citizen-children">
-            <span class="log-dot log-dot--household"></span>
-            <div class="log-item__body">
-              <span class="log-item__text">Two kids, born in US</span>
-              <div class="log-item__meta">
-                <span class="log-item__category">household · citizen children</span>
-                <span class="log-tag log-tag--visual">visual</span>
-              </div>
-            </div>
-            <span class="log-item__arrow">›</span>
-          </div>
+        <!-- Turn 5: Seemed nervous when org was mentioned -->
+        <div class="chat-msg">Seemed nervous when org was mentioned</div>
+        <button class="chat-card" data-panel="consideration">
+          <span class="log-dot log-dot--consideration"></span>
+          <span class="chat-card__category">consideration</span>
+          <span class="chat-card__confirm">logged</span>
+          <span class="chat-card__arrow">›</span>
+        </button>
 
-          <div class="log-item" data-panel="consideration">
-            <span class="log-dot log-dot--consideration"></span>
-            <div class="log-item__body">
-              <span class="log-item__text">Seemed nervous when org was mentioned</span>
-              <div class="log-item__meta">
-                <span class="log-item__category">consideration</span>
-                <span class="log-tag log-tag--context">context</span>
-              </div>
-            </div>
-            <span class="log-item__arrow">›</span>
-          </div>
+        <!-- Open-ended prompt for the next entry -->
+        <div class="chat-prompt">What else did you hear? Tap a suggestion below or type what they said.</div>
 
-        </div><!-- /#log-list -->
+      </div><!-- /#chat-thread -->
 
-        <!-- Free input -->
-        <div class="free-input">
-          <input type="text" class="free-input__field" id="log-input"
-                 placeholder="Add to log…" autocomplete="off" />
-          <button class="free-input__btn" id="log-add-btn">Add</button>
-        </div>
+      <!-- Persistent suggestions -->
+      <div class="chat-suggestions" id="chat-suggestions">
+        <button class="chat-suggestion"
+                data-text="Has WhatsApp, checks regularly"
+                data-dot="household"
+                data-category="household"
+                data-panel="consideration">Has WhatsApp</button>
+        <button class="chat-suggestion"
+                data-text="Prefers Spanish"
+                data-dot="household"
+                data-category="household"
+                data-panel="consideration">Spanish</button>
+        <button class="chat-suggestion"
+                data-text="Worried about eviction timeline"
+                data-dot="barrier"
+                data-category="barrier · scheduling"
+                data-panel="scheduling">Eviction urgency</button>
+      </div>
 
-        <!-- Quick-add buttons -->
-        <div class="quick-add">
-          <span class="section-label">Quick add</span>
-          <div class="quick-add__chips">
-            <button class="quick-add__chip"
-                    data-text="Has WhatsApp, checks regularly"
-                    data-dot="household"
-                    data-category="household"
-                    data-tag="visual"
-                    data-panel="consideration">Has WhatsApp</button>
-            <button class="quick-add__chip"
-                    data-text="Prefers Spanish"
-                    data-dot="household"
-                    data-category="household"
-                    data-tag="visual"
-                    data-panel="consideration">Spanish</button>
-            <button class="quick-add__chip"
-                    data-text="Worried about eviction timeline"
-                    data-dot="barrier"
-                    data-category="barrier · scheduling"
-                    data-tag="visual"
-                    data-panel="scheduling">Eviction urgency</button>
-          </div>
-        </div>
-
-      </div><!-- /.tab-content__inner -->
+      <!-- Composer -->
+      <div class="chat-composer">
+        <input type="text" class="chat-composer__input" id="chat-input"
+               placeholder="Type what they said…" autocomplete="off" />
+        <button class="chat-composer__send" id="chat-send-btn" aria-label="Send">→</button>
+      </div>
 
       <div class="tab-footer">No names or status stored · session builds barrier profile only</div>
     </div>
@@ -1750,9 +1722,16 @@
       var panelId = itemEl.dataset.panel || 'consideration';
       var meta    = PANEL_META[panelId] || PANEL_META['consideration'];
 
-      // populate header
-      document.getElementById('panel-title').textContent =
-        itemEl.querySelector('.log-item__text').textContent;
+      // Title = the CBO message sitting directly above the card.
+      // Falls back to the category if structure is unexpected.
+      var titleText = '';
+      var prev = itemEl.previousElementSibling;
+      if (prev && prev.classList.contains('chat-msg')) {
+        titleText = prev.textContent;
+      } else {
+        titleText = meta.badgeText;
+      }
+      document.getElementById('panel-title').textContent = titleText;
 
       var badge = document.getElementById('panel-badge');
       badge.className = 'panel-header__badge ' + meta.badgeClass;
@@ -1784,9 +1763,9 @@
       document.getElementById('panel-overlay').classList.remove('visible');
     }
 
-    // wire hardcoded log items
-    document.querySelectorAll('#log-list .log-item').forEach(function(item) {
-      item.addEventListener('click', function() { openPanel(item); });
+    // wire hardcoded chat cards (the 5 pre-existing turns)
+    document.querySelectorAll('#chat-thread .chat-card').forEach(function(card) {
+      card.addEventListener('click', function() { openPanel(card); });
     });
 
     document.getElementById('panel-close').addEventListener('click', closePanel);
@@ -1837,65 +1816,76 @@
       return { dot: 'consideration', category: 'consideration', tag: 'context', panel: 'consideration' };
     }
 
-    function addLogItem(text, dot, category, tag, panel) {
-      var list = document.getElementById('log-list');
-      var item = document.createElement('div');
-      item.className = 'log-item';
-      item.dataset.panel = panel;
+    function addChatTurn(text, dot, category, panel) {
+      var thread = document.getElementById('chat-thread');
+      var prompt = thread.querySelector('.chat-prompt');
 
-      var tagClass = tag === 'visual' ? 'log-tag--visual' : 'log-tag--context';
-      var dotClass = 'log-dot--' + dot;
+      // CBO message bubble — textContent prevents XSS
+      var msg = document.createElement('div');
+      msg.className = 'chat-msg';
+      msg.textContent = text;
 
-      // sanitize text to prevent XSS
-      var safe = document.createElement('span');
-      safe.textContent = text;
-      var safeText = safe.innerHTML;
+      // System card — textContent on category prevents XSS
+      var card = document.createElement('button');
+      card.className = 'chat-card';
+      card.dataset.panel = panel;
+      card.innerHTML =
+        '<span class="log-dot log-dot--' + dot + '"></span>' +
+        '<span class="chat-card__category"></span>' +
+        '<span class="chat-card__confirm">logged</span>' +
+        '<span class="chat-card__arrow">›</span>';
+      card.querySelector('.chat-card__category').textContent = category;
+      card.addEventListener('click', function() { openPanel(card); });
 
-      item.innerHTML =
-        '<span class="log-dot ' + dotClass + '"></span>' +
-        '<div class="log-item__body">' +
-          '<span class="log-item__text">' + safeText + '</span>' +
-          '<div class="log-item__meta">' +
-            '<span class="log-item__category">' + category + '</span>' +
-            '<span class="log-tag ' + tagClass + '">' + tag + '</span>' +
-          '</div>' +
-        '</div>' +
-        '<span class="log-item__arrow">›</span>';
+      // Insert the new turn before the ambient prompt so the prompt
+      // stays docked at the bottom of the thread.
+      if (prompt) {
+        thread.insertBefore(msg, prompt);
+        thread.insertBefore(card, prompt);
+      } else {
+        thread.appendChild(msg);
+        thread.appendChild(card);
+      }
 
-      item.addEventListener('click', function() { openPanel(item); });
-      list.appendChild(item);
+      // Scroll newest turn into view
+      thread.scrollTop = thread.scrollHeight;
+
       updateConfidence();
-      showToast('Added to log');
     }
 
-    function handleAddInput() {
-      var input = document.getElementById('log-input');
+    function handleSend() {
+      var input = document.getElementById('chat-input');
       var text  = input.value.trim();
       if (!text) return;
       var cat = categorize(text);
-      addLogItem(text, cat.dot, cat.category, cat.tag, cat.panel);
+      addChatTurn(text, cat.dot, cat.category, cat.panel);
       input.value = '';
     }
 
-    document.getElementById('log-add-btn').addEventListener('click', handleAddInput);
-    document.getElementById('log-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleAddInput();
+    document.getElementById('chat-send-btn').addEventListener('click', handleSend);
+    document.getElementById('chat-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSend();
     });
 
     /* ============================================================
-       QUICK-ADD CHIPS
+       SUGGESTION CHIPS
     ============================================================ */
-    document.querySelectorAll('.quick-add__chip').forEach(function(chip) {
+    document.querySelectorAll('.chat-suggestion').forEach(function(chip) {
       chip.addEventListener('click', function() {
-        addLogItem(
+        addChatTurn(
           chip.dataset.text,
           chip.dataset.dot,
           chip.dataset.category,
-          chip.dataset.tag,
           chip.dataset.panel
         );
       });
     });
+
+    // On load, scroll chat thread to the newest content
+    (function scrollThreadOnLoad() {
+      var thread = document.getElementById('chat-thread');
+      if (thread) thread.scrollTop = thread.scrollHeight;
+    })();
 
     /* ============================================================
        OUTPUT TAB — DELIVER ROW
