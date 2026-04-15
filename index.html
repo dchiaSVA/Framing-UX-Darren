@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Steady Mode</title>
+  <style>
+
+    /* ============================================================
+       CSS CUSTOM PROPERTIES
+       All colors defined here. No hardcoded hex anywhere else.
+       Light mode defaults; dark mode override via media query.
+    ============================================================ */
+
+    :root {
+      /* Backgrounds */
+      --color-background-primary:   #ffffff;
+      --color-background-secondary: #f4f4f5;
+      --color-background-info:      #eff6ff;
+      --color-background-warning:   #fffbeb;
+      --color-background-success:   #f0fdf4;
+      --color-background-danger:    #fef2f2;
+
+      /* Text */
+      --color-text-primary:   #111111;
+      --color-text-secondary: #444444;
+      --color-text-tertiary:  #767676;
+      --color-text-info:      #1d4ed8;
+      --color-text-warning:   #92400e;
+      --color-text-success:   #166534;
+      --color-text-danger:    #991b1b;
+
+      /* Borders */
+      --color-border-secondary: rgba(0, 0, 0, 0.15);
+      --color-border-tertiary:  rgba(0, 0, 0, 0.08);
+
+      /* Semantic dot colors — derived from text palette */
+      --color-dot-barrier:       var(--color-text-danger);
+      --color-dot-need:          var(--color-text-success);
+      --color-dot-household:     #6d28d9;
+      --color-dot-consideration: var(--color-text-tertiary);
+
+      /* Tag pill colors */
+      --color-tag-visual-bg:    var(--color-background-info);
+      --color-tag-visual-text:  var(--color-text-info);
+      --color-tag-context-bg:   var(--color-background-secondary);
+      --color-tag-context-text: var(--color-text-tertiary);
+
+      /* Status bar / chrome */
+      --color-chrome-bg:     #f4f4f5;
+      --color-chrome-border: rgba(0, 0, 0, 0.10);
+
+      /* Tab active indicator */
+      --color-tab-active-text:      var(--color-text-primary);
+      --color-tab-active-indicator: var(--color-text-primary);
+      --color-tab-inactive-text:    var(--color-text-tertiary);
+
+      /* Toast */
+      --color-toast-bg:   #1c1c1e;
+      --color-toast-text: #f9f9f9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-background-primary:   #1c1c1e;
+        --color-background-secondary: #2c2c2e;
+        --color-background-info:      #1e3a5f;
+        --color-background-warning:   #3d2e00;
+        --color-background-success:   #052e16;
+        --color-background-danger:    #450a0a;
+
+        --color-text-primary:   #f0f0f0;
+        --color-text-secondary: #c8c8c8;
+        --color-text-tertiary:  #8a8a8e;
+        --color-text-info:      #93c5fd;
+        --color-text-warning:   #fcd34d;
+        --color-text-success:   #86efac;
+        --color-text-danger:    #fca5a5;
+
+        --color-border-secondary: rgba(255, 255, 255, 0.15);
+        --color-border-tertiary:  rgba(255, 255, 255, 0.08);
+
+        --color-dot-household: #a78bfa;
+
+        --color-chrome-bg:     #2c2c2e;
+        --color-chrome-border: rgba(255, 255, 255, 0.08);
+
+        --color-toast-bg:   #f0f0f0;
+        --color-toast-text: #111111;
+      }
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font: inherit;
+      color: inherit;
+    }
+
+    textarea {
+      resize: none;
+      font: inherit;
+    }
+
+    input {
+      font: inherit;
+    }
+
+    /* ============================================================
+       BASE TYPOGRAPHY
+       font-family: system-ui, sans-serif
+       14px body · 12px secondary · 11px tags/badges
+       10px labels/footers
+       font-weight: 400 regular · 500 medium only
+    ============================================================ */
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--color-text-primary);
+      background-color: var(--color-background-secondary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .text-secondary {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    .text-tertiary {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+    }
+
+    .text-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+    }
+
+    .text-tag {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .text-medium {
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       PHONE CONTAINER
+       390px max-width, centered on desktop.
+       On mobile: fills full viewport width.
+    ============================================================ */
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100dvh;
+      background: var(--color-background-primary);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       STATUS BAR
+    ============================================================ */
+
+    .status-bar {
+      background: var(--color-chrome-bg);
+      border-bottom: 1px solid var(--color-chrome-border);
+      padding: 10px 20px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .status-bar__time {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .status-bar__indicators {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .status-bar__indicator {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+    }
+
+    /* ============================================================
+       APP HEADER
+    ============================================================ */
+
+    .app-header {
+      background: var(--color-chrome-bg);
+      border-bottom: 1px solid var(--color-chrome-border);
+      padding: 14px 20px 12px;
+      flex-shrink: 0;
+    }
+
+    .app-header__title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .app-header__subtitle {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      margin-top: 1px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================================
+       TAB NAVIGATION
+       Notes · Session (default) · Output
+    ============================================================ */
+
+    .tab-nav {
+      display: flex;
+      background: var(--color-chrome-bg);
+      border-bottom: 1px solid var(--color-chrome-border);
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px 10px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-tab-inactive-text);
+      border-bottom: 2px solid transparent;
+      text-align: center;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .tab-btn.active {
+      font-weight: 500;
+      color: var(--color-tab-active-text);
+      border-bottom-color: var(--color-tab-active-indicator);
+    }
+
+    /* ============================================================
+       TAB CONTENT AREAS
+       Only the active tab is visible.
+       Each tab is flex column: scrollable inner + optional sticky footer.
+    ============================================================ */
+
+    .tab-content {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--color-background-secondary);
+      min-height: 0;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    .tab-content__inner {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 16px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Sticky footer — sits below scrollable content */
+    .tab-footer {
+      flex-shrink: 0;
+      padding: 9px 16px;
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--color-text-tertiary);
+      text-align: center;
+      background: var(--color-background-primary);
+      border-top: 1px solid var(--color-border-tertiary);
+      letter-spacing: 0.01em;
+    }
+
+    /* ============================================================
+       SESSION TAB
+    ============================================================ */
+
+    /* Section label */
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      padding: 0 2px;
+    }
+
+    /* Log item list */
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-background-primary);
+      border-radius: 8px;
+      border: 1px solid var(--color-border-tertiary);
+      overflow: hidden;
+    }
+
+    .log-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--color-border-tertiary);
+      background: var(--color-background-primary);
+      transition: background 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .log-item:last-child {
+      border-bottom: none;
+    }
+
+    .log-item:active {
+      background: var(--color-background-secondary);
+    }
+
+    /* Color dot */
+    .log-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .log-dot--barrier       { background: var(--color-dot-barrier); }
+    .log-dot--need          { background: var(--color-dot-need); }
+    .log-dot--household     { background: var(--color-dot-household); }
+    .log-dot--consideration { background: var(--color-dot-consideration); }
+
+    /* Item content */
+    .log-item__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .log-item__text {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-text-primary);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .log-item__meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px;
+    }
+
+    .log-item__category {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* Visual / context tag pill */
+    .log-tag {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .log-tag--visual {
+      background: var(--color-tag-visual-bg);
+      color: var(--color-tag-visual-text);
+    }
+
+    .log-tag--context {
+      background: var(--color-tag-context-bg);
+      color: var(--color-tag-context-text);
+    }
+
+    /* Right chevron */
+    .log-item__arrow {
+      font-size: 16px;
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    /* Free input row */
+    .free-input {
+      display: flex;
+      gap: 8px;
+    }
+
+    .free-input__field {
+      flex: 1;
+      height: 40px;
+      padding: 0 12px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      outline: none;
+    }
+
+    .free-input__field::placeholder {
+      color: var(--color-text-tertiary);
+    }
+
+    .free-input__field:focus {
+      border-color: var(--color-text-tertiary);
+    }
+
+    .free-input__btn {
+      height: 40px;
+      padding: 0 16px;
+      background: var(--color-text-primary);
+      color: var(--color-background-primary);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      flex-shrink: 0;
+      transition: opacity 0.1s;
+    }
+
+    .free-input__btn:active {
+      opacity: 0.75;
+    }
+
+    /* Quick-add buttons */
+    .quick-add {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quick-add__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .quick-add__chip {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--color-border-secondary);
+      background: var(--color-background-primary);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: background 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .quick-add__chip:active {
+      background: var(--color-background-secondary);
+    }
+
+    /* Toast */
+    .toast {
+      position: absolute;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--color-toast-bg);
+      color: var(--color-toast-text);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 200;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============================================================
+       SIDE PANEL + OVERLAY
+    ============================================================ */
+
+    .panel-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .panel-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .side-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 86%;
+      height: 100%;
+      background: var(--color-background-primary);
+      z-index: 101;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+      overflow: hidden;
+    }
+
+    .side-panel.open {
+      transform: translateX(0);
+    }
+
+    /* Panel header */
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 14px 11px;
+      border-bottom: 1px solid var(--color-border-tertiary);
+      flex-shrink: 0;
+      background: var(--color-chrome-bg);
+    }
+
+    .panel-close {
+      font-size: 20px;
+      line-height: 1;
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
+      padding: 1px 4px 1px 0;
+      background: none;
+      border: none;
+    }
+
+    .panel-close:active {
+      color: var(--color-text-primary);
+    }
+
+    .panel-header__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .panel-header__title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      line-height: 1.35;
+    }
+
+    .panel-header__badge {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .panel-header__badge--barrier {
+      background: var(--color-background-danger);
+      color: var(--color-text-danger);
+    }
+
+    .panel-header__badge--need {
+      background: var(--color-background-success);
+      color: var(--color-text-success);
+    }
+
+    .panel-header__badge--household {
+      background: var(--color-background-info);
+      color: var(--color-text-info);
+    }
+
+    .panel-header__badge--consideration {
+      background: var(--color-background-secondary);
+      color: var(--color-text-tertiary);
+    }
+
+    /* Panel body — scrollable content */
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    /* Individual panel sections — only the active one is shown */
+    .panel-section {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-section.active {
+      display: flex;
+    }
+
+    /* Source line */
+    .source-line {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+      font-weight: 400;
+    }
+
+    /* Bar chart visual */
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-label {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      width: 88px;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 6px;
+      background: var(--color-border-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--color-text-primary);
+      border-radius: 3px;
+      opacity: 0.55;
+    }
+
+    .bar-pct {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      width: 28px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Availability / eligibility list */
+    .avail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .avail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--color-border-tertiary);
+      background: var(--color-background-primary);
+    }
+
+    .avail-item:last-child {
+      border-bottom: none;
+    }
+
+    .avail-name {
+      font-size: 12px;
+      color: var(--color-text-primary);
+      flex: 1;
+      padding-right: 8px;
+    }
+
+    .avail-badge {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .avail-badge--available {
+      background: var(--color-background-success);
+      color: var(--color-text-success);
+    }
+
+    .avail-badge--low {
+      background: var(--color-background-warning);
+      color: var(--color-text-warning);
+    }
+
+    .avail-badge--ineligible {
+      background: var(--color-background-danger);
+      color: var(--color-text-danger);
+    }
+
+    .avail-badge--eligible {
+      background: var(--color-background-success);
+      color: var(--color-text-success);
+    }
+
+    .avail-badge--pathway {
+      background: var(--color-background-info);
+      color: var(--color-text-info);
+    }
+
+    .avail-badge--status {
+      background: var(--color-background-danger);
+      color: var(--color-text-danger);
+    }
+
+    .avail-badge--daytime {
+      background: var(--color-background-secondary);
+      color: var(--color-text-tertiary);
+    }
+
+    /* Contextual boxes — clarifying question / eligibility / note */
+    .panel-box {
+      border-radius: 8px;
+      padding: 11px 13px;
+    }
+
+    .panel-box--warning {
+      background: var(--color-background-warning);
+    }
+
+    .panel-box--success {
+      background: var(--color-background-success);
+    }
+
+    .panel-box--gray {
+      background: var(--color-background-secondary);
+    }
+
+    .panel-box__label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .panel-box--warning .panel-box__label { color: var(--color-text-warning); }
+    .panel-box--success .panel-box__label { color: var(--color-text-success); }
+    .panel-box--gray    .panel-box__label { color: var(--color-text-tertiary); }
+
+    .panel-box__text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--color-text-primary);
+    }
+
+    /* Textarea inside panel */
+    .panel-textarea {
+      width: 100%;
+      min-height: 72px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      outline: none;
+    }
+
+    .panel-textarea::placeholder {
+      color: var(--color-text-tertiary);
+    }
+
+    .panel-textarea:focus {
+      border-color: var(--color-text-tertiary);
+    }
+
+    /* Confirm button — sticky at bottom of panel */
+    .panel-confirm-wrap {
+      flex-shrink: 0;
+      padding: 12px 14px;
+      border-top: 1px solid var(--color-border-tertiary);
+      background: var(--color-background-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .panel-confirm-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--color-text-primary);
+      color: var(--color-background-primary);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.1s;
+    }
+
+    .panel-confirm-btn:active {
+      opacity: 0.75;
+    }
+
+    .panel-confirm-btn.confirmed {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .panel-source-below {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+      text-align: center;
+    }
+
+    /* ============================================================
+       OUTPUT TAB
+    ============================================================ */
+
+    /* Section divider */
+    .divider {
+      height: 1px;
+      background: var(--color-border-tertiary);
+      flex-shrink: 0;
+    }
+
+    /* Barrier profile 2×2 grid */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .profile-chip {
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .profile-chip__label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-tertiary);
+      margin-bottom: 3px;
+    }
+
+    .profile-chip__value {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    /* Confidence bar */
+    .confidence-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .confidence-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .confidence-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .confidence-pct {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    .confidence-track {
+      height: 6px;
+      background: var(--color-border-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .confidence-fill {
+      height: 100%;
+      background: var(--color-text-success);
+      border-radius: 3px;
+      width: 84%;
+      transition: width 0.35s ease;
+    }
+
+    /* Transparency script block */
+    .script-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .script-block__header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .script-block__label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-primary);
+    }
+
+    .script-block__sublabel {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.03em;
+    }
+
+    .script-block__text {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      padding: 10px 12px;
+      background: var(--color-background-secondary);
+      border-radius: 8px;
+    }
+
+    .script-block__source {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* Resource cards */
+    .resource-card {
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .resource-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .resource-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    .resource-why {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+    }
+
+    .resource-source {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* Action rows — deliver + log */
+    .action-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 11px 8px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.1s;
+    }
+
+    .btn-action:active {
+      opacity: 0.75;
+    }
+
+    /* Green — WhatsApp */
+    .btn-action--green {
+      background: var(--color-text-success);
+      color: var(--color-background-primary);
+    }
+
+    /* Blue — Log session */
+    .btn-action--blue {
+      background: var(--color-text-info);
+      color: var(--color-background-primary);
+    }
+
+    .btn-action--blue:disabled {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    /* Secondary — Print / Discard */
+    .btn-action--secondary {
+      background: transparent;
+      border: 1px solid var(--color-border-secondary);
+      color: var(--color-text-secondary);
+    }
+
+    /* ============================================================
+       NOTES TAB
+    ============================================================ */
+
+    /* Incoming note — colleague */
+    .note {
+      background: var(--color-background-primary);
+      border-radius: 8px;
+      border: 1px solid var(--color-border-tertiary);
+      padding: 12px 14px;
+    }
+
+    .note__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .note__from {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    .note__time {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+    }
+
+    .note__body {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Network alert — styled differently */
+    .note--alert {
+      background: var(--color-background-info);
+      border: 1px solid var(--color-border-tertiary);
+    }
+
+    .note--alert .note__from {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-text-info);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .note--alert .note__body {
+      color: var(--color-text-primary);
+    }
+
+    /* Worker notes */
+    .worker-notes {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .worker-notes__textarea {
+      width: 100%;
+      min-height: 96px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      outline: none;
+    }
+
+    .worker-notes__textarea::placeholder {
+      color: var(--color-text-tertiary);
+    }
+
+    .worker-notes__textarea:focus {
+      border-color: var(--color-text-tertiary);
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+      <span class="status-bar__time" id="status-time">9:41</span>
+      <div class="status-bar__indicators">
+        <span class="status-bar__indicator">●●●</span>
+        <span class="status-bar__indicator">WiFi</span>
+        <span class="status-bar__indicator">⬛</span>
+      </div>
+    </div>
+
+    <!-- APP HEADER -->
+    <div class="app-header">
+      <div class="app-header__title">Steady Mode</div>
+      <div class="app-header__subtitle">CBO Decision Support</div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn" role="tab" aria-selected="false"
+              aria-controls="tab-notes" data-tab="notes">Notes</button>
+      <button class="tab-btn active" role="tab" aria-selected="true"
+              aria-controls="tab-session" data-tab="session">Session</button>
+      <button class="tab-btn" role="tab" aria-selected="false"
+              aria-controls="tab-output" data-tab="output">Output</button>
+    </nav>
+
+    <!-- TAB CONTENT: NOTES -->
+    <div class="tab-content" id="tab-notes" role="tabpanel">
+      <div class="tab-content__inner">
+
+        <!-- Note 1: Colleague -->
+        <div class="note">
+          <div class="note__header">
+            <span class="note__from">From: Maria R. · 8:45am</span>
+          </div>
+          <p class="note__body">"She came in last month for food assistance. Very cautious about sharing info. Prefers Spanish. Has two young kids."</p>
+        </div>
+
+        <!-- Note 2: Network alert -->
+        <div class="note note--alert">
+          <div class="note__header">
+            <span class="note__from">Network alert</span>
+            <span class="note__time">updated today</span>
+          </div>
+          <p class="note__body">"BronxWorks rent assistance now accepting walk-ins Tue/Thu evenings. No docs required."</p>
+        </div>
+
+        <!-- Worker notes textarea -->
+        <div class="worker-notes">
+          <span class="text-label">Your notes</span>
+          <textarea class="worker-notes__textarea"
+            placeholder="Met briefly at community event last week. Said she's been struggling since the storm."
+            rows="4"></textarea>
+        </div>
+
+      </div><!-- /.tab-content__inner -->
+
+      <div class="tab-footer">Notes stay on this device only · not logged without confirmation</div>
+    </div>
+
+    <!-- TAB CONTENT: SESSION (default active) -->
+    <div class="tab-content active" id="tab-session" role="tabpanel">
+      <div class="tab-content__inner">
+
+        <!-- Section label -->
+        <span class="section-label">Logged so far — tap any item</span>
+
+        <!-- Hardcoded log items -->
+        <div class="log-list" id="log-list">
+
+          <div class="log-item" data-panel="data-fear">
+            <span class="log-dot log-dot--barrier"></span>
+            <div class="log-item__body">
+              <span class="log-item__text">Scared to share information</span>
+              <div class="log-item__meta">
+                <span class="log-item__category">barrier · data fear</span>
+                <span class="log-tag log-tag--visual">visual</span>
+              </div>
+            </div>
+            <span class="log-item__arrow">›</span>
+          </div>
+
+          <div class="log-item" data-panel="scheduling">
+            <span class="log-dot log-dot--barrier"></span>
+            <div class="log-item__body">
+              <span class="log-item__text">Works nights, can't do daytime</span>
+              <div class="log-item__meta">
+                <span class="log-item__category">barrier · scheduling</span>
+                <span class="log-tag log-tag--visual">visual</span>
+              </div>
+            </div>
+            <span class="log-item__arrow">›</span>
+          </div>
+
+          <div class="log-item" data-panel="rent">
+            <span class="log-dot log-dot--need"></span>
+            <div class="log-item__body">
+              <span class="log-item__text">Needs rent help after storm</span>
+              <div class="log-item__meta">
+                <span class="log-item__category">need · rent/housing</span>
+                <span class="log-tag log-tag--visual">visual</span>
+              </div>
+            </div>
+            <span class="log-item__arrow">›</span>
+          </div>
+
+          <div class="log-item" data-panel="citizen-children">
+            <span class="log-dot log-dot--household"></span>
+            <div class="log-item__body">
+              <span class="log-item__text">Two kids, born in US</span>
+              <div class="log-item__meta">
+                <span class="log-item__category">household · citizen children</span>
+                <span class="log-tag log-tag--visual">visual</span>
+              </div>
+            </div>
+            <span class="log-item__arrow">›</span>
+          </div>
+
+          <div class="log-item" data-panel="consideration">
+            <span class="log-dot log-dot--consideration"></span>
+            <div class="log-item__body">
+              <span class="log-item__text">Seemed nervous when org was mentioned</span>
+              <div class="log-item__meta">
+                <span class="log-item__category">consideration</span>
+                <span class="log-tag log-tag--context">context</span>
+              </div>
+            </div>
+            <span class="log-item__arrow">›</span>
+          </div>
+
+        </div><!-- /#log-list -->
+
+        <!-- Free input -->
+        <div class="free-input">
+          <input type="text" class="free-input__field" id="log-input"
+                 placeholder="Add to log…" autocomplete="off" />
+          <button class="free-input__btn" id="log-add-btn">Add</button>
+        </div>
+
+        <!-- Quick-add buttons -->
+        <div class="quick-add">
+          <span class="section-label">Quick add</span>
+          <div class="quick-add__chips">
+            <button class="quick-add__chip"
+                    data-text="Has WhatsApp, checks regularly"
+                    data-dot="household"
+                    data-category="household"
+                    data-tag="visual"
+                    data-panel="consideration">Has WhatsApp</button>
+            <button class="quick-add__chip"
+                    data-text="Prefers Spanish"
+                    data-dot="household"
+                    data-category="household"
+                    data-tag="visual"
+                    data-panel="consideration">Spanish</button>
+            <button class="quick-add__chip"
+                    data-text="Worried about eviction timeline"
+                    data-dot="barrier"
+                    data-category="barrier · scheduling"
+                    data-tag="visual"
+                    data-panel="scheduling">Eviction urgency</button>
+          </div>
+        </div>
+
+      </div><!-- /.tab-content__inner -->
+
+      <div class="tab-footer">No names or status stored · session builds barrier profile only</div>
+    </div>
+
+    <!-- TOAST (lives inside .phone so it clips to the container) -->
+    <div class="toast" id="toast" role="status" aria-live="polite">Added to log</div>
+
+    <!-- PANEL OVERLAY -->
+    <div class="panel-overlay" id="panel-overlay"></div>
+
+    <!-- SIDE PANEL -->
+    <div class="side-panel" id="side-panel" aria-modal="true" role="dialog">
+
+      <!-- Header (title + badge populated by JS on open) -->
+      <div class="panel-header">
+        <button class="panel-close" id="panel-close" aria-label="Close panel">✕</button>
+        <div class="panel-header__info">
+          <div class="panel-header__title" id="panel-title"></div>
+          <span class="panel-header__badge" id="panel-badge"></span>
+        </div>
+      </div>
+
+      <!-- Scrollable body containing the five content sections -->
+      <div class="panel-body">
+
+        <!-- ── PANEL: DATA FEAR ── -->
+        <div class="panel-section" id="panel-data-fear">
+
+          <div class="bar-chart">
+            <div class="bar-row">
+              <span class="bar-label">Data fear</span>
+              <div class="bar-track"><div class="bar-fill" style="width:74%"></div></div>
+              <span class="bar-pct">74%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Scheduling</span>
+              <div class="bar-track"><div class="bar-fill" style="width:58%"></div></div>
+              <span class="bar-pct">58%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Cost</span>
+              <div class="bar-track"><div class="bar-fill" style="width:41%"></div></div>
+              <span class="bar-pct">41%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Documentation</span>
+              <div class="bar-track"><div class="bar-fill" style="width:29%"></div></div>
+              <span class="bar-pct">29%</span>
+            </div>
+          </div>
+
+          <div class="source-line">Network sessions this week · CMS 2022</div>
+
+          <div class="panel-box panel-box--warning">
+            <div class="panel-box__label">Clarifying question</div>
+            <p class="panel-box__text">Has someone you know had a bad experience sharing information with an organization?</p>
+          </div>
+
+          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+
+        </div><!-- /#panel-data-fear -->
+
+        <!-- ── PANEL: SCHEDULING ── -->
+        <div class="panel-section" id="panel-scheduling">
+
+          <div class="avail-list">
+            <div class="avail-item">
+              <span class="avail-name">BronxWorks Tue/Thu eve</span>
+              <span class="avail-badge avail-badge--available">Available</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">Make the Road evenings</span>
+              <span class="avail-badge avail-badge--available">Available</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">NYIC Queens evening</span>
+              <span class="avail-badge avail-badge--low">Low capacity</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">Catholic Charities</span>
+              <span class="avail-badge avail-badge--daytime">Daytime only</span>
+            </div>
+          </div>
+
+          <div class="source-line">Curated network · verified today</div>
+
+          <div class="panel-box panel-box--warning">
+            <div class="panel-box__label">Clarifying question</div>
+            <p class="panel-box__text">Is there a specific evening or weekend time that works best — weekdays or weekends?</p>
+          </div>
+
+          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+
+        </div><!-- /#panel-scheduling -->
+
+        <!-- ── PANEL: RENT ── -->
+        <div class="panel-section" id="panel-rent">
+
+          <div class="avail-list">
+            <div class="avail-item">
+              <span class="avail-name">Mutual aid fund (no docs)</span>
+              <span class="avail-badge avail-badge--available">Available</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">BronxWorks emergency</span>
+              <span class="avail-badge avail-badge--available">Available</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">FEMA direct (requires status)</span>
+              <span class="avail-badge avail-badge--ineligible">Ineligible</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">FEMA via citizen child</span>
+              <span class="avail-badge avail-badge--eligible">Eligible</span>
+            </div>
+          </div>
+
+          <div class="source-line">NILC · verified Apr 2025 · Morey 2012</div>
+
+          <div class="panel-box panel-box--success">
+            <div class="panel-box__label">Eligibility — say out loud</div>
+            <p class="panel-box__text">Emergency rent assistance through local mutual aid does not require immigration documentation. You qualify based on demonstrated need.</p>
+          </div>
+
+          <div class="panel-box panel-box--warning">
+            <div class="panel-box__label">Clarifying question</div>
+            <p class="panel-box__text">Has your landlord given you any written notice, or is it just verbal so far?</p>
+          </div>
+
+          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+
+        </div><!-- /#panel-rent -->
+
+        <!-- ── PANEL: CITIZEN CHILDREN ── -->
+        <div class="panel-section" id="panel-citizen-children">
+
+          <div class="avail-list">
+            <div class="avail-item">
+              <span class="avail-name">FEMA application (for kids)</span>
+              <span class="avail-badge avail-badge--pathway">Opens pathway</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">Medicaid for citizen children</span>
+              <span class="avail-badge avail-badge--eligible">Eligible</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">School enrollment support</span>
+              <span class="avail-badge avail-badge--available">Available</span>
+            </div>
+            <div class="avail-item">
+              <span class="avail-name">Cash assistance (parent)</span>
+              <span class="avail-badge avail-badge--status">Status required</span>
+            </div>
+          </div>
+
+          <div class="source-line">Morey 2012 · NILC · MOIA 2024</div>
+
+          <div class="panel-box panel-box--warning">
+            <div class="panel-box__label">Clarifying question</div>
+            <p class="panel-box__text">Do the kids have their birth certificates or social security cards accessible?</p>
+          </div>
+
+          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+
+        </div><!-- /#panel-citizen-children -->
+
+        <!-- ── PANEL: CONSIDERATION ── -->
+        <div class="panel-section" id="panel-consideration">
+
+          <div class="panel-box panel-box--gray">
+            <div class="panel-box__label">Context note</div>
+            <p class="panel-box__text">This is a qualitative observation — logged as session context. It doesn't map to a resource or barrier category but is worth remembering when deciding which org to recommend first.</p>
+          </div>
+
+          <div class="panel-box panel-box--warning">
+            <div class="panel-box__label">Practical note</div>
+            <p class="panel-box__text">Consider leading with the transparency script before naming any org. Let her ask which org rather than you naming one first.</p>
+          </div>
+
+          <textarea class="panel-textarea" placeholder="Which org? What did she say exactly?" rows="3"></textarea>
+
+        </div><!-- /#panel-consideration -->
+
+      </div><!-- /.panel-body -->
+
+      <!-- Sticky confirm button -->
+      <div class="panel-confirm-wrap">
+        <button class="panel-confirm-btn" id="panel-confirm-btn">Confirm + add to log</button>
+        <div class="panel-source-below" id="panel-source-below"></div>
+      </div>
+
+    </div><!-- /.side-panel -->
+
+    <!-- TAB CONTENT: OUTPUT -->
+    <div class="tab-content" id="tab-output" role="tabpanel">
+      <div class="tab-content__inner">
+
+        <!-- Barrier profile chips -->
+        <div class="profile-grid">
+          <div class="profile-chip">
+            <div class="profile-chip__label">Primary</div>
+            <div class="profile-chip__value">Data fear</div>
+          </div>
+          <div class="profile-chip">
+            <div class="profile-chip__label">Secondary</div>
+            <div class="profile-chip__value">Scheduling</div>
+          </div>
+          <div class="profile-chip">
+            <div class="profile-chip__label">Need</div>
+            <div class="profile-chip__value">Rent / housing</div>
+          </div>
+          <div class="profile-chip">
+            <div class="profile-chip__label">Language</div>
+            <div class="profile-chip__value">Spanish</div>
+          </div>
+        </div>
+
+        <!-- Confidence bar + suggested question -->
+        <div class="confidence-wrap">
+          <div class="confidence-row">
+            <span class="confidence-label">Match confidence</span>
+            <span class="confidence-pct" id="confidence-pct">84%</span>
+          </div>
+          <div class="confidence-track">
+            <div class="confidence-fill" id="confidence-fill"></div>
+          </div>
+        </div>
+
+        <div class="panel-box panel-box--warning">
+          <div class="panel-box__label">Suggested next question</div>
+          <p class="panel-box__text" id="suggested-question">Is there an evening or weekend time that works better for you?</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Transparency script -->
+        <div class="script-block">
+          <div class="script-block__header">
+            <span class="script-block__label">Transparency script — say out loud</span>
+            <span class="script-block__sublabel">For data fear + rent assistance</span>
+          </div>
+          <p class="script-block__text">"What you tell me stays here. We don't record your name or immigration status. We don't share anything with DHS or ICE. We only track what type of help people need — never who they are."</p>
+          <span class="script-block__source">CMS 2022 · 805 UndocuFund model</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Matched resources -->
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-name">Make the Road NY — Brooklyn</span>
+            <span class="avail-badge avail-badge--available">Available</span>
+          </div>
+          <p class="resource-why">Evening hours · strict no-share policy · rent assistance · Spanish</p>
+          <span class="resource-source">Curated network · verified this month · (718) 418-7690</span>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-name">BronxWorks — Tue/Thu evenings</span>
+            <span class="avail-badge avail-badge--available">Available</span>
+          </div>
+          <p class="resource-why">Walk-in evenings · no docs required · rent + family services</p>
+          <span class="resource-source">Network alert today · (718) 508-3000</span>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-name">NYIC Queens clinic</span>
+            <span class="avail-badge avail-badge--low">Low capacity</span>
+          </div>
+          <p class="resource-why">Evening screening · no status required · legal + housing</p>
+          <span class="resource-source">Curated network · verified Feb 2025 · walk-in</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Deliver row -->
+        <div class="action-row">
+          <button class="btn-action btn-action--green" id="btn-whatsapp">Forward via WhatsApp</button>
+          <button class="btn-action btn-action--secondary" id="btn-print">Print</button>
+        </div>
+
+        <!-- Log row -->
+        <div class="action-row">
+          <button class="btn-action btn-action--blue" id="btn-log-session">Confirm + log session</button>
+          <button class="btn-action btn-action--secondary" id="btn-discard">Discard</button>
+        </div>
+
+      </div><!-- /.tab-content__inner -->
+
+      <div class="tab-footer">No personal data in log · sources shown for each resource</div>
+    </div>
+
+  </div><!-- /.phone -->
+
+  <script>
+    /* ============================================================
+       LIVE CLOCK
+    ============================================================ */
+    function updateClock() {
+      const t = new Date();
+      document.getElementById('status-time').textContent =
+        t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    updateClock();
+    setInterval(updateClock, 10000);
+
+    /* ============================================================
+       TAB SWITCHING
+    ============================================================ */
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.tab-content').forEach(function(c) {
+          c.classList.remove('active');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* ============================================================
+       TOAST
+    ============================================================ */
+    var toastTimer;
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() {
+        toast.classList.remove('visible');
+      }, 2500);
+    }
+
+    /* ============================================================
+       CONFIDENCE BAR + SUGGESTED QUESTION
+    ============================================================ */
+    var currentConfidence = 84;
+
+    var QUESTIONS = [
+      { threshold: 0,  text: 'Is there an evening or weekend time that works better for you?' },
+      { threshold: 88, text: 'Has someone you know had a bad experience with an organization?' },
+      { threshold: 91, text: 'Would it help if I explained exactly what we keep and what we don\'t?' },
+      { threshold: 93, text: 'Is there a time of day that works better — evenings or weekends?' }
+    ];
+
+    function getQuestion(confidence) {
+      var q = QUESTIONS[0].text;
+      for (var i = 0; i < QUESTIONS.length; i++) {
+        if (confidence >= QUESTIONS[i].threshold) q = QUESTIONS[i].text;
+      }
+      return q;
+    }
+
+    function updateConfidence() {
+      var increment = Math.floor(Math.random() * 3) + 3; // 3–5
+      currentConfidence = Math.min(98, currentConfidence + increment);
+      document.getElementById('confidence-fill').style.width = currentConfidence + '%';
+      document.getElementById('confidence-pct').textContent = currentConfidence + '%';
+      document.getElementById('suggested-question').textContent = getQuestion(currentConfidence);
+    }
+
+    /* ============================================================
+       SIDE PANEL — open / close
+    ============================================================ */
+    var PANEL_META = {
+      'data-fear': {
+        badgeClass:   'panel-header__badge--barrier',
+        badgeText:    'barrier · data fear',
+        confirmText:  'Confirm + add to log',
+        sourceBelow:  'CMS 2022 · 805 UndocuFund model'
+      },
+      'scheduling': {
+        badgeClass:   'panel-header__badge--barrier',
+        badgeText:    'barrier · scheduling',
+        confirmText:  'Confirm',
+        sourceBelow:  ''
+      },
+      'rent': {
+        badgeClass:   'panel-header__badge--need',
+        badgeText:    'need · rent/housing',
+        confirmText:  'Confirm',
+        sourceBelow:  ''
+      },
+      'citizen-children': {
+        badgeClass:   'panel-header__badge--household',
+        badgeText:    'household · citizen children',
+        confirmText:  'Confirm',
+        sourceBelow:  ''
+      },
+      'consideration': {
+        badgeClass:   'panel-header__badge--consideration',
+        badgeText:    'consideration',
+        confirmText:  'Add to log',
+        sourceBelow:  ''
+      }
+    };
+
+    function openPanel(itemEl) {
+      var panelId = itemEl.dataset.panel || 'consideration';
+      var meta    = PANEL_META[panelId] || PANEL_META['consideration'];
+
+      // populate header
+      document.getElementById('panel-title').textContent =
+        itemEl.querySelector('.log-item__text').textContent;
+
+      var badge = document.getElementById('panel-badge');
+      badge.className = 'panel-header__badge ' + meta.badgeClass;
+      badge.textContent = meta.badgeText;
+
+      // show correct section
+      document.querySelectorAll('.panel-section').forEach(function(s) {
+        s.classList.remove('active');
+      });
+      document.getElementById('panel-' + panelId).classList.add('active');
+
+      // reset + label confirm button
+      var confirmBtn = document.getElementById('panel-confirm-btn');
+      confirmBtn.textContent = meta.confirmText;
+      confirmBtn.classList.remove('confirmed');
+
+      // source below
+      var src = document.getElementById('panel-source-below');
+      src.textContent = meta.sourceBelow;
+      src.style.display = meta.sourceBelow ? 'block' : 'none';
+
+      // open
+      document.getElementById('side-panel').classList.add('open');
+      document.getElementById('panel-overlay').classList.add('visible');
+    }
+
+    function closePanel() {
+      document.getElementById('side-panel').classList.remove('open');
+      document.getElementById('panel-overlay').classList.remove('visible');
+    }
+
+    // wire hardcoded log items
+    document.querySelectorAll('#log-list .log-item').forEach(function(item) {
+      item.addEventListener('click', function() { openPanel(item); });
+    });
+
+    document.getElementById('panel-close').addEventListener('click', closePanel);
+    document.getElementById('panel-overlay').addEventListener('click', closePanel);
+
+    /* ============================================================
+       CONFIRM BUTTON — "Added ✓" → 600ms → close
+    ============================================================ */
+    document.getElementById('panel-confirm-btn').addEventListener('click', function() {
+      this.textContent = 'Added ✓';
+      this.classList.add('confirmed');
+      var self = this;
+      setTimeout(function() { closePanel(); }, 600);
+    });
+
+    /* ============================================================
+       KEYWORD MAP + FREE INPUT
+    ============================================================ */
+    var KEYWORD_MAP = [
+      { keywords: ['fear','scared','share','trust','ice','dhs'],
+        dot: 'barrier',  category: 'barrier · data fear',       tag: 'visual',  panel: 'data-fear' },
+      { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'],
+        dot: 'barrier',  category: 'barrier · scheduling',      tag: 'visual',  panel: 'scheduling' },
+      { keywords: ['cost','money','pay','afford','insurance','fee'],
+        dot: 'barrier',  category: 'barrier · cost',            tag: 'visual',  panel: 'consideration' },
+      { keywords: ['rent','housing','eviction','landlord','apartment'],
+        dot: 'need',     category: 'need · rent/housing',       tag: 'visual',  panel: 'rent' },
+      { keywords: ['food','supplies','pantry','eat','hungry'],
+        dot: 'need',     category: 'need · food/supplies',      tag: 'visual',  panel: 'consideration' },
+      { keywords: ['legal','lawyer','court','immigration','attorney'],
+        dot: 'need',     category: 'need · legal aid',          tag: 'visual',  panel: 'consideration' },
+      { keywords: ['health','doctor','hospital','sick','medical','clinic'],
+        dot: 'need',     category: 'need · healthcare',         tag: 'visual',  panel: 'consideration' },
+      { keywords: ['kids','children','born','citizen','family','daughter','son'],
+        dot: 'household',category: 'household · citizen children', tag: 'visual', panel: 'citizen-children' },
+      { keywords: ['spanish','english','language','dialect','creole','bengali'],
+        dot: 'household',category: 'household · language',      tag: 'visual',  panel: 'consideration' }
+    ];
+
+    function categorize(text) {
+      var lower = text.toLowerCase();
+      for (var i = 0; i < KEYWORD_MAP.length; i++) {
+        var rule = KEYWORD_MAP[i];
+        for (var j = 0; j < rule.keywords.length; j++) {
+          if (lower.indexOf(rule.keywords[j]) !== -1) return rule;
+        }
+      }
+      return { dot: 'consideration', category: 'consideration', tag: 'context', panel: 'consideration' };
+    }
+
+    function addLogItem(text, dot, category, tag, panel) {
+      var list = document.getElementById('log-list');
+      var item = document.createElement('div');
+      item.className = 'log-item';
+      item.dataset.panel = panel;
+
+      var tagClass = tag === 'visual' ? 'log-tag--visual' : 'log-tag--context';
+      var dotClass = 'log-dot--' + dot;
+
+      // sanitize text to prevent XSS
+      var safe = document.createElement('span');
+      safe.textContent = text;
+      var safeText = safe.innerHTML;
+
+      item.innerHTML =
+        '<span class="log-dot ' + dotClass + '"></span>' +
+        '<div class="log-item__body">' +
+          '<span class="log-item__text">' + safeText + '</span>' +
+          '<div class="log-item__meta">' +
+            '<span class="log-item__category">' + category + '</span>' +
+            '<span class="log-tag ' + tagClass + '">' + tag + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<span class="log-item__arrow">›</span>';
+
+      item.addEventListener('click', function() { openPanel(item); });
+      list.appendChild(item);
+      updateConfidence();
+      showToast('Added to log');
+    }
+
+    function handleAddInput() {
+      var input = document.getElementById('log-input');
+      var text  = input.value.trim();
+      if (!text) return;
+      var cat = categorize(text);
+      addLogItem(text, cat.dot, cat.category, cat.tag, cat.panel);
+      input.value = '';
+    }
+
+    document.getElementById('log-add-btn').addEventListener('click', handleAddInput);
+    document.getElementById('log-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleAddInput();
+    });
+
+    /* ============================================================
+       QUICK-ADD CHIPS
+    ============================================================ */
+    document.querySelectorAll('.quick-add__chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        addLogItem(
+          chip.dataset.text,
+          chip.dataset.dot,
+          chip.dataset.category,
+          chip.dataset.tag,
+          chip.dataset.panel
+        );
+      });
+    });
+
+    /* ============================================================
+       OUTPUT TAB — DELIVER ROW
+    ============================================================ */
+    document.getElementById('btn-whatsapp').addEventListener('click', function() {
+      var msg = 'Ayuda disponible ahora: renta/vivienda. Sin documentos requeridos. ' +
+                'Make the Road NY — (718) 418-7690. Evening hours available. Comparte.';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg).catch(function() {});
+      } else {
+        // fallback for older mobile browsers
+        var ta = document.createElement('textarea');
+        ta.value = msg;
+        ta.style.position = 'fixed';
+        ta.style.opacity  = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+      }
+      showToast('Message copied — paste into WhatsApp');
+    });
+
+    document.getElementById('btn-print').addEventListener('click', function() {
+      window.print();
+    });
+
+    /* ============================================================
+       OUTPUT TAB — LOG ROW
+    ============================================================ */
+    document.getElementById('btn-log-session').addEventListener('click', function() {
+      this.textContent = 'Logged ✓';
+      this.disabled = true;
+      showToast('Session logged — no personal data recorded');
+    });
+
+    document.getElementById('btn-discard').addEventListener('click', function() {
+      showToast('Session discarded');
+    });
+
+  </script>
+
+</body>
+</html>
