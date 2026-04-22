@@ -6,22 +6,13 @@
   <title>Steady Mode</title>
   <style>
 
-    /* ============================================================
-       CSS CUSTOM PROPERTIES
-       All colors defined here. No hardcoded hex anywhere else.
-       Light mode defaults; dark mode override via media query.
-    ============================================================ */
-
     :root {
-      /* Backgrounds */
       --color-background-primary:   #ffffff;
       --color-background-secondary: #f4f4f5;
       --color-background-info:      #eff6ff;
       --color-background-warning:   #fffbeb;
       --color-background-success:   #f0fdf4;
       --color-background-danger:    #fef2f2;
-
-      /* Text */
       --color-text-primary:   #111111;
       --color-text-secondary: #444444;
       --color-text-tertiary:  #767676;
@@ -29,33 +20,21 @@
       --color-text-warning:   #92400e;
       --color-text-success:   #166534;
       --color-text-danger:    #991b1b;
-
-      /* Borders */
       --color-border-secondary: rgba(0, 0, 0, 0.15);
       --color-border-tertiary:  rgba(0, 0, 0, 0.08);
-
-      /* Semantic dot colors — derived from text palette */
       --color-dot-barrier:       var(--color-text-danger);
       --color-dot-need:          var(--color-text-success);
       --color-dot-household:     #6d28d9;
       --color-dot-consideration: var(--color-text-tertiary);
-
-      /* Tag pill colors */
       --color-tag-visual-bg:    var(--color-background-info);
       --color-tag-visual-text:  var(--color-text-info);
       --color-tag-context-bg:   var(--color-background-secondary);
       --color-tag-context-text: var(--color-text-tertiary);
-
-      /* Status bar / chrome */
       --color-chrome-bg:     #f4f4f5;
       --color-chrome-border: rgba(0, 0, 0, 0.10);
-
-      /* Tab active indicator */
       --color-tab-active-text:      var(--color-text-primary);
       --color-tab-active-indicator: var(--color-text-primary);
       --color-tab-inactive-text:    var(--color-text-tertiary);
-
-      /* Toast */
       --color-toast-bg:   #1c1c1e;
       --color-toast-text: #f9f9f9;
     }
@@ -68,7 +47,6 @@
         --color-background-warning:   #3d2e00;
         --color-background-success:   #052e16;
         --color-background-danger:    #450a0a;
-
         --color-text-primary:   #f0f0f0;
         --color-text-secondary: #c8c8c8;
         --color-text-tertiary:  #8a8a8e;
@@ -76,58 +54,21 @@
         --color-text-warning:   #fcd34d;
         --color-text-success:   #86efac;
         --color-text-danger:    #fca5a5;
-
         --color-border-secondary: rgba(255, 255, 255, 0.15);
         --color-border-tertiary:  rgba(255, 255, 255, 0.08);
-
         --color-dot-household: #a78bfa;
-
         --color-chrome-bg:     #2c2c2e;
         --color-chrome-border: rgba(255, 255, 255, 0.08);
-
         --color-toast-bg:   #f0f0f0;
         --color-toast-text: #111111;
       }
     }
 
-    /* ============================================================
-       RESET
-    ============================================================ */
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-      background: none;
-      font: inherit;
-      color: inherit;
-    }
-
-    textarea {
-      resize: none;
-      font: inherit;
-    }
-
-    input {
-      font: inherit;
-    }
-
-    /* ============================================================
-       BASE TYPOGRAPHY
-       font-family: system-ui, sans-serif
-       14px body · 12px secondary · 11px tags/badges
-       10px labels/footers
-       font-weight: 400 regular · 500 medium only
-    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+    textarea { resize: none; font: inherit; }
+    input { font: inherit; }
 
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -137,46 +78,15 @@
       color: var(--color-text-primary);
       background-color: var(--color-background-secondary);
       -webkit-font-smoothing: antialiased;
-    }
-
-    .text-secondary {
-      font-size: 12px;
-      color: var(--color-text-secondary);
-    }
-
-    .text-tertiary {
-      font-size: 12px;
-      color: var(--color-text-tertiary);
-    }
-
-    .text-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--color-text-tertiary);
-    }
-
-    .text-tag {
-      font-size: 11px;
-      font-weight: 500;
-    }
-
-    .text-medium {
-      font-weight: 500;
-    }
-
-    /* ============================================================
-       PHONE CONTAINER
-       390px max-width, centered on desktop.
-       On mobile: fills full viewport width.
-    ============================================================ */
-
-    body {
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }
+
+    .text-secondary { font-size: 12px; color: var(--color-text-secondary); }
+    .text-tertiary  { font-size: 12px; color: var(--color-text-tertiary); }
+    .text-label     { font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-tertiary); }
+    .text-medium    { font-weight: 500; }
 
     .phone {
       width: 100%;
@@ -189,10 +99,6 @@
       overflow: hidden;
     }
 
-    /* ============================================================
-       STATUS BAR
-    ============================================================ */
-
     .status-bar {
       background: var(--color-chrome-bg);
       border-bottom: 1px solid var(--color-chrome-border);
@@ -202,28 +108,9 @@
       align-items: center;
       flex-shrink: 0;
     }
-
-    .status-bar__time {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      letter-spacing: 0.01em;
-    }
-
-    .status-bar__indicators {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .status-bar__indicator {
-      font-size: 11px;
-      color: var(--color-text-secondary);
-    }
-
-    /* ============================================================
-       APP HEADER
-    ============================================================ */
+    .status-bar__time { font-size: 12px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.01em; }
+    .status-bar__indicators { display: flex; gap: 6px; align-items: center; }
+    .status-bar__indicator { font-size: 11px; color: var(--color-text-secondary); }
 
     .app-header {
       background: var(--color-chrome-bg);
@@ -231,25 +118,8 @@
       padding: 14px 20px 12px;
       flex-shrink: 0;
     }
-
-    .app-header__title {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      letter-spacing: 0.01em;
-    }
-
-    .app-header__subtitle {
-      font-size: 11px;
-      color: var(--color-text-tertiary);
-      margin-top: 1px;
-      letter-spacing: 0.02em;
-    }
-
-    /* ============================================================
-       TAB NAVIGATION
-       Notes · Session (default) · Output
-    ============================================================ */
+    .app-header__title    { font-size: 14px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.01em; }
+    .app-header__subtitle { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; letter-spacing: 0.02em; }
 
     .tab-nav {
       display: flex;
@@ -257,7 +127,6 @@
       border-bottom: 1px solid var(--color-chrome-border);
       flex-shrink: 0;
     }
-
     .tab-btn {
       flex: 1;
       padding: 11px 4px 10px;
@@ -267,905 +136,168 @@
       border-bottom: 2px solid transparent;
       text-align: center;
       background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      border-top: none; border-left: none; border-right: none;
       margin-bottom: -1px;
       transition: color 0.15s, border-color 0.15s;
     }
+    .tab-btn.active { font-weight: 500; color: var(--color-tab-active-text); border-bottom-color: var(--color-tab-active-indicator); }
 
-    .tab-btn.active {
-      font-weight: 500;
-      color: var(--color-tab-active-text);
-      border-bottom-color: var(--color-tab-active-indicator);
-    }
+    .tab-content { display: none; flex: 1; flex-direction: column; overflow: hidden; background: var(--color-background-secondary); min-height: 0; }
+    .tab-content.active { display: flex; }
+    .tab-content__inner { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .tab-footer { flex-shrink: 0; padding: 9px 16px; font-size: 10px; font-weight: 400; color: var(--color-text-tertiary); text-align: center; background: var(--color-background-primary); border-top: 1px solid var(--color-border-tertiary); letter-spacing: 0.01em; }
 
-    /* ============================================================
-       TAB CONTENT AREAS
-       Only the active tab is visible.
-       Each tab is flex column: scrollable inner + optional sticky footer.
-    ============================================================ */
-
-    .tab-content {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
-      background: var(--color-background-secondary);
-      min-height: 0;
-    }
-
-    .tab-content.active {
-      display: flex;
-    }
-
-    .tab-content__inner {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding: 16px 16px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    /* Sticky footer — sits below scrollable content */
-    .tab-footer {
-      flex-shrink: 0;
-      padding: 9px 16px;
-      font-size: 10px;
-      font-weight: 400;
-      color: var(--color-text-tertiary);
-      text-align: center;
-      background: var(--color-background-primary);
-      border-top: 1px solid var(--color-border-tertiary);
-      letter-spacing: 0.01em;
-    }
-
-    /* ============================================================
-       CHAT TAB
-    ============================================================ */
-
-    /* Color dot — shared by chat cards and side panel badges */
-    .log-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
+    .log-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .log-dot--barrier       { background: var(--color-dot-barrier); }
     .log-dot--need          { background: var(--color-dot-need); }
     .log-dot--household     { background: var(--color-dot-household); }
     .log-dot--consideration { background: var(--color-dot-consideration); }
 
-    /* Chat thread — the scrollable message area */
-    .chat-thread {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding: 14px 14px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 0;
-    }
+    .chat-thread { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 14px 14px 8px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
 
-    /* CBO message bubble — right-aligned */
-    .chat-msg {
-      align-self: flex-end;
-      max-width: 78%;
-      padding: 8px 12px;
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-tertiary);
-      border-radius: 14px 14px 4px 14px;
-      font-size: 13px;
-      line-height: 1.45;
-      color: var(--color-text-primary);
-      word-wrap: break-word;
-    }
+    .chat-msg { align-self: flex-end; max-width: 78%; padding: 8px 12px; background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 14px 14px 4px 14px; font-size: 13px; line-height: 1.45; color: var(--color-text-primary); word-wrap: break-word; }
 
-    /* System card — left-aligned, tappable, confirms categorization */
-    .chat-card {
-      align-self: flex-start;
-      max-width: 86%;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px 8px 12px;
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-tertiary);
-      border-radius: 4px 14px 14px 14px;
-      cursor: pointer;
-      text-align: left;
-      transition: background 0.1s;
-      -webkit-tap-highlight-color: transparent;
-      margin-top: -4px;
-    }
+    .chat-card { align-self: flex-start; max-width: 86%; display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 12px; background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 4px 14px 14px 14px; cursor: pointer; text-align: left; transition: background 0.1s; -webkit-tap-highlight-color: transparent; margin-top: -4px; }
+    .chat-card:active { background: var(--color-background-secondary); }
+    .chat-card__category { font-size: 12px; font-weight: 500; color: var(--color-text-primary); flex: 1; min-width: 0; }
+    .chat-card__confirm  { font-size: 10px; color: var(--color-text-tertiary); letter-spacing: 0.02em; flex-shrink: 0; }
+    .chat-card__arrow    { font-size: 16px; line-height: 1; color: var(--color-text-tertiary); flex-shrink: 0; }
 
-    .chat-card:active {
-      background: var(--color-background-secondary);
-    }
+    .chat-analyzing { align-self: flex-start; font-size: 12px; color: var(--color-text-tertiary); font-style: italic; padding: 4px 4px 2px; }
 
-    .chat-card__category {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      flex: 1;
-      min-width: 0;
-    }
+    .chat-prompt { align-self: flex-start; max-width: 86%; font-size: 12px; color: var(--color-text-tertiary); line-height: 1.5; padding: 4px 4px 2px; font-style: italic; }
 
-    .chat-card__confirm {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-      letter-spacing: 0.02em;
-      flex-shrink: 0;
-    }
-
-    .chat-card__arrow {
-      font-size: 16px;
-      line-height: 1;
-      color: var(--color-text-tertiary);
-      flex-shrink: 0;
-    }
-
-    /* System prompt — quiet left-aligned guidance text, no card */
-    .chat-prompt {
-      align-self: flex-start;
-      max-width: 86%;
-      font-size: 12px;
-      color: var(--color-text-tertiary);
-      line-height: 1.5;
-      padding: 4px 4px 2px;
-      font-style: italic;
-    }
-
-    /* Suggestions — persistent horizontal row above composer */
-    .chat-suggestions {
-      flex-shrink: 0;
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding: 8px 14px;
-      background: var(--color-background-primary);
-      border-top: 1px solid var(--color-border-tertiary);
-      scrollbar-width: none;
-    }
-
+    .chat-suggestions { flex-shrink: 0; display: flex; gap: 6px; overflow-x: auto; padding: 8px 14px; background: var(--color-background-primary); border-top: 1px solid var(--color-border-tertiary); scrollbar-width: none; }
     .chat-suggestions::-webkit-scrollbar { display: none; }
+    .chat-suggestion { flex-shrink: 0; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: 14px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; transition: background 0.1s; -webkit-tap-highlight-color: transparent; }
+    .chat-suggestion:active { background: var(--color-background-secondary); }
 
-    .chat-suggestion {
-      flex-shrink: 0;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 11px;
-      border-radius: 14px;
-      border: 1px solid var(--color-border-secondary);
-      background: var(--color-background-primary);
-      color: var(--color-text-secondary);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.1s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .chat-suggestion:active {
-      background: var(--color-background-secondary);
-    }
-
-    /* Composer — input + send button */
-    .chat-composer {
-      flex-shrink: 0;
-      display: flex;
-      gap: 8px;
-      padding: 8px 14px 10px;
-      background: var(--color-background-primary);
-      border-top: 1px solid var(--color-border-tertiary);
-    }
-
-    .chat-composer__input {
-      flex: 1;
-      height: 38px;
-      padding: 0 13px;
-      background: var(--color-background-secondary);
-      border: 1px solid transparent;
-      border-radius: 19px;
-      font-size: 13px;
-      color: var(--color-text-primary);
-      outline: none;
-    }
-
-    .chat-composer__input::placeholder {
-      color: var(--color-text-tertiary);
-    }
-
-    .chat-composer__input:focus {
-      border-color: var(--color-border-secondary);
-    }
-
-    .chat-composer__send {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--color-text-primary);
-      color: var(--color-background-primary);
-      font-size: 16px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      line-height: 1;
-      transition: opacity 0.1s;
-    }
-
-    .chat-composer__send:active { opacity: 0.75; }
+    .chat-composer { flex-shrink: 0; display: flex; gap: 8px; padding: 8px 14px 10px; background: var(--color-background-primary); border-top: 1px solid var(--color-border-tertiary); }
+    .chat-composer__input { flex: 1; height: 38px; padding: 0 13px; background: var(--color-background-secondary); border: 1px solid transparent; border-radius: 19px; font-size: 13px; color: var(--color-text-primary); outline: none; }
+    .chat-composer__input::placeholder { color: var(--color-text-tertiary); }
+    .chat-composer__input:focus { border-color: var(--color-border-secondary); }
+    .chat-composer__send { width: 38px; height: 38px; border-radius: 50%; background: var(--color-text-primary); color: var(--color-background-primary); font-size: 16px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; transition: opacity 0.1s; }
+    .chat-composer__send:active  { opacity: 0.75; }
     .chat-composer__send:disabled { opacity: 0.35; pointer-events: none; }
 
-    /* Toast */
-    .toast {
-      position: absolute;
-      bottom: 56px;
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
-      background: var(--color-toast-bg);
-      color: var(--color-toast-text);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 500;
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.18s ease, transform 0.18s ease;
-      z-index: 200;
-    }
+    .toast { position: absolute; bottom: 56px; left: 50%; transform: translateX(-50%) translateY(4px); background: var(--color-toast-bg); color: var(--color-toast-text); padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 200; }
+    .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .toast.visible {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .panel-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
+    .panel-overlay.visible { opacity: 1; pointer-events: auto; }
 
-    /* ============================================================
-       SIDE PANEL + OVERLAY
-    ============================================================ */
+    .side-panel { position: absolute; top: 0; right: 0; width: 86%; height: 100%; background: var(--color-background-primary); z-index: 101; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.25s ease; overflow: hidden; }
+    .side-panel.open { transform: translateX(0); }
 
-    .panel-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      z-index: 100;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s ease;
-    }
+    .panel-header { display: flex; align-items: flex-start; gap: 10px; padding: 13px 14px 11px; border-bottom: 1px solid var(--color-border-tertiary); flex-shrink: 0; background: var(--color-chrome-bg); }
+    .panel-close { font-size: 20px; line-height: 1; color: var(--color-text-tertiary); flex-shrink: 0; padding: 1px 4px 1px 0; background: none; border: none; }
+    .panel-close:active { color: var(--color-text-primary); }
+    .panel-header__info  { flex: 1; min-width: 0; }
+    .panel-header__title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); line-height: 1.35; }
+    .panel-header__badge { display: inline-block; margin-top: 4px; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.02em; }
+    .panel-header__badge--barrier       { background: var(--color-background-danger);    color: var(--color-text-danger); }
+    .panel-header__badge--need          { background: var(--color-background-success);   color: var(--color-text-success); }
+    .panel-header__badge--household     { background: var(--color-background-info);      color: var(--color-text-info); }
+    .panel-header__badge--consideration { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
 
-    .panel-overlay.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .panel-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 14px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
 
-    .side-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 86%;
-      height: 100%;
-      background: var(--color-background-primary);
-      z-index: 101;
-      display: flex;
-      flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.25s ease;
-      overflow: hidden;
-    }
+    .panel-section { display: none; flex-direction: column; gap: 12px; }
+    .panel-section.active { display: flex; }
 
-    .side-panel.open {
-      transform: translateX(0);
-    }
+    .source-line { font-size: 10px; color: var(--color-text-tertiary); font-weight: 400; }
 
-    /* Panel header */
-    .panel-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 13px 14px 11px;
-      border-bottom: 1px solid var(--color-border-tertiary);
-      flex-shrink: 0;
-      background: var(--color-chrome-bg);
-    }
+    .bar-chart { display: flex; flex-direction: column; gap: 8px; }
+    .bar-row { display: flex; align-items: center; gap: 8px; }
+    .bar-label { font-size: 11px; color: var(--color-text-secondary); width: 88px; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
+    .bar-fill  { height: 100%; background: var(--color-text-primary); border-radius: 3px; opacity: 0.55; }
+    .bar-pct   { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); width: 28px; text-align: right; flex-shrink: 0; }
 
-    .panel-close {
-      font-size: 20px;
-      line-height: 1;
-      color: var(--color-text-tertiary);
-      flex-shrink: 0;
-      padding: 1px 4px 1px 0;
-      background: none;
-      border: none;
-    }
+    .avail-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--color-border-tertiary); border-radius: 8px; overflow: hidden; }
+    .avail-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+    .avail-item:last-child { border-bottom: none; }
+    .avail-name  { font-size: 12px; color: var(--color-text-primary); flex: 1; padding-right: 8px; }
+    .avail-badge { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; white-space: nowrap; }
+    .avail-badge--available  { background: var(--color-background-success);   color: var(--color-text-success); }
+    .avail-badge--low        { background: var(--color-background-warning);   color: var(--color-text-warning); }
+    .avail-badge--ineligible { background: var(--color-background-danger);    color: var(--color-text-danger); }
+    .avail-badge--eligible   { background: var(--color-background-success);   color: var(--color-text-success); }
+    .avail-badge--pathway    { background: var(--color-background-info);      color: var(--color-text-info); }
+    .avail-badge--status     { background: var(--color-background-danger);    color: var(--color-text-danger); }
+    .avail-badge--daytime    { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
 
-    .panel-close:active {
-      color: var(--color-text-primary);
-    }
-
-    .panel-header__info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .panel-header__title {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      line-height: 1.35;
-    }
-
-    .panel-header__badge {
-      display: inline-block;
-      margin-top: 4px;
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 10px;
-      letter-spacing: 0.02em;
-    }
-
-    .panel-header__badge--barrier {
-      background: var(--color-background-danger);
-      color: var(--color-text-danger);
-    }
-
-    .panel-header__badge--need {
-      background: var(--color-background-success);
-      color: var(--color-text-success);
-    }
-
-    .panel-header__badge--household {
-      background: var(--color-background-info);
-      color: var(--color-text-info);
-    }
-
-    .panel-header__badge--consideration {
-      background: var(--color-background-secondary);
-      color: var(--color-text-tertiary);
-    }
-
-    /* Panel body — scrollable content */
-    .panel-body {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 0;
-    }
-
-    /* Individual panel sections — only the active one is shown */
-    .panel-section {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .panel-section.active {
-      display: flex;
-    }
-
-    /* Source line */
-    .source-line {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-      font-weight: 400;
-    }
-
-    /* Bar chart visual */
-    .bar-chart {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .bar-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .bar-label {
-      font-size: 11px;
-      color: var(--color-text-secondary);
-      width: 88px;
-      flex-shrink: 0;
-    }
-
-    .bar-track {
-      flex: 1;
-      height: 6px;
-      background: var(--color-border-tertiary);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      background: var(--color-text-primary);
-      border-radius: 3px;
-      opacity: 0.55;
-    }
-
-    .bar-pct {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--color-text-secondary);
-      width: 28px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    /* Availability / eligibility list */
-    .avail-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: 1px solid var(--color-border-tertiary);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .avail-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 12px;
-      border-bottom: 1px solid var(--color-border-tertiary);
-      background: var(--color-background-primary);
-    }
-
-    .avail-item:last-child {
-      border-bottom: none;
-    }
-
-    .avail-name {
-      font-size: 12px;
-      color: var(--color-text-primary);
-      flex: 1;
-      padding-right: 8px;
-    }
-
-    .avail-badge {
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 7px;
-      border-radius: 10px;
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-
-    .avail-badge--available {
-      background: var(--color-background-success);
-      color: var(--color-text-success);
-    }
-
-    .avail-badge--low {
-      background: var(--color-background-warning);
-      color: var(--color-text-warning);
-    }
-
-    .avail-badge--ineligible {
-      background: var(--color-background-danger);
-      color: var(--color-text-danger);
-    }
-
-    .avail-badge--eligible {
-      background: var(--color-background-success);
-      color: var(--color-text-success);
-    }
-
-    .avail-badge--pathway {
-      background: var(--color-background-info);
-      color: var(--color-text-info);
-    }
-
-    .avail-badge--status {
-      background: var(--color-background-danger);
-      color: var(--color-text-danger);
-    }
-
-    .avail-badge--daytime {
-      background: var(--color-background-secondary);
-      color: var(--color-text-tertiary);
-    }
-
-    /* Contextual boxes — clarifying question / eligibility / note */
-    .panel-box {
-      border-radius: 8px;
-      padding: 11px 13px;
-    }
-
-    .panel-box--warning {
-      background: var(--color-background-warning);
-    }
-
-    .panel-box--success {
-      background: var(--color-background-success);
-    }
-
-    .panel-box--gray {
-      background: var(--color-background-secondary);
-    }
-
-    .panel-box__label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
+    .panel-box { border-radius: 8px; padding: 11px 13px; }
+    .panel-box--warning { background: var(--color-background-warning); }
+    .panel-box--success { background: var(--color-background-success); }
+    .panel-box--gray    { background: var(--color-background-secondary); }
+    .panel-box__label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
     .panel-box--warning .panel-box__label { color: var(--color-text-warning); }
     .panel-box--success .panel-box__label { color: var(--color-text-success); }
     .panel-box--gray    .panel-box__label { color: var(--color-text-tertiary); }
+    .panel-box__text { font-size: 13px; line-height: 1.5; color: var(--color-text-primary); }
 
-    .panel-box__text {
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--color-text-primary);
-    }
+    .panel-textarea { width: 100%; min-height: 72px; background: var(--color-background-primary); border: 1px solid var(--color-border-secondary); border-radius: 8px; padding: 9px 11px; font-size: 13px; color: var(--color-text-primary); line-height: 1.5; outline: none; }
+    .panel-textarea::placeholder { color: var(--color-text-tertiary); }
+    .panel-textarea:focus { border-color: var(--color-text-tertiary); }
 
-    /* Textarea inside panel */
-    .panel-textarea {
-      width: 100%;
-      min-height: 72px;
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-secondary);
-      border-radius: 8px;
-      padding: 9px 11px;
-      font-size: 13px;
-      color: var(--color-text-primary);
-      line-height: 1.5;
-      outline: none;
-    }
+    .panel-confirm-wrap { flex-shrink: 0; padding: 12px 14px; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); display: flex; flex-direction: column; gap: 6px; }
+    .panel-confirm-btn { width: 100%; padding: 12px; background: var(--color-text-primary); color: var(--color-background-primary); border-radius: 8px; font-size: 14px; font-weight: 500; text-align: center; border: none; cursor: pointer; transition: opacity 0.1s; }
+    .panel-confirm-btn:active  { opacity: 0.75; }
+    .panel-confirm-btn.confirmed { opacity: 0.6; pointer-events: none; }
+    .panel-source-below { font-size: 10px; color: var(--color-text-tertiary); text-align: center; }
 
-    .panel-textarea::placeholder {
-      color: var(--color-text-tertiary);
-    }
+    .divider { height: 1px; background: var(--color-border-tertiary); flex-shrink: 0; }
 
-    .panel-textarea:focus {
-      border-color: var(--color-text-tertiary);
-    }
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .profile-chip { background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 12px; }
+    .profile-chip__label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-tertiary); margin-bottom: 3px; }
+    .profile-chip__value { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
 
-    /* Confirm button — sticky at bottom of panel */
-    .panel-confirm-wrap {
-      flex-shrink: 0;
-      padding: 12px 14px;
-      border-top: 1px solid var(--color-border-tertiary);
-      background: var(--color-background-primary);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .confidence-wrap  { display: flex; flex-direction: column; gap: 8px; }
+    .confidence-row   { display: flex; justify-content: space-between; align-items: baseline; }
+    .confidence-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
+    .confidence-pct   { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+    .confidence-track { height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
+    .confidence-fill  { height: 100%; background: var(--color-text-success); border-radius: 3px; width: 84%; transition: width 0.5s ease; }
 
-    .panel-confirm-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--color-text-primary);
-      color: var(--color-background-primary);
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      text-align: center;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.1s;
-    }
+    .script-block { display: flex; flex-direction: column; gap: 6px; }
+    .script-block__header  { display: flex; flex-direction: column; gap: 2px; }
+    .script-block__label   { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-primary); }
+    .script-block__sublabel { font-size: 10px; color: var(--color-text-tertiary); letter-spacing: 0.03em; }
+    .script-block__text    { font-size: 13px; font-style: italic; color: var(--color-text-primary); line-height: 1.6; padding: 10px 12px; background: var(--color-background-secondary); border-radius: 8px; }
+    .script-block__source  { font-size: 10px; color: var(--color-text-tertiary); }
 
-    .panel-confirm-btn:active {
-      opacity: 0.75;
-    }
+    .resource-card { background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 5px; }
+    .resource-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .resource-name   { font-size: 13px; font-weight: 500; color: var(--color-text-primary); flex: 1; line-height: 1.3; }
+    .resource-why    { font-size: 11px; color: var(--color-text-secondary); line-height: 1.45; }
+    .resource-source { font-size: 10px; color: var(--color-text-tertiary); }
 
-    .panel-confirm-btn.confirmed {
-      opacity: 0.6;
-      pointer-events: none;
-    }
+    .action-row { display: flex; gap: 8px; }
+    .btn-action { flex: 1; padding: 11px 8px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; border: none; transition: opacity 0.1s; }
+    .btn-action:active    { opacity: 0.75; }
+    .btn-action--green    { background: var(--color-text-success); color: var(--color-background-primary); }
+    .btn-action--blue     { background: var(--color-text-info);    color: var(--color-background-primary); }
+    .btn-action--blue:disabled { opacity: 0.55; pointer-events: none; }
+    .btn-action--secondary { background: transparent; border: 1px solid var(--color-border-secondary); color: var(--color-text-secondary); }
 
-    .panel-source-below {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-      text-align: center;
-    }
+    .note { background: var(--color-background-primary); border-radius: 8px; border: 1px solid var(--color-border-tertiary); padding: 12px 14px; }
+    .note__header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .note__from   { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+    .note__time   { font-size: 10px; color: var(--color-text-tertiary); }
+    .note__body   { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+    .note--alert  { background: var(--color-background-info); border: 1px solid var(--color-border-tertiary); }
+    .note--alert .note__from { font-size: 11px; font-weight: 500; color: var(--color-text-info); text-transform: uppercase; letter-spacing: 0.04em; }
+    .note--alert .note__body { color: var(--color-text-primary); }
 
-    /* ============================================================
-       OUTPUT TAB
-    ============================================================ */
+    .worker-notes { display: flex; flex-direction: column; gap: 6px; }
+    .worker-notes__textarea { width: 100%; min-height: 96px; background: var(--color-background-primary); border: 1px solid var(--color-border-secondary); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--color-text-primary); line-height: 1.5; outline: none; }
+    .worker-notes__textarea::placeholder { color: var(--color-text-tertiary); }
+    .worker-notes__textarea:focus { border-color: var(--color-text-tertiary); }
 
-    /* Section divider */
-    .divider {
-      height: 1px;
-      background: var(--color-border-tertiary);
-      flex-shrink: 0;
-    }
-
-    /* Barrier profile 2×2 grid */
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .profile-chip {
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-tertiary);
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-
-    .profile-chip__label {
-      font-size: 10px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-text-tertiary);
-      margin-bottom: 3px;
-    }
-
-    .profile-chip__value {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-    }
-
-    /* Confidence bar */
-    .confidence-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .confidence-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .confidence-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--color-text-secondary);
-    }
-
-    .confidence-pct {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-    }
-
-    .confidence-track {
-      height: 6px;
-      background: var(--color-border-tertiary);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .confidence-fill {
-      height: 100%;
-      background: var(--color-text-success);
-      border-radius: 3px;
-      width: 84%;
-      transition: width 0.35s ease;
-    }
-
-    /* Transparency script block */
-    .script-block {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .script-block__header {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .script-block__label {
-      font-size: 10px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--color-text-primary);
-    }
-
-    .script-block__sublabel {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-      letter-spacing: 0.03em;
-    }
-
-    .script-block__text {
-      font-size: 13px;
-      font-style: italic;
-      color: var(--color-text-primary);
-      line-height: 1.6;
-      padding: 10px 12px;
-      background: var(--color-background-secondary);
-      border-radius: 8px;
-    }
-
-    .script-block__source {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-    }
-
-    /* Resource cards */
-    .resource-card {
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-tertiary);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .resource-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .resource-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      flex: 1;
-      line-height: 1.3;
-    }
-
-    .resource-why {
-      font-size: 11px;
-      color: var(--color-text-secondary);
-      line-height: 1.45;
-    }
-
-    .resource-source {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-    }
-
-    /* Action rows — deliver + log */
-    .action-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-action {
-      flex: 1;
-      padding: 11px 8px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      text-align: center;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.1s;
-    }
-
-    .btn-action:active {
-      opacity: 0.75;
-    }
-
-    /* Green — WhatsApp */
-    .btn-action--green {
-      background: var(--color-text-success);
-      color: var(--color-background-primary);
-    }
-
-    /* Blue — Log session */
-    .btn-action--blue {
-      background: var(--color-text-info);
-      color: var(--color-background-primary);
-    }
-
-    .btn-action--blue:disabled {
-      opacity: 0.55;
-      pointer-events: none;
-    }
-
-    /* Secondary — Print / Discard */
-    .btn-action--secondary {
-      background: transparent;
-      border: 1px solid var(--color-border-secondary);
-      color: var(--color-text-secondary);
-    }
-
-    /* ============================================================
-       NOTES TAB
-    ============================================================ */
-
-    /* Incoming note — colleague */
-    .note {
-      background: var(--color-background-primary);
-      border-radius: 8px;
-      border: 1px solid var(--color-border-tertiary);
-      padding: 12px 14px;
-    }
-
-    .note__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 6px;
-    }
-
-    .note__from {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-    }
-
-    .note__time {
-      font-size: 10px;
-      color: var(--color-text-tertiary);
-    }
-
-    .note__body {
-      font-size: 13px;
-      color: var(--color-text-secondary);
-      line-height: 1.5;
-    }
-
-    /* Network alert — styled differently */
-    .note--alert {
-      background: var(--color-background-info);
-      border: 1px solid var(--color-border-tertiary);
-    }
-
-    .note--alert .note__from {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--color-text-info);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .note--alert .note__body {
-      color: var(--color-text-primary);
-    }
-
-    /* Worker notes */
-    .worker-notes {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .worker-notes__textarea {
-      width: 100%;
-      min-height: 96px;
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-secondary);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 13px;
-      color: var(--color-text-primary);
-      line-height: 1.5;
-      outline: none;
-    }
-
-    .worker-notes__textarea::placeholder {
-      color: var(--color-text-tertiary);
-    }
-
-    .worker-notes__textarea:focus {
-      border-color: var(--color-text-tertiary);
-    }
+    /* Generated panel section for API results */
+    .panel-section--generated { display: flex; flex-direction: column; gap: 12px; }
 
   </style>
 </head>
@@ -1173,7 +305,6 @@
 
   <div class="phone">
 
-    <!-- STATUS BAR -->
     <div class="status-bar">
       <span class="status-bar__time" id="status-time">9:41</span>
       <div class="status-bar__indicators">
@@ -1183,35 +314,26 @@
       </div>
     </div>
 
-    <!-- APP HEADER -->
     <div class="app-header">
       <div class="app-header__title">Steady Mode</div>
       <div class="app-header__subtitle">CBO Decision Support</div>
     </div>
 
-    <!-- TAB NAVIGATION -->
     <nav class="tab-nav" role="tablist">
-      <button class="tab-btn" role="tab" aria-selected="false"
-              aria-controls="tab-notes" data-tab="notes">Notes</button>
-      <button class="tab-btn active" role="tab" aria-selected="true"
-              aria-controls="tab-chat" data-tab="chat">Chat</button>
-      <button class="tab-btn" role="tab" aria-selected="false"
-              aria-controls="tab-output" data-tab="output">Output</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes"  data-tab="notes">Notes</button>
+      <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-chat"   data-tab="chat">Chat</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-output" data-tab="output">Output</button>
     </nav>
 
-    <!-- TAB CONTENT: NOTES -->
+    <!-- NOTES TAB -->
     <div class="tab-content" id="tab-notes" role="tabpanel">
       <div class="tab-content__inner">
-
-        <!-- Note 1: Colleague -->
         <div class="note">
           <div class="note__header">
             <span class="note__from">From: Maria R. · 8:45am</span>
           </div>
           <p class="note__body">"She came in last month for food assistance. Very cautious about sharing info. Prefers Spanish. Has two young kids."</p>
         </div>
-
-        <!-- Note 2: Network alert -->
         <div class="note note--alert">
           <div class="note__header">
             <span class="note__from">Network alert</span>
@@ -1219,27 +341,21 @@
           </div>
           <p class="note__body">"BronxWorks rent assistance now accepting walk-ins Tue/Thu evenings. No docs required."</p>
         </div>
-
-        <!-- Worker notes textarea -->
         <div class="worker-notes">
           <span class="text-label">Your notes</span>
           <textarea class="worker-notes__textarea"
             placeholder="Met briefly at community event last week. Said she's been struggling since the storm."
             rows="4"></textarea>
         </div>
-
-      </div><!-- /.tab-content__inner -->
-
+      </div>
       <div class="tab-footer">Notes stay on this device only · not logged without confirmation</div>
     </div>
 
-    <!-- TAB CONTENT: CHAT (default active) -->
+    <!-- CHAT TAB -->
     <div class="tab-content active" id="tab-chat" role="tabpanel">
 
-      <!-- Scrollable message thread -->
       <div class="chat-thread" id="chat-thread">
 
-        <!-- Turn 1: Scared to share information -->
         <div class="chat-msg">Scared to share information</div>
         <button class="chat-card" data-panel="data-fear">
           <span class="log-dot log-dot--barrier"></span>
@@ -1248,7 +364,6 @@
           <span class="chat-card__arrow">›</span>
         </button>
 
-        <!-- Turn 2: Works nights, can't do daytime -->
         <div class="chat-msg">Works nights, can't do daytime</div>
         <button class="chat-card" data-panel="scheduling">
           <span class="log-dot log-dot--barrier"></span>
@@ -1257,7 +372,6 @@
           <span class="chat-card__arrow">›</span>
         </button>
 
-        <!-- Turn 3: Needs rent help after storm -->
         <div class="chat-msg">Needs rent help after storm</div>
         <button class="chat-card" data-panel="rent">
           <span class="log-dot log-dot--need"></span>
@@ -1266,7 +380,6 @@
           <span class="chat-card__arrow">›</span>
         </button>
 
-        <!-- Turn 4: Two kids, born in US -->
         <div class="chat-msg">Two kids, born in US</div>
         <button class="chat-card" data-panel="citizen-children">
           <span class="log-dot log-dot--household"></span>
@@ -1275,7 +388,6 @@
           <span class="chat-card__arrow">›</span>
         </button>
 
-        <!-- Turn 5: Seemed nervous when org was mentioned -->
         <div class="chat-msg">Seemed nervous when org was mentioned</div>
         <button class="chat-card" data-panel="consideration">
           <span class="log-dot log-dot--consideration"></span>
@@ -1284,31 +396,16 @@
           <span class="chat-card__arrow">›</span>
         </button>
 
-        <!-- Open-ended prompt for the next entry -->
-        <div class="chat-prompt">What else did you hear? Tap a suggestion below or type what they said.</div>
+        <div class="chat-prompt">What else did you hear? Tap a suggestion or type what they said.</div>
 
-      </div><!-- /#chat-thread -->
-
-      <!-- Persistent suggestions -->
-      <div class="chat-suggestions" id="chat-suggestions">
-        <button class="chat-suggestion"
-                data-text="Has WhatsApp, checks regularly"
-                data-dot="household"
-                data-category="household"
-                data-panel="consideration">Has WhatsApp</button>
-        <button class="chat-suggestion"
-                data-text="Prefers Spanish"
-                data-dot="household"
-                data-category="household"
-                data-panel="consideration">Spanish</button>
-        <button class="chat-suggestion"
-                data-text="Worried about eviction timeline"
-                data-dot="barrier"
-                data-category="barrier · scheduling"
-                data-panel="scheduling">Eviction urgency</button>
       </div>
 
-      <!-- Composer -->
+      <div class="chat-suggestions" id="chat-suggestions">
+        <button class="chat-suggestion" data-text="Has WhatsApp, checks regularly">Has WhatsApp</button>
+        <button class="chat-suggestion" data-text="Prefers Spanish">Spanish</button>
+        <button class="chat-suggestion" data-text="Worried about eviction timeline">Eviction urgency</button>
+      </div>
+
       <div class="chat-composer">
         <input type="text" class="chat-composer__input" id="chat-input"
                placeholder="Type what they said…" autocomplete="off" />
@@ -1318,16 +415,13 @@
       <div class="tab-footer">No names or status stored · session builds barrier profile only</div>
     </div>
 
-    <!-- TOAST (lives inside .phone so it clips to the container) -->
     <div class="toast" id="toast" role="status" aria-live="polite">Added to log</div>
 
-    <!-- PANEL OVERLAY -->
     <div class="panel-overlay" id="panel-overlay"></div>
 
     <!-- SIDE PANEL -->
     <div class="side-panel" id="side-panel" aria-modal="true" role="dialog">
 
-      <!-- Header (title + badge populated by JS on open) -->
       <div class="panel-header">
         <button class="panel-close" id="panel-close" aria-label="Close panel">✕</button>
         <div class="panel-header__info">
@@ -1336,202 +430,143 @@
         </div>
       </div>
 
-      <!-- Scrollable body containing the five content sections -->
       <div class="panel-body">
 
-        <!-- ── PANEL: DATA FEAR ── -->
+        <!-- DATA FEAR -->
         <div class="panel-section" id="panel-data-fear">
-
           <div class="bar-chart">
-            <div class="bar-row">
-              <span class="bar-label">Data fear</span>
-              <div class="bar-track"><div class="bar-fill" style="width:74%"></div></div>
-              <span class="bar-pct">74%</span>
-            </div>
-            <div class="bar-row">
-              <span class="bar-label">Scheduling</span>
-              <div class="bar-track"><div class="bar-fill" style="width:58%"></div></div>
-              <span class="bar-pct">58%</span>
-            </div>
-            <div class="bar-row">
-              <span class="bar-label">Cost</span>
-              <div class="bar-track"><div class="bar-fill" style="width:41%"></div></div>
-              <span class="bar-pct">41%</span>
-            </div>
-            <div class="bar-row">
-              <span class="bar-label">Documentation</span>
-              <div class="bar-track"><div class="bar-fill" style="width:29%"></div></div>
-              <span class="bar-pct">29%</span>
-            </div>
+            <div class="bar-row"><span class="bar-label">Data fear</span><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><span class="bar-pct">74%</span></div>
+            <div class="bar-row"><span class="bar-label">Scheduling</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><span class="bar-pct">58%</span></div>
+            <div class="bar-row"><span class="bar-label">Cost</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-pct">41%</span></div>
+            <div class="bar-row"><span class="bar-label">Documentation</span><div class="bar-track"><div class="bar-fill" style="width:29%"></div></div><span class="bar-pct">29%</span></div>
           </div>
-
           <div class="source-line">Network sessions this week · CMS 2022</div>
-
           <div class="panel-box panel-box--warning">
             <div class="panel-box__label">Clarifying question</div>
             <p class="panel-box__text">Has someone you know had a bad experience sharing information with an organization?</p>
           </div>
-
           <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+        </div>
 
-        </div><!-- /#panel-data-fear -->
-
-        <!-- ── PANEL: SCHEDULING ── -->
+        <!-- SCHEDULING -->
         <div class="panel-section" id="panel-scheduling">
-
           <div class="avail-list">
-            <div class="avail-item">
-              <span class="avail-name">BronxWorks Tue/Thu eve</span>
-              <span class="avail-badge avail-badge--available">Available</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">Make the Road evenings</span>
-              <span class="avail-badge avail-badge--available">Available</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">NYIC Queens evening</span>
-              <span class="avail-badge avail-badge--low">Low capacity</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">Catholic Charities</span>
-              <span class="avail-badge avail-badge--daytime">Daytime only</span>
-            </div>
+            <div class="avail-item"><span class="avail-name">BronxWorks Tue/Thu eve</span><span class="avail-badge avail-badge--available">Available</span></div>
+            <div class="avail-item"><span class="avail-name">Make the Road evenings</span><span class="avail-badge avail-badge--available">Available</span></div>
+            <div class="avail-item"><span class="avail-name">NYIC Queens evening</span><span class="avail-badge avail-badge--low">Low capacity</span></div>
+            <div class="avail-item"><span class="avail-name">Catholic Charities</span><span class="avail-badge avail-badge--daytime">Daytime only</span></div>
           </div>
-
           <div class="source-line">Curated network · verified today</div>
-
           <div class="panel-box panel-box--warning">
             <div class="panel-box__label">Clarifying question</div>
             <p class="panel-box__text">Is there a specific evening or weekend time that works best — weekdays or weekends?</p>
           </div>
-
           <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+        </div>
 
-        </div><!-- /#panel-scheduling -->
-
-        <!-- ── PANEL: RENT ── -->
+        <!-- RENT -->
         <div class="panel-section" id="panel-rent">
-
           <div class="avail-list">
-            <div class="avail-item">
-              <span class="avail-name">Mutual aid fund (no docs)</span>
-              <span class="avail-badge avail-badge--available">Available</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">BronxWorks emergency</span>
-              <span class="avail-badge avail-badge--available">Available</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">FEMA direct (requires status)</span>
-              <span class="avail-badge avail-badge--ineligible">Ineligible</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">FEMA via citizen child</span>
-              <span class="avail-badge avail-badge--eligible">Eligible</span>
-            </div>
+            <div class="avail-item"><span class="avail-name">Mutual aid fund (no docs)</span><span class="avail-badge avail-badge--available">Available</span></div>
+            <div class="avail-item"><span class="avail-name">BronxWorks emergency</span><span class="avail-badge avail-badge--available">Available</span></div>
+            <div class="avail-item"><span class="avail-name">FEMA direct (requires status)</span><span class="avail-badge avail-badge--ineligible">Ineligible</span></div>
+            <div class="avail-item"><span class="avail-name">FEMA via citizen child</span><span class="avail-badge avail-badge--eligible">Eligible</span></div>
           </div>
-
           <div class="source-line">NILC · verified Apr 2025 · Morey 2012</div>
-
           <div class="panel-box panel-box--success">
             <div class="panel-box__label">Eligibility — say out loud</div>
             <p class="panel-box__text">Emergency rent assistance through local mutual aid does not require immigration documentation. You qualify based on demonstrated need.</p>
           </div>
-
           <div class="panel-box panel-box--warning">
             <div class="panel-box__label">Clarifying question</div>
             <p class="panel-box__text">Has your landlord given you any written notice, or is it just verbal so far?</p>
           </div>
-
           <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+        </div>
 
-        </div><!-- /#panel-rent -->
-
-        <!-- ── PANEL: CITIZEN CHILDREN ── -->
+        <!-- CITIZEN CHILDREN -->
         <div class="panel-section" id="panel-citizen-children">
-
           <div class="avail-list">
-            <div class="avail-item">
-              <span class="avail-name">FEMA application (for kids)</span>
-              <span class="avail-badge avail-badge--pathway">Opens pathway</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">Medicaid for citizen children</span>
-              <span class="avail-badge avail-badge--eligible">Eligible</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">School enrollment support</span>
-              <span class="avail-badge avail-badge--available">Available</span>
-            </div>
-            <div class="avail-item">
-              <span class="avail-name">Cash assistance (parent)</span>
-              <span class="avail-badge avail-badge--status">Status required</span>
-            </div>
+            <div class="avail-item"><span class="avail-name">FEMA application (for kids)</span><span class="avail-badge avail-badge--pathway">Opens pathway</span></div>
+            <div class="avail-item"><span class="avail-name">Medicaid for citizen children</span><span class="avail-badge avail-badge--eligible">Eligible</span></div>
+            <div class="avail-item"><span class="avail-name">School enrollment support</span><span class="avail-badge avail-badge--available">Available</span></div>
+            <div class="avail-item"><span class="avail-name">Cash assistance (parent)</span><span class="avail-badge avail-badge--status">Status required</span></div>
           </div>
-
           <div class="source-line">Morey 2012 · NILC · MOIA 2024</div>
-
           <div class="panel-box panel-box--warning">
             <div class="panel-box__label">Clarifying question</div>
             <p class="panel-box__text">Do the kids have their birth certificates or social security cards accessible?</p>
           </div>
-
           <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+        </div>
 
-        </div><!-- /#panel-citizen-children -->
-
-        <!-- ── PANEL: CONSIDERATION ── -->
+        <!-- CONSIDERATION -->
         <div class="panel-section" id="panel-consideration">
-
           <div class="panel-box panel-box--gray">
             <div class="panel-box__label">Context note</div>
-            <p class="panel-box__text">This is a qualitative observation — logged as session context. It doesn't map to a resource or barrier category but is worth remembering when deciding which org to recommend first.</p>
+            <p class="panel-box__text">Qualitative observation — logged as session context. Worth remembering when deciding which org to recommend first.</p>
           </div>
-
           <div class="panel-box panel-box--warning">
             <div class="panel-box__label">Practical note</div>
             <p class="panel-box__text">Consider leading with the transparency script before naming any org. Let her ask which org rather than you naming one first.</p>
           </div>
-
           <textarea class="panel-textarea" placeholder="Which org? What did she say exactly?" rows="3"></textarea>
+        </div>
 
-        </div><!-- /#panel-consideration -->
+        <!-- API-GENERATED PANEL (populated by JS) -->
+        <div class="panel-section" id="panel-api-generated">
+          <div class="panel-box panel-box--gray" id="api-panel-note">
+            <div class="panel-box__label">Context note</div>
+            <p class="panel-box__text" id="api-panel-note-text"></p>
+          </div>
+          <div class="panel-box panel-box--warning" id="api-panel-question">
+            <div class="panel-box__label">Clarifying question</div>
+            <p class="panel-box__text" id="api-panel-question-text"></p>
+          </div>
+          <div class="panel-box panel-box--success" id="api-panel-script" style="display:none">
+            <div class="panel-box__label">Transparency script — say out loud</div>
+            <p class="panel-box__text" id="api-panel-script-text"></p>
+          </div>
+          <div class="panel-box panel-box--success" id="api-panel-eligibility" style="display:none">
+            <div class="panel-box__label">Eligibility — say out loud</div>
+            <p class="panel-box__text" id="api-panel-eligibility-text"></p>
+          </div>
+          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+          <div class="source-line">Generated by Gemini · grounded in CMS 2022, NILC, Morey 2012</div>
+        </div>
 
-      </div><!-- /.panel-body -->
+      </div>
 
-      <!-- Sticky confirm button -->
       <div class="panel-confirm-wrap">
         <button class="panel-confirm-btn" id="panel-confirm-btn">Confirm + add to log</button>
         <div class="panel-source-below" id="panel-source-below"></div>
       </div>
 
-    </div><!-- /.side-panel -->
+    </div>
 
-    <!-- TAB CONTENT: OUTPUT -->
+    <!-- OUTPUT TAB -->
     <div class="tab-content" id="tab-output" role="tabpanel">
       <div class="tab-content__inner">
 
-        <!-- Barrier profile chips -->
         <div class="profile-grid">
           <div class="profile-chip">
             <div class="profile-chip__label">Primary</div>
-            <div class="profile-chip__value">Data fear</div>
+            <div class="profile-chip__value" id="chip-primary">Data fear</div>
           </div>
           <div class="profile-chip">
             <div class="profile-chip__label">Secondary</div>
-            <div class="profile-chip__value">Scheduling</div>
+            <div class="profile-chip__value" id="chip-secondary">Scheduling</div>
           </div>
           <div class="profile-chip">
             <div class="profile-chip__label">Need</div>
-            <div class="profile-chip__value">Rent / housing</div>
+            <div class="profile-chip__value" id="chip-need">Rent / housing</div>
           </div>
           <div class="profile-chip">
             <div class="profile-chip__label">Language</div>
-            <div class="profile-chip__value">Spanish</div>
+            <div class="profile-chip__value" id="chip-language">Spanish</div>
           </div>
         </div>
 
-        <!-- Confidence bar + suggested question -->
         <div class="confidence-wrap">
           <div class="confidence-row">
             <span class="confidence-label">Match confidence</span>
@@ -1549,7 +584,6 @@
 
         <div class="divider"></div>
 
-        <!-- Transparency script -->
         <div class="script-block">
           <div class="script-block__header">
             <span class="script-block__label">Transparency script — say out loud</span>
@@ -1559,9 +593,11 @@
           <span class="script-block__source">CMS 2022 · 805 UndocuFund model</span>
         </div>
 
+        <!-- Generated script appended here by JS if API returns one -->
+        <div id="generated-scripts-container"></div>
+
         <div class="divider"></div>
 
-        <!-- Matched resources -->
         <div class="resource-card">
           <div class="resource-header">
             <span class="resource-name">Make the Road NY — Brooklyn</span>
@@ -1591,40 +627,108 @@
 
         <div class="divider"></div>
 
-        <!-- Deliver row -->
         <div class="action-row">
           <button class="btn-action btn-action--green" id="btn-whatsapp">Forward via WhatsApp</button>
           <button class="btn-action btn-action--secondary" id="btn-print">Print</button>
         </div>
 
-        <!-- Log row -->
         <div class="action-row">
           <button class="btn-action btn-action--blue" id="btn-log-session">Confirm + log session</button>
           <button class="btn-action btn-action--secondary" id="btn-discard">Discard</button>
         </div>
 
-      </div><!-- /.tab-content__inner -->
-
+      </div>
       <div class="tab-footer">No personal data in log · sources shown for each resource</div>
     </div>
 
-  </div><!-- /.phone -->
+  </div>
 
   <script>
-    /* ============================================================
-       LIVE CLOCK
-    ============================================================ */
+
+    /* ── API CONFIG ─────────────────────────────────────────────── */
+    const GEMINI_API_KEY = "AIzaSyAq2qu8fJmdXJbEhEU0_zEQu4bSpdgXtPE";
+
+    const SYSTEM_PROMPT = `You are a decision-support assistant for CBO frontline workers and promotoras working with undocumented Hispanic immigrants in New York City.
+
+You never interact with immigrants directly. You support the worker only.
+
+You will receive a worker input describing what a person said or what the worker observed. Respond with a JSON object only — no prose, no markdown, no explanation outside the JSON.
+
+Response format:
+{
+  "category": "barrier" | "need" | "household" | "consideration",
+  "subtype": string,
+  "dot": "barrier" | "need" | "household" | "consideration",
+  "tag": "visual" | "context",
+  "label": string,
+  "clarifying_question": string,
+  "panel_note": string,
+  "transparency_script": string or null,
+  "eligibility_note": string or null
+}
+
+RULES:
+Never collect or store immigration status.
+Never recommend a specific resource.
+Never assume the barrier is cultural — default to scheduling and cost first.
+Never give more than one clarifying question. One question only, said out loud. Short sentences. No jargon.
+Never output anything outside the JSON structure. No preamble. No markdown. Raw JSON only.
+Only generate transparency_script if category is barrier AND subtype is data fear — otherwise null.
+Only generate eligibility_note if category is need — otherwise null.
+Write transparency_script in first person from the worker. Model: "What you tell me stays here. We don't record your name or immigration status. We don't share anything with DHS or ICE. We only track what type of help people need — never who they are."
+Write eligibility_note as a statement the worker says out loud. Start with what the person qualifies for.
+
+CATEGORIES:
+barrier subtypes: data fear · scheduling · cost · documentation gap · transportation · language — dot: barrier
+need subtypes: rent/housing · food/supplies · cash assistance · legal aid · healthcare · childcare — dot: need
+household subtypes: citizen children · mixed-status family · single adult · family with children · language preference — dot: household
+consideration: anything qualitative that does not fit above — dot: consideration`;
+
+    /* ── GEMINI CALL ────────────────────────────────────────────── */
+    async function callGemini(workerInput, sessionContext) {
+      const prompt = `Session so far: ${sessionContext}\n\nWorker input: "${workerInput}"`;
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.3, maxOutputTokens: 400 }
+            })
+          }
+        );
+        const data = await response.json();
+        const text = data.candidates[0].content.parts[0].text;
+        const clean = text.replace(/```json|```/g, "").trim();
+        return JSON.parse(clean);
+      } catch(e) {
+        return null;
+      }
+    }
+
+    /* ── SESSION STATE ──────────────────────────────────────────── */
+    var sessionContext = "data fear, scheduling, rent/housing, citizen children";
+    var barrierCount  = 2;
+    var needCount     = 1;
+    var chipPrimary   = "Data fear";
+    var chipSecondary = "Scheduling";
+    var chipNeed      = "Rent / housing";
+    var chipLanguage  = "Spanish";
+    var loggedItems   = [];          // new items only; hardcoded five are in the HTML
+
+    /* ── CLOCK ──────────────────────────────────────────────────── */
     function updateClock() {
-      const t = new Date();
+      var t = new Date();
       document.getElementById('status-time').textContent =
         t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
     updateClock();
     setInterval(updateClock, 10000);
 
-    /* ============================================================
-       TAB SWITCHING
-    ============================================================ */
+    /* ── TAB SWITCHING ──────────────────────────────────────────── */
     document.querySelectorAll('.tab-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         document.querySelectorAll('.tab-btn').forEach(function(b) {
@@ -1640,90 +744,87 @@
       });
     });
 
-    /* ============================================================
-       TOAST
-    ============================================================ */
+    /* ── TOAST ──────────────────────────────────────────────────── */
     var toastTimer;
     function showToast(msg) {
       var toast = document.getElementById('toast');
       toast.textContent = msg;
       toast.classList.add('visible');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(function() {
-        toast.classList.remove('visible');
-      }, 2500);
+      toastTimer = setTimeout(function() { toast.classList.remove('visible'); }, 2500);
     }
 
-    /* ============================================================
-       CONFIDENCE BAR + SUGGESTED QUESTION
-    ============================================================ */
+    /* ── PROFILE UPDATE ─────────────────────────────────────────── */
+    var itemsAddedCount = 0;
     var currentConfidence = 84;
-
-    var QUESTIONS = [
-      { threshold: 0,  text: 'Is there an evening or weekend time that works better for you?' },
-      { threshold: 88, text: 'Has someone you know had a bad experience with an organization?' },
-      { threshold: 91, text: 'Would it help if I explained exactly what we keep and what we don\'t?' },
-      { threshold: 93, text: 'Is there a time of day that works better — evenings or weekends?' }
+    var QUESTION_CYCLE = [
+      'Is there an evening or weekend time that works better for you?',
+      'Has someone you know had a bad experience with an organization?',
+      'Would it help if I explained exactly what we keep and what we don\'t?',
+      'Is there a time of day that works better — evenings or weekends?'
     ];
 
-    function getQuestion(confidence) {
-      var q = QUESTIONS[0].text;
-      for (var i = 0; i < QUESTIONS.length; i++) {
-        if (confidence >= QUESTIONS[i].threshold) q = QUESTIONS[i].text;
+    function updateProfileChips(result) {
+      if (!result) return;
+      if (result.category === 'barrier') {
+        if (barrierCount === 0) {
+          chipPrimary = result.subtype;
+          document.getElementById('chip-primary').textContent = result.subtype;
+        } else if (barrierCount === 1) {
+          chipSecondary = result.subtype;
+          document.getElementById('chip-secondary').textContent = result.subtype;
+        }
+        barrierCount++;
       }
-      return q;
+      if (result.category === 'need' && needCount === 0) {
+        chipNeed = result.subtype;
+        document.getElementById('chip-need').textContent = result.subtype;
+        needCount++;
+      }
+      if (result.category === 'household' && result.subtype === 'language preference') {
+        document.getElementById('chip-language').textContent = result.label || result.subtype;
+      }
     }
 
-    function updateConfidence() {
-      var increment = Math.floor(Math.random() * 3) + 3; // 3–5
-      currentConfidence = Math.min(98, currentConfidence + increment);
+    function incrementProfile(result) {
+      itemsAddedCount++;
+      var bump = Math.floor(Math.random() * 3) + 3;
+      currentConfidence = Math.min(97, currentConfidence + bump);
       document.getElementById('confidence-fill').style.width = currentConfidence + '%';
       document.getElementById('confidence-pct').textContent = currentConfidence + '%';
-      document.getElementById('suggested-question').textContent = getQuestion(currentConfidence);
+      var idx = itemsAddedCount % QUESTION_CYCLE.length;
+      document.getElementById('suggested-question').textContent = QUESTION_CYCLE[idx];
+      if (result) updateProfileChips(result);
+      if (result && result.transparency_script) {
+        var container = document.getElementById('generated-scripts-container');
+        var div = document.createElement('div');
+        div.className = 'script-block';
+        div.style.marginTop = '4px';
+        div.innerHTML =
+          '<div class="script-block__header">' +
+            '<span class="script-block__label">Generated script — ' + (result.subtype || '') + '</span>' +
+          '</div>' +
+          '<p class="script-block__text">' + result.transparency_script + '</p>' +
+          '<span class="script-block__source">Generated by Gemini · CMS 2022 model</span>';
+        container.appendChild(div);
+      }
+      // Persist updated confidence, question index, and chip state after every add or confirm
+      saveSession();
     }
 
-    /* ============================================================
-       SIDE PANEL — open / close
-    ============================================================ */
+    /* ── PANEL OPEN / CLOSE ─────────────────────────────────────── */
     var PANEL_META = {
-      'data-fear': {
-        badgeClass:   'panel-header__badge--barrier',
-        badgeText:    'barrier · data fear',
-        confirmText:  'Confirm + add to log',
-        sourceBelow:  'CMS 2022 · 805 UndocuFund model'
-      },
-      'scheduling': {
-        badgeClass:   'panel-header__badge--barrier',
-        badgeText:    'barrier · scheduling',
-        confirmText:  'Confirm',
-        sourceBelow:  ''
-      },
-      'rent': {
-        badgeClass:   'panel-header__badge--need',
-        badgeText:    'need · rent/housing',
-        confirmText:  'Confirm',
-        sourceBelow:  ''
-      },
-      'citizen-children': {
-        badgeClass:   'panel-header__badge--household',
-        badgeText:    'household · citizen children',
-        confirmText:  'Confirm',
-        sourceBelow:  ''
-      },
-      'consideration': {
-        badgeClass:   'panel-header__badge--consideration',
-        badgeText:    'consideration',
-        confirmText:  'Add to log',
-        sourceBelow:  ''
-      }
+      'data-fear':        { badgeClass: 'panel-header__badge--barrier',       badgeText: 'barrier · data fear',           confirmText: 'Confirm + add to log', sourceBelow: 'CMS 2022 · 805 UndocuFund model' },
+      'scheduling':       { badgeClass: 'panel-header__badge--barrier',       badgeText: 'barrier · scheduling',          confirmText: 'Confirm',              sourceBelow: '' },
+      'rent':             { badgeClass: 'panel-header__badge--need',           badgeText: 'need · rent/housing',           confirmText: 'Confirm',              sourceBelow: '' },
+      'citizen-children': { badgeClass: 'panel-header__badge--household',     badgeText: 'household · citizen children',  confirmText: 'Confirm',              sourceBelow: '' },
+      'consideration':    { badgeClass: 'panel-header__badge--consideration', badgeText: 'consideration',                 confirmText: 'Add to log',           sourceBelow: '' },
+      'api-generated':    { badgeClass: 'panel-header__badge--consideration', badgeText: 'logged',                        confirmText: 'Confirm + add to log', sourceBelow: 'Generated by Gemini · CMS 2022, NILC, Morey 2012' }
     };
 
     function openPanel(itemEl) {
-      var panelId = itemEl.dataset.panel || 'consideration';
-      var meta    = PANEL_META[panelId] || PANEL_META['consideration'];
-
-      // Title = the CBO message sitting directly above the card.
-      // Falls back to the category if structure is unexpected.
+      var panelId  = itemEl.dataset.panel || 'consideration';
+      var meta     = PANEL_META[panelId] || PANEL_META['consideration'];
       var titleText = '';
       var prev = itemEl.previousElementSibling;
       if (prev && prev.classList.contains('chat-msg')) {
@@ -1732,28 +833,17 @@
         titleText = meta.badgeText;
       }
       document.getElementById('panel-title').textContent = titleText;
-
       var badge = document.getElementById('panel-badge');
       badge.className = 'panel-header__badge ' + meta.badgeClass;
       badge.textContent = meta.badgeText;
-
-      // show correct section
-      document.querySelectorAll('.panel-section').forEach(function(s) {
-        s.classList.remove('active');
-      });
+      document.querySelectorAll('.panel-section').forEach(function(s) { s.classList.remove('active'); });
       document.getElementById('panel-' + panelId).classList.add('active');
-
-      // reset + label confirm button
       var confirmBtn = document.getElementById('panel-confirm-btn');
       confirmBtn.textContent = meta.confirmText;
       confirmBtn.classList.remove('confirmed');
-
-      // source below
       var src = document.getElementById('panel-source-below');
       src.textContent = meta.sourceBelow;
       src.style.display = meta.sourceBelow ? 'block' : 'none';
-
-      // open
       document.getElementById('side-panel').classList.add('open');
       document.getElementById('panel-overlay').classList.add('visible');
     }
@@ -1763,46 +853,31 @@
       document.getElementById('panel-overlay').classList.remove('visible');
     }
 
-    // wire hardcoded chat cards (the 5 pre-existing turns)
     document.querySelectorAll('#chat-thread .chat-card').forEach(function(card) {
       card.addEventListener('click', function() { openPanel(card); });
     });
-
     document.getElementById('panel-close').addEventListener('click', closePanel);
     document.getElementById('panel-overlay').addEventListener('click', closePanel);
 
-    /* ============================================================
-       CONFIRM BUTTON — "Added ✓" → 600ms → close
-    ============================================================ */
+    /* ── CONFIRM BUTTON ─────────────────────────────────────────── */
     document.getElementById('panel-confirm-btn').addEventListener('click', function() {
       this.textContent = 'Added ✓';
       this.classList.add('confirmed');
-      var self = this;
+      incrementProfile(null);
       setTimeout(function() { closePanel(); }, 600);
     });
 
-    /* ============================================================
-       KEYWORD MAP + FREE INPUT
-    ============================================================ */
+    /* ── KEYWORD MAP (fallback) ─────────────────────────────────── */
     var KEYWORD_MAP = [
-      { keywords: ['fear','scared','share','trust','ice','dhs'],
-        dot: 'barrier',  category: 'barrier · data fear',       tag: 'visual',  panel: 'data-fear' },
-      { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'],
-        dot: 'barrier',  category: 'barrier · scheduling',      tag: 'visual',  panel: 'scheduling' },
-      { keywords: ['cost','money','pay','afford','insurance','fee'],
-        dot: 'barrier',  category: 'barrier · cost',            tag: 'visual',  panel: 'consideration' },
-      { keywords: ['rent','housing','eviction','landlord','apartment'],
-        dot: 'need',     category: 'need · rent/housing',       tag: 'visual',  panel: 'rent' },
-      { keywords: ['food','supplies','pantry','eat','hungry'],
-        dot: 'need',     category: 'need · food/supplies',      tag: 'visual',  panel: 'consideration' },
-      { keywords: ['legal','lawyer','court','immigration','attorney'],
-        dot: 'need',     category: 'need · legal aid',          tag: 'visual',  panel: 'consideration' },
-      { keywords: ['health','doctor','hospital','sick','medical','clinic'],
-        dot: 'need',     category: 'need · healthcare',         tag: 'visual',  panel: 'consideration' },
-      { keywords: ['kids','children','born','citizen','family','daughter','son'],
-        dot: 'household',category: 'household · citizen children', tag: 'visual', panel: 'citizen-children' },
-      { keywords: ['spanish','english','language','dialect','creole','bengali'],
-        dot: 'household',category: 'household · language',      tag: 'visual',  panel: 'consideration' }
+      { keywords: ['fear','scared','share','trust','ice','dhs'],              dot: 'barrier',      category: 'barrier · data fear',          panel: 'data-fear' },
+      { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'], dot: 'barrier', category: 'barrier · scheduling', panel: 'scheduling' },
+      { keywords: ['cost','money','pay','afford','insurance','fee'],           dot: 'barrier',      category: 'barrier · cost',               panel: 'consideration' },
+      { keywords: ['rent','housing','eviction','landlord','apartment'],        dot: 'need',         category: 'need · rent/housing',          panel: 'rent' },
+      { keywords: ['food','supplies','pantry','eat','hungry'],                 dot: 'need',         category: 'need · food/supplies',         panel: 'consideration' },
+      { keywords: ['legal','lawyer','court','immigration','attorney'],         dot: 'need',         category: 'need · legal aid',             panel: 'consideration' },
+      { keywords: ['health','doctor','hospital','sick','medical','clinic'],    dot: 'need',         category: 'need · healthcare',            panel: 'consideration' },
+      { keywords: ['kids','children','born','citizen','family','daughter','son'], dot: 'household', category: 'household · citizen children', panel: 'citizen-children' },
+      { keywords: ['spanish','english','language','dialect','creole','bengali'], dot: 'household',  category: 'household · language',         panel: 'consideration' }
     ];
 
     function categorize(text) {
@@ -1813,32 +888,155 @@
           if (lower.indexOf(rule.keywords[j]) !== -1) return rule;
         }
       }
-      return { dot: 'consideration', category: 'consideration', tag: 'context', panel: 'consideration' };
+      return { dot: 'consideration', category: 'consideration', panel: 'consideration' };
     }
 
-    function addChatTurn(text, dot, category, panel) {
+    /* ── LOCALSTORAGE: SAVE SESSION ─────────────────────────────── */
+    function saveSession() {
+      var ta = document.querySelector('.worker-notes__textarea');
+      // Build one object with all restorable state.
+      // loggedItems holds only API-derived labels and metadata —
+      // no verbatim person text and no raw API responses are stored.
+      var data = {
+        confidence:      currentConfidence,
+        itemsAddedCount: itemsAddedCount,
+        barrierCount:    barrierCount,
+        needCount:       needCount,
+        chipPrimary:     chipPrimary,
+        chipSecondary:   chipSecondary,
+        chipNeed:        chipNeed,
+        chipLanguage:    chipLanguage,
+        // sessionContext is the running subtype list passed to Gemini to avoid repeating questions
+        sessionContext:  sessionContext,
+        // workerNotes is device-only; saved so workers don't lose in-progress notes on reload
+        workerNotes:     ta ? ta.value : '',
+        loggedItems:     loggedItems
+      };
+      // Serialize the whole object to JSON and write it under one fixed key — one key, one object
+      localStorage.setItem('steadymode_session', JSON.stringify(data));
+    }
+
+    /* ── LOCALSTORAGE: RESTORE ONE CHAT TURN ────────────────────── */
+    // Rebuilds a single logged item in the chat thread from a saved loggedItems entry.
+    // Called only during loadSession — does NOT push to loggedItems or trigger saveSession.
+    function restoreChatTurn(item) {
       var thread = document.getElementById('chat-thread');
       var prompt = thread.querySelector('.chat-prompt');
 
-      // CBO message bubble — textContent prevents XSS
+      var msg = document.createElement('div');
+      msg.className = 'chat-msg';
+      // Use the stored API-derived label rather than verbatim person input (not saved)
+      msg.textContent = item.label || item.category;
+      msg.dataset.dynamic = 'true';
+
+      var card = document.createElement('button');
+      card.className = 'chat-card';
+      card.dataset.panel = item.panel;
+      card.dataset.dynamic = 'true';
+      card.innerHTML =
+        '<span class="log-dot log-dot--' + item.dot + '"></span>' +
+        '<span class="chat-card__category"></span>' +
+        '<span class="chat-card__confirm">logged</span>' +
+        '<span class="chat-card__arrow">›</span>';
+      card.querySelector('.chat-card__category').textContent = item.category;
+      card.addEventListener('click', function() { openPanel(this); });
+
+      if (prompt) {
+        thread.insertBefore(msg, prompt);
+        thread.insertBefore(card, prompt);
+      } else {
+        thread.appendChild(msg);
+        thread.appendChild(card);
+      }
+    }
+
+    /* ── LOCALSTORAGE: LOAD SESSION ─────────────────────────────── */
+    function loadSession() {
+      // Read the single session key; return immediately if nothing was previously saved
+      var raw = localStorage.getItem('steadymode_session');
+      if (!raw) return;
+
+      var data;
+      try {
+        // Parse the stored JSON string back into a JS object so fields can be read individually
+        data = JSON.parse(raw);
+      } catch(e) { return; }
+      if (!data) return;
+
+      // Restore confidence score and sync the bar width and percentage label
+      if (typeof data.confidence === 'number') {
+        currentConfidence = data.confidence;
+        document.getElementById('confidence-fill').style.width = currentConfidence + '%';
+        document.getElementById('confidence-pct').textContent  = currentConfidence + '%';
+      }
+      // Restore item counter so the question cycle resumes from where it left off
+      if (typeof data.itemsAddedCount === 'number') {
+        itemsAddedCount = data.itemsAddedCount;
+        document.getElementById('suggested-question').textContent =
+          QUESTION_CYCLE[itemsAddedCount % QUESTION_CYCLE.length];
+      }
+      // Restore counters that gate future chip updates so new barriers/needs slot correctly
+      if (typeof data.barrierCount === 'number') barrierCount = data.barrierCount;
+      if (typeof data.needCount    === 'number') needCount    = data.needCount;
+
+      // Restore barrier-profile chip text values shown in the Output tab
+      if (data.chipPrimary)   { chipPrimary   = data.chipPrimary;   document.getElementById('chip-primary').textContent   = data.chipPrimary; }
+      if (data.chipSecondary) { chipSecondary = data.chipSecondary; document.getElementById('chip-secondary').textContent = data.chipSecondary; }
+      if (data.chipNeed)      { chipNeed      = data.chipNeed;      document.getElementById('chip-need').textContent      = data.chipNeed; }
+      if (data.chipLanguage)  { chipLanguage  = data.chipLanguage;  document.getElementById('chip-language').textContent  = data.chipLanguage; }
+
+      // Restore the Gemini session context string so the model doesn't repeat categories
+      if (typeof data.sessionContext === 'string') sessionContext = data.sessionContext;
+
+      // Restore worker notes; device-only field, never transmitted or logged
+      if (typeof data.workerNotes === 'string') {
+        var ta = document.querySelector('.worker-notes__textarea');
+        if (ta) ta.value = data.workerNotes;
+      }
+
+      // Re-render each saved logged item in the chat thread;
+      // the five hardcoded items are already present in the HTML — only new ones are stored
+      if (Array.isArray(data.loggedItems) && data.loggedItems.length > 0) {
+        data.loggedItems.forEach(function(item) { restoreChatTurn(item); });
+        // Replace empty array with the restored list so future saves include all items
+        loggedItems = data.loggedItems;
+      }
+    }
+
+    /* ── ADD CHAT TURN ──────────────────────────────────────────── */
+    function addChatTurn(text, dot, category, panel, apiResult) {
+      var thread = document.getElementById('chat-thread');
+      var prompt = thread.querySelector('.chat-prompt');
+
       var msg = document.createElement('div');
       msg.className = 'chat-msg';
       msg.textContent = text;
+      msg.dataset.dynamic = 'true';  // marks element as runtime-added so Discard can remove it
 
-      // System card — textContent on category prevents XSS
       var card = document.createElement('button');
       card.className = 'chat-card';
       card.dataset.panel = panel;
+      card.dataset.dynamic = 'true'; // marks element as runtime-added so Discard can remove it
+
+      if (apiResult) {
+        card.dataset.apiResult = JSON.stringify(apiResult);
+      }
+
       card.innerHTML =
         '<span class="log-dot log-dot--' + dot + '"></span>' +
         '<span class="chat-card__category"></span>' +
         '<span class="chat-card__confirm">logged</span>' +
         '<span class="chat-card__arrow">›</span>';
       card.querySelector('.chat-card__category').textContent = category;
-      card.addEventListener('click', function() { openPanel(card); });
 
-      // Insert the new turn before the ambient prompt so the prompt
-      // stays docked at the bottom of the thread.
+      card.addEventListener('click', function() {
+        if (this.dataset.apiResult) {
+          openApiPanel(JSON.parse(this.dataset.apiResult), this);
+        } else {
+          openPanel(this);
+        }
+      });
+
       if (prompt) {
         thread.insertBefore(msg, prompt);
         thread.insertBefore(card, prompt);
@@ -1847,19 +1045,111 @@
         thread.appendChild(card);
       }
 
-      // Scroll newest turn into view
       thread.scrollTop = thread.scrollHeight;
-
-      updateConfidence();
+      // Record only the derived label, dot, category, and panel — never verbatim person text
+      loggedItems.push({
+        label:    apiResult ? (apiResult.label || category) : category,
+        dot:      dot,
+        category: category,
+        panel:    panel
+      });
+      incrementProfile(apiResult || null);
     }
 
-    function handleSend() {
-      var input = document.getElementById('chat-input');
-      var text  = input.value.trim();
+    /* ── OPEN API-GENERATED PANEL ───────────────────────────────── */
+    function openApiPanel(result, cardEl) {
+      var meta = PANEL_META['api-generated'];
+
+      var titleText = '';
+      var prev = cardEl.previousElementSibling;
+      if (prev && prev.classList.contains('chat-msg')) {
+        titleText = prev.textContent;
+      } else {
+        titleText = result.label || 'Logged item';
+      }
+      document.getElementById('panel-title').textContent = titleText;
+
+      var badgeClassMap = { barrier: 'panel-header__badge--barrier', need: 'panel-header__badge--need', household: 'panel-header__badge--household', consideration: 'panel-header__badge--consideration' };
+      var badge = document.getElementById('panel-badge');
+      badge.className = 'panel-header__badge ' + (badgeClassMap[result.category] || 'panel-header__badge--consideration');
+      badge.textContent = result.category + (result.subtype ? ' · ' + result.subtype : '');
+
+      document.getElementById('api-panel-note-text').textContent     = result.panel_note || '';
+      document.getElementById('api-panel-question-text').textContent  = result.clarifying_question || '';
+
+      var scriptBox = document.getElementById('api-panel-script');
+      if (result.transparency_script) {
+        document.getElementById('api-panel-script-text').textContent = result.transparency_script;
+        scriptBox.style.display = 'block';
+      } else {
+        scriptBox.style.display = 'none';
+      }
+
+      var eligBox = document.getElementById('api-panel-eligibility');
+      if (result.eligibility_note) {
+        document.getElementById('api-panel-eligibility-text').textContent = result.eligibility_note;
+        eligBox.style.display = 'block';
+      } else {
+        eligBox.style.display = 'none';
+      }
+
+      document.querySelectorAll('.panel-section').forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById('panel-api-generated').classList.add('active');
+
+      var confirmBtn = document.getElementById('panel-confirm-btn');
+      confirmBtn.textContent = meta.confirmText;
+      confirmBtn.classList.remove('confirmed');
+
+      var src = document.getElementById('panel-source-below');
+      src.textContent = meta.sourceBelow;
+      src.style.display = meta.sourceBelow ? 'block' : 'none';
+
+      document.getElementById('side-panel').classList.add('open');
+      document.getElementById('panel-overlay').classList.add('visible');
+    }
+
+    /* ── HANDLE SEND (async, calls Gemini) ─────────────────────── */
+    async function handleSend() {
+      var input  = document.getElementById('chat-input');
+      var sendBtn = document.getElementById('chat-send-btn');
+      var text   = input.value.trim();
       if (!text) return;
-      var cat = categorize(text);
-      addChatTurn(text, cat.dot, cat.category, cat.panel);
-      input.value = '';
+
+      input.disabled   = true;
+      sendBtn.disabled = true;
+
+      var thread = document.getElementById('chat-thread');
+      var prompt = thread.querySelector('.chat-prompt');
+
+      var msg = document.createElement('div');
+      msg.className = 'chat-msg';
+      msg.textContent = text;
+      if (prompt) { thread.insertBefore(msg, prompt); } else { thread.appendChild(msg); }
+
+      var analyzing = document.createElement('div');
+      analyzing.className = 'chat-analyzing';
+      analyzing.textContent = 'Analyzing…';
+      if (prompt) { thread.insertBefore(analyzing, prompt); } else { thread.appendChild(analyzing); }
+      thread.scrollTop = thread.scrollHeight;
+
+      var result = await callGemini(text, sessionContext);
+      analyzing.remove();
+
+      if (result) {
+        sessionContext += ', ' + (result.subtype || result.category);
+        var dot      = result.dot || 'consideration';
+        var category = result.category + (result.subtype ? ' · ' + result.subtype : '');
+        var panel    = 'api-generated';
+        addChatTurn(text, dot, category, panel, result);
+      } else {
+        var cat = categorize(text);
+        addChatTurn(text, cat.dot, cat.category, cat.panel, null);
+      }
+
+      input.value      = '';
+      input.disabled   = false;
+      sendBtn.disabled = false;
+      input.focus();
     }
 
     document.getElementById('chat-send-btn').addEventListener('click', handleSend);
@@ -1867,43 +1157,67 @@
       if (e.key === 'Enter') handleSend();
     });
 
-    /* ============================================================
-       SUGGESTION CHIPS
-    ============================================================ */
+    /* ── SUGGESTION CHIPS (also call Gemini) ───────────────────── */
     document.querySelectorAll('.chat-suggestion').forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        addChatTurn(
-          chip.dataset.text,
-          chip.dataset.dot,
-          chip.dataset.category,
-          chip.dataset.panel
-        );
+      chip.addEventListener('click', async function() {
+        var text = chip.dataset.text;
+        var thread = document.getElementById('chat-thread');
+        var prompt = thread.querySelector('.chat-prompt');
+
+        var msg = document.createElement('div');
+        msg.className = 'chat-msg';
+        msg.textContent = text;
+        if (prompt) { thread.insertBefore(msg, prompt); } else { thread.appendChild(msg); }
+
+        var analyzing = document.createElement('div');
+        analyzing.className = 'chat-analyzing';
+        analyzing.textContent = 'Analyzing…';
+        if (prompt) { thread.insertBefore(analyzing, prompt); } else { thread.appendChild(analyzing); }
+        thread.scrollTop = thread.scrollHeight;
+
+        var result = await callGemini(text, sessionContext);
+        analyzing.remove();
+
+        if (result) {
+          sessionContext += ', ' + (result.subtype || result.category);
+          var dot      = result.dot || 'consideration';
+          var category = result.category + (result.subtype ? ' · ' + result.subtype : '');
+          addChatTurn(text, dot, category, 'api-generated', result);
+        } else {
+          var cat = categorize(text);
+          addChatTurn(text, cat.dot, cat.category, cat.panel, null);
+        }
       });
     });
 
-    // On load, scroll chat thread to the newest content
-    (function scrollThreadOnLoad() {
+    /* ── WORKER NOTES AUTOSAVE ──────────────────────────────────── */
+    // Save whenever the worker edits their local notes so changes survive a reload
+    document.querySelector('.worker-notes__textarea').addEventListener('input', function() {
+      saveSession();
+    });
+
+    /* ── LOAD SAVED SESSION ON STARTUP ─────────────────────────── */
+    // Runs once at page load; reads localStorage and restores state if a session was saved
+    loadSession();
+
+    /* ── SCROLL ON LOAD ─────────────────────────────────────────── */
+    (function() {
       var thread = document.getElementById('chat-thread');
       if (thread) thread.scrollTop = thread.scrollHeight;
     })();
 
-    /* ============================================================
-       OUTPUT TAB — DELIVER ROW
-    ============================================================ */
+    /* ── WHATSAPP / PRINT / LOG ─────────────────────────────────── */
     document.getElementById('btn-whatsapp').addEventListener('click', function() {
-      var msg = 'Ayuda disponible ahora: renta/vivienda. Sin documentos requeridos. ' +
-                'Make the Road NY — (718) 418-7690. Evening hours available. Comparte.';
+      var msg = 'Ayuda disponible ahora: renta/vivienda. Sin documentos requeridos. Make the Road NY — (718) 418-7690. Evening hours available. Comparte.';
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(msg).catch(function() {});
       } else {
-        // fallback for older mobile browsers
         var ta = document.createElement('textarea');
         ta.value = msg;
         ta.style.position = 'fixed';
         ta.style.opacity  = '0';
         document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
+        ta.focus(); ta.select();
         try { document.execCommand('copy'); } catch(e) {}
         document.body.removeChild(ta);
       }
@@ -1914,9 +1228,6 @@
       window.print();
     });
 
-    /* ============================================================
-       OUTPUT TAB — LOG ROW
-    ============================================================ */
     document.getElementById('btn-log-session').addEventListener('click', function() {
       this.textContent = 'Logged ✓';
       this.disabled = true;
@@ -1924,10 +1235,42 @@
     });
 
     document.getElementById('btn-discard').addEventListener('click', function() {
+      // Remove the saved session so the next page load starts from scratch
+      localStorage.removeItem('steadymode_session');
+
+      // Reset all state variables to their original defaults
+      currentConfidence = 84;
+      itemsAddedCount   = 0;
+      barrierCount      = 2;
+      needCount         = 1;
+      chipPrimary       = 'Data fear';
+      chipSecondary     = 'Scheduling';
+      chipNeed          = 'Rent / housing';
+      chipLanguage      = 'Spanish';
+      sessionContext    = 'data fear, scheduling, rent/housing, citizen children';
+      loggedItems       = [];
+
+      // Reset Output tab UI to match the defaults above
+      document.getElementById('confidence-fill').style.width    = '84%';
+      document.getElementById('confidence-pct').textContent     = '84%';
+      document.getElementById('suggested-question').textContent = QUESTION_CYCLE[0];
+      document.getElementById('chip-primary').textContent       = 'Data fear';
+      document.getElementById('chip-secondary').textContent     = 'Scheduling';
+      document.getElementById('chip-need').textContent          = 'Rent / housing';
+      document.getElementById('chip-language').textContent      = 'Spanish';
+
+      // Clear worker notes
+      var ta = document.querySelector('.worker-notes__textarea');
+      if (ta) ta.value = '';
+
+      // Remove all dynamically added chat turns; hardcoded five items have no data-dynamic attr
+      document.querySelectorAll('#chat-thread [data-dynamic]').forEach(function(el) { el.remove(); });
+      // Clear any generated transparency scripts appended to the Output tab
+      document.getElementById('generated-scripts-container').innerHTML = '';
+
       showToast('Session discarded');
     });
 
   </script>
-
 </body>
 </html>
