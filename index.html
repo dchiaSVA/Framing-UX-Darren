@@ -117,9 +117,14 @@
       border-bottom: 1px solid var(--color-chrome-border);
       padding: 14px 20px 12px;
       flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .app-header__title    { font-size: 14px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.01em; }
     .app-header__subtitle { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; letter-spacing: 0.02em; }
+    .app-header__confidence { font-size: 11px; color: var(--color-text-tertiary); font-weight: 500; white-space: nowrap; }
+    .app-header__confidence.confident { color: var(--color-text-success); }
 
     .tab-nav {
       display: flex;
@@ -259,7 +264,7 @@
     .confidence-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
     .confidence-pct   { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
     .confidence-track { height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
-    .confidence-fill  { height: 100%; background: var(--color-text-success); border-radius: 3px; width: 84%; transition: width 0.5s ease; }
+    .confidence-fill  { height: 100%; background: var(--color-text-success); border-radius: 3px; width: 75%; transition: width 0.5s ease; }
 
     .script-block { display: flex; flex-direction: column; gap: 6px; }
     .script-block__header  { display: flex; flex-direction: column; gap: 2px; }
@@ -317,6 +322,9 @@
     <div class="app-header">
       <div class="app-header__title">Steady Mode</div>
       <div class="app-header__subtitle">CBO Decision Support</div>
+      <div class="app-header__confidence">
+        Match <span id="header-confidence-pct">75%</span>
+      </div>
     </div>
 
     <nav class="tab-nav" role="tablist">
@@ -570,7 +578,7 @@
         <div class="confidence-wrap">
           <div class="confidence-row">
             <span class="confidence-label">Match confidence</span>
-            <span class="confidence-pct" id="confidence-pct">84%</span>
+            <span class="confidence-pct" id="confidence-pct">75%</span>
           </div>
           <div class="confidence-track">
             <div class="confidence-fill" id="confidence-fill"></div>
@@ -719,6 +727,15 @@ consideration: anything qualitative that does not fit above — dot: considerati
     var chipLanguage  = "Spanish";
     var loggedItems   = [];          // new items only; hardcoded five are in the HTML
 
+    /* ── CONFIDENCE FLAGS ───────────────────────────────────────── */
+    // Initialized to reflect the five hardcoded session items already on screen.
+    // base 30 + hasNeed 25 + hasBarrier 20 = 75 (matches initial currentConfidence below).
+    var hasNeed                  = true;   // rent/housing need is in the hardcoded items
+    var hasBarrier               = true;   // data fear + scheduling are in the hardcoded items
+    var hasLanguage              = false;
+    var hasHousehold             = false;
+    var hasTransparencyAddressed = false;
+
     /* ── CLOCK ──────────────────────────────────────────────────── */
     function updateClock() {
       var t = new Date();
@@ -756,7 +773,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
     /* ── PROFILE UPDATE ─────────────────────────────────────────── */
     var itemsAddedCount = 0;
-    var currentConfidence = 84;
+    var currentConfidence = 75;
     var QUESTION_CYCLE = [
       'Is there an evening or weekend time that works better for you?',
       'Has someone you know had a bad experience with an organization?',
@@ -788,10 +805,46 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
     function incrementProfile(result) {
       itemsAddedCount++;
-      var bump = Math.floor(Math.random() * 3) + 3;
-      currentConfidence = Math.min(97, currentConfidence + bump);
+
+      // Update session flags from the new item before recalculating confidence
+      if (result) {
+        if (result.category === 'need')    hasNeed    = true;
+        if (result.category === 'barrier') hasBarrier = true;
+        if (result.category === 'household' && result.subtype === 'language preference')
+          hasLanguage = true;
+        if (result.category === 'household' && (
+              result.subtype === 'citizen children'    ||
+              result.subtype === 'mixed-status family' ||
+              result.subtype === 'family with children'))
+          hasHousehold = true;
+        if (result.category === 'barrier' && result.subtype === 'data fear' && result.transparency_script)
+          hasTransparencyAddressed = true;
+      }
+
+      /*
+       * Research-grounded confidence formula — recalculated from scratch on every add
+       * base 30    minimum signal without any categorized data
+       * +25 hasNeed: eligibility pathway requires knowing what resource to match (Morey 2012, NILC)
+       * +20 hasBarrier: match only works when actual barrier is known not assumed (CMS 2022)
+       * +10 hasLanguage: language mismatch breaks last-mile delivery (Méndez et al. 2020)
+       * +10 hasHousehold: opens or closes eligibility pathways (Morey 2012)
+       *  +5 hasTransparencyAddressed: data fear unaddressed means match won't be used (CMS 2022)
+       * cap at 97
+       */
+      var score = 30;
+      if (hasNeed)                  score += 25;
+      if (hasBarrier)               score += 20;
+      if (hasLanguage)              score += 10;
+      if (hasHousehold)             score += 10;
+      if (hasTransparencyAddressed) score += 5;
+      currentConfidence = Math.min(97, score);
+
       document.getElementById('confidence-fill').style.width = currentConfidence + '%';
-      document.getElementById('confidence-pct').textContent = currentConfidence + '%';
+      document.getElementById('confidence-pct').textContent  = currentConfidence + '%';
+      var headerEl = document.getElementById('header-confidence-pct');
+      headerEl.textContent = currentConfidence + '%';
+      headerEl.parentElement.classList.toggle('confident', currentConfidence >= 75);
+
       var idx = itemsAddedCount % QUESTION_CYCLE.length;
       document.getElementById('suggested-question').textContent = QUESTION_CYCLE[idx];
       if (result) updateProfileChips(result);
@@ -910,7 +963,13 @@ consideration: anything qualitative that does not fit above — dot: considerati
         sessionContext:  sessionContext,
         // workerNotes is device-only; saved so workers don't lose in-progress notes on reload
         workerNotes:     ta ? ta.value : '',
-        loggedItems:     loggedItems
+        loggedItems:     loggedItems,
+        // confidence flags — required to recalculate correctly when new items are added after restore
+        hasNeed:                  hasNeed,
+        hasBarrier:               hasBarrier,
+        hasLanguage:              hasLanguage,
+        hasHousehold:             hasHousehold,
+        hasTransparencyAddressed: hasTransparencyAddressed
       };
       // Serialize the whole object to JSON and write it under one fixed key — one key, one object
       localStorage.setItem('steadymode_session', JSON.stringify(data));
@@ -963,11 +1022,14 @@ consideration: anything qualitative that does not fit above — dot: considerati
       } catch(e) { return; }
       if (!data) return;
 
-      // Restore confidence score and sync the bar width and percentage label
+      // Restore confidence score and sync the bar, percentage label, and header indicator
       if (typeof data.confidence === 'number') {
         currentConfidence = data.confidence;
         document.getElementById('confidence-fill').style.width = currentConfidence + '%';
         document.getElementById('confidence-pct').textContent  = currentConfidence + '%';
+        var headerEl = document.getElementById('header-confidence-pct');
+        headerEl.textContent = currentConfidence + '%';
+        headerEl.parentElement.classList.toggle('confident', currentConfidence >= 75);
       }
       // Restore item counter so the question cycle resumes from where it left off
       if (typeof data.itemsAddedCount === 'number') {
@@ -978,6 +1040,12 @@ consideration: anything qualitative that does not fit above — dot: considerati
       // Restore counters that gate future chip updates so new barriers/needs slot correctly
       if (typeof data.barrierCount === 'number') barrierCount = data.barrierCount;
       if (typeof data.needCount    === 'number') needCount    = data.needCount;
+      // Restore confidence flags so recalculation is correct when new items are added after restore
+      if (typeof data.hasNeed                  === 'boolean') hasNeed                  = data.hasNeed;
+      if (typeof data.hasBarrier               === 'boolean') hasBarrier               = data.hasBarrier;
+      if (typeof data.hasLanguage              === 'boolean') hasLanguage              = data.hasLanguage;
+      if (typeof data.hasHousehold             === 'boolean') hasHousehold             = data.hasHousehold;
+      if (typeof data.hasTransparencyAddressed === 'boolean') hasTransparencyAddressed = data.hasTransparencyAddressed;
 
       // Restore barrier-profile chip text values shown in the Output tab
       if (data.chipPrimary)   { chipPrimary   = data.chipPrimary;   document.getElementById('chip-primary').textContent   = data.chipPrimary; }
@@ -1141,9 +1209,15 @@ consideration: anything qualitative that does not fit above — dot: considerati
         var category = result.category + (result.subtype ? ' · ' + result.subtype : '');
         var panel    = 'api-generated';
         addChatTurn(text, dot, category, panel, result);
+        var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
+        if (chatPrompt) chatPrompt.textContent = result.ambiguous
+          ? result.clarifying_question
+          : 'What else did you hear? Tap a suggestion or type what they said.';
       } else {
         var cat = categorize(text);
         addChatTurn(text, cat.dot, cat.category, cat.panel, null);
+        var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
+        if (chatPrompt) chatPrompt.textContent = 'What else did you hear? Tap a suggestion or type what they said.';
       }
 
       input.value      = '';
@@ -1183,9 +1257,15 @@ consideration: anything qualitative that does not fit above — dot: considerati
           var dot      = result.dot || 'consideration';
           var category = result.category + (result.subtype ? ' · ' + result.subtype : '');
           addChatTurn(text, dot, category, 'api-generated', result);
+          var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
+          if (chatPrompt) chatPrompt.textContent = result.ambiguous
+            ? result.clarifying_question
+            : 'What else did you hear? Tap a suggestion or type what they said.';
         } else {
           var cat = categorize(text);
           addChatTurn(text, cat.dot, cat.category, cat.panel, null);
+          var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
+          if (chatPrompt) chatPrompt.textContent = 'What else did you hear? Tap a suggestion or type what they said.';
         }
       });
     });
@@ -1239,20 +1319,28 @@ consideration: anything qualitative that does not fit above — dot: considerati
       localStorage.removeItem('steadymode_session');
 
       // Reset all state variables to their original defaults
-      currentConfidence = 84;
-      itemsAddedCount   = 0;
-      barrierCount      = 2;
-      needCount         = 1;
-      chipPrimary       = 'Data fear';
-      chipSecondary     = 'Scheduling';
-      chipNeed          = 'Rent / housing';
-      chipLanguage      = 'Spanish';
-      sessionContext    = 'data fear, scheduling, rent/housing, citizen children';
-      loggedItems       = [];
+      currentConfidence        = 75;
+      itemsAddedCount          = 0;
+      barrierCount             = 2;
+      needCount                = 1;
+      chipPrimary              = 'Data fear';
+      chipSecondary            = 'Scheduling';
+      chipNeed                 = 'Rent / housing';
+      chipLanguage             = 'Spanish';
+      sessionContext           = 'data fear, scheduling, rent/housing, citizen children';
+      loggedItems              = [];
+      hasNeed                  = true;
+      hasBarrier               = true;
+      hasLanguage              = false;
+      hasHousehold             = false;
+      hasTransparencyAddressed = false;
 
       // Reset Output tab UI to match the defaults above
-      document.getElementById('confidence-fill').style.width    = '84%';
-      document.getElementById('confidence-pct').textContent     = '84%';
+      document.getElementById('confidence-fill').style.width    = '75%';
+      document.getElementById('confidence-pct').textContent     = '75%';
+      var headerEl = document.getElementById('header-confidence-pct');
+      headerEl.textContent = '75%';
+      headerEl.parentElement.classList.toggle('confident', true);
       document.getElementById('suggested-question').textContent = QUESTION_CYCLE[0];
       document.getElementById('chip-primary').textContent       = 'Data fear';
       document.getElementById('chip-secondary').textContent     = 'Scheduling';
