@@ -1793,7 +1793,8 @@ unrelated: input is gibberish, a test, food/random objects, or has no connection
   }
 
   /* ── LOCALSTORAGE: SAVE / LOAD ──────────────────────────────── */
-  var SESSION_VERSION = 3; // bump when state shape changes — discards stale saves
+  var SESSION_VERSION = 4; // bump when state shape changes — discards stale saves
+  var isRestoring = false; // suppresses incrementProfile during session restore
 
   function saveSession() {
     var data = {
@@ -1852,9 +1853,11 @@ unrelated: input is gibberish, a test, food/random objects, or has no connection
     if (typeof data.sessionContext === 'string') sessionContext = data.sessionContext;
 
     if (Array.isArray(data.loggedItems) && data.loggedItems.length > 0) {
+      isRestoring = true;
       data.loggedItems.forEach(function(item) {
-        appendBlock(item.label || item.category, item.dot || 'consideration', '', null);
+        appendBlock(item.label || item.category, item.dot || 'consideration', item.subtype || '', null);
       });
+      isRestoring = false;
       loggedItems = data.loggedItems;
     }
   }
@@ -2116,6 +2119,7 @@ unrelated: input is gibberish, a test, food/random objects, or has no connection
    * Cap 97 — the research is clear no tool closes the gap completely
    */
   function incrementProfile(result, fallbackCat, fallbackSub) {
+    if (isRestoring) return; // profileItems already restored from localStorage
     itemsAddedCount++;
 
     // For keyword-fallback blocks (result=null), synthesize a minimal result
@@ -2691,8 +2695,18 @@ unrelated: input is gibberish, a test, food/random objects, or has no connection
     hideEmptyState();
     var highlightedText = buildHighlightedText(text, category, subtype, apiResult);
     var badgeClass = 'badge-' + (category || 'consideration');
-    // Surface if no real API result, Actionable if API gave us structured data
-    var initDepth = (apiResult && apiResult.category && apiResult.category !== 'consideration') ? 1 : 0;
+    // Look up depth from profileItems (reliable on restore); fall back to API result heuristic
+    var initDepth = 0;
+    if (isRestoring && subtype) {
+      var searchArrays = [profileItems.barrier, profileItems.need, profileItems.household, profileItems.language];
+      outer: for (var si = 0; si < searchArrays.length; si++) {
+        for (var di = 0; di < searchArrays[si].length; di++) {
+          if (searchArrays[si][di].subtype === subtype) { initDepth = searchArrays[si][di].depth || 0; break outer; }
+        }
+      }
+    } else {
+      initDepth = (apiResult && apiResult.category && apiResult.category !== 'consideration') ? 1 : 0;
+    }
     block.dataset.depth = initDepth;
     var covClass = initDepth >= 2 ? 'depth--indepth' : initDepth >= 1 ? 'depth--actionable' : 'depth--surface';
     var covLabel = initDepth >= 2 ? 'In-depth' : initDepth >= 1 ? 'Actionable' : 'Surface';
@@ -2721,6 +2735,7 @@ unrelated: input is gibberish, a test, food/random objects, or has no connection
     loggedItems.push({
       label: text.slice(0, 60),
       dot: category,
+      subtype: subtype || '',
       category: category + (subtype ? ' · ' + subtype : ''),
       panel: block.dataset.panel
     });
