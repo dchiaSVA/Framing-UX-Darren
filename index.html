@@ -304,6 +304,77 @@
     /* Generated panel section for API results */
     .panel-section--generated { display: flex; flex-direction: column; gap: 12px; }
 
+    /* ── NOTES / BLOCK INTERFACE ──────────────────────────────────── */
+    .note-banner { display: flex; overflow: hidden; flex-shrink: 0; max-height: 0; transition: max-height 0.2s ease; }
+    .note-banner.visible { max-height: 34px; }
+    .banner-seg { flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px; }
+    .banner-seg + .banner-seg { border-left: 0.5px solid rgba(255,255,255,0.4); }
+    .banner-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .banner-label { font-size: 10px; font-weight: 500; }
+    .banner-barrier { background: #e8e0f7; }
+    .banner-barrier .banner-dot { background: #3C3489; }
+    .banner-barrier .banner-label { color: #3C3489; }
+    .banner-need { background: #d6f0e8; }
+    .banner-need .banner-dot { background: #085041; }
+    .banner-need .banner-label { color: #085041; }
+    .banner-household { background: #fce8d5; }
+    .banner-household .banner-dot { background: #633806; }
+    .banner-household .banner-label { color: #633806; }
+    .banner-consideration { background: #f0efec; }
+    .banner-consideration .banner-dot { background: #5F5E5A; }
+    .banner-consideration .banner-label { color: #5F5E5A; }
+
+    .notes-thread { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 14px 14px 8px 0; display: flex; flex-direction: column; min-height: 0; }
+    .notes-date { font-size: 11px; color: var(--color-text-tertiary); padding: 0 14px 12px 32px; }
+
+    .note-block { display: flex; align-items: flex-start; padding: 4px 14px 4px 0; margin-bottom: 10px; border-radius: 5px; transition: background 0.4s ease; cursor: default; -webkit-tap-highlight-color: transparent; }
+    .note-block.flashing { background: rgba(209,186,155,0.22); }
+
+    .block-handle { width: 32px; min-height: 32px; display: flex; align-items: flex-start; justify-content: center; padding-top: 5px; flex-shrink: 0; font-size: 13px; color: var(--color-text-tertiary); opacity: 0.15; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none; }
+    .note-block:hover .block-handle { opacity: 0.4; }
+    .note-block.dragging .block-handle { opacity: 0.7; }
+
+    .block-content { flex: 1; min-width: 0; }
+    .block-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .block-text { font-size: 13px; line-height: 1.7; color: var(--color-text-primary); flex: 1; min-width: 0; }
+    .block-badges { display: flex; gap: 3px; flex-shrink: 0; margin-top: 3px; flex-wrap: wrap; justify-content: flex-end; }
+
+    .block-badge { font-size: 10px; font-weight: 500; min-width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+    .badge-barrier { background: #e8e0f7; color: #3C3489; }
+    .badge-need { background: #d6f0e8; color: #085041; }
+    .badge-household { background: #fce8d5; color: #633806; }
+    .badge-consideration { background: #f0efec; color: #5F5E5A; }
+
+    .block-ph { border-radius: 3px; padding: 1px 3px; cursor: pointer; -webkit-tap-highlight-color: transparent; position: relative; display: inline; }
+    .block-ph::after { content: ''; position: absolute; inset: -6px; }
+    .ph-barrier { background: #e8e0f7; color: #3C3489; }
+    .ph-need { background: #d6f0e8; color: #085041; }
+    .ph-household { background: #fce8d5; color: #633806; }
+    .ph-consideration { background: #f0efec; color: #5F5E5A; }
+
+    .block-processing-status { font-size: 11px; color: var(--color-text-info); font-style: italic; margin-top: 4px; display: flex; align-items: center; gap: 5px; }
+    .block-spinner { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--color-text-info); border-top-color: transparent; flex-shrink: 0; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .block-dragging { opacity: 0.95; border: 0.5px solid var(--color-border-secondary); border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .block-ghost { opacity: 0.2; }
+    .drop-indicator { height: 2px; background: var(--color-text-info); border-radius: 1px; margin: 0 14px 10px 32px; pointer-events: none; }
+
+    .block-input-wrap { display: flex; align-items: flex-start; padding: 4px 14px 8px 0; gap: 0; flex-shrink: 0; }
+    .block-input-inner { flex: 1; min-width: 0; }
+    .block-input { font-size: 13px; line-height: 1.7; color: var(--color-text-primary); outline: none; min-height: 22px; max-height: 120px; overflow-y: auto; word-break: break-word; }
+    .block-input:empty::before { content: attr(data-placeholder); color: var(--color-text-tertiary); pointer-events: none; }
+    .block-input-hint { font-size: 11px; color: var(--color-text-tertiary); font-style: italic; margin-top: 3px; }
+
+    .block-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 14px 8px 32px; flex-shrink: 0; }
+    .block-toggle-label { font-size: 11px; color: var(--color-text-tertiary); }
+    .block-toggle-switch { position: relative; width: 32px; height: 18px; flex-shrink: 0; }
+    .block-toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .block-toggle-knob { position: absolute; inset: 0; border-radius: 9px; background: var(--color-border-secondary); transition: background 0.2s; cursor: pointer; }
+    .block-toggle-knob::before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; top: 2px; border-radius: 50%; background: white; transition: transform 0.2s; }
+    .block-toggle-switch input:checked + .block-toggle-knob { background: var(--color-text-info); }
+    .block-toggle-switch input:checked + .block-toggle-knob::before { transform: translateX(14px); }
+
   </style>
 </head>
 <body>
@@ -359,68 +430,93 @@
       <div class="tab-footer">Notes stay on this device only · not logged without confirmation</div>
     </div>
 
-    <!-- CHAT TAB -->
+    <!-- SESSION TAB -->
     <div class="tab-content active" id="tab-chat" role="tabpanel">
 
-      <div class="chat-thread" id="chat-thread">
+      <!-- Note banner — appears briefly after block is processed -->
+      <div class="note-banner" id="note-banner"></div>
 
-        <div class="chat-msg">Scared to share information</div>
-        <button class="chat-card" data-panel="data-fear">
-          <span class="log-dot log-dot--barrier"></span>
-          <span class="chat-card__category">barrier · data fear</span>
-          <span class="chat-card__confirm">logged</span>
-          <span class="chat-card__arrow">›</span>
-        </button>
+      <!-- Scrollable blocks area -->
+      <div class="notes-thread" id="notes-thread">
+        <div class="notes-date" id="notes-date"></div>
 
-        <div class="chat-msg">Works nights, can't do daytime</div>
-        <button class="chat-card" data-panel="scheduling">
-          <span class="log-dot log-dot--barrier"></span>
-          <span class="chat-card__category">barrier · scheduling</span>
-          <span class="chat-card__confirm">logged</span>
-          <span class="chat-card__arrow">›</span>
-        </button>
+        <!-- Five hardcoded blocks -->
+        <div class="note-block" data-panel="data-fear" data-category="barrier" data-subtype="data fear" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
+          <div class="block-handle">⠿</div>
+          <div class="block-content">
+            <div class="block-row">
+              <div class="block-text"><span class="block-ph ph-barrier">Scared to share her information</span> with anyone</div>
+              <div class="block-badges"><span class="block-badge badge-barrier">×1</span></div>
+            </div>
+          </div>
+        </div>
 
-        <div class="chat-msg">Needs rent help after storm</div>
-        <button class="chat-card" data-panel="rent">
-          <span class="log-dot log-dot--need"></span>
-          <span class="chat-card__category">need · rent/housing</span>
-          <span class="chat-card__confirm">logged</span>
-          <span class="chat-card__arrow">›</span>
-        </button>
+        <div class="note-block" data-panel="scheduling" data-category="barrier" data-subtype="scheduling" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
+          <div class="block-handle">⠿</div>
+          <div class="block-content">
+            <div class="block-row">
+              <div class="block-text"><span class="block-ph ph-barrier">Works nights</span>, can't do daytime</div>
+              <div class="block-badges"><span class="block-badge badge-barrier">×1</span></div>
+            </div>
+          </div>
+        </div>
 
-        <div class="chat-msg">Two kids, born in US</div>
-        <button class="chat-card" data-panel="citizen-children">
-          <span class="log-dot log-dot--household"></span>
-          <span class="chat-card__category">household · citizen children</span>
-          <span class="chat-card__confirm">logged</span>
-          <span class="chat-card__arrow">›</span>
-        </button>
+        <div class="note-block" data-panel="rent" data-category="need" data-subtype="rent/housing" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
+          <div class="block-handle">⠿</div>
+          <div class="block-content">
+            <div class="block-row">
+              <div class="block-text"><span class="block-ph ph-need">Needs help with rent</span> after the storm</div>
+              <div class="block-badges"><span class="block-badge badge-need">×1</span></div>
+            </div>
+          </div>
+        </div>
 
-        <div class="chat-msg">Seemed nervous when org was mentioned</div>
-        <button class="chat-card" data-panel="consideration">
-          <span class="log-dot log-dot--consideration"></span>
-          <span class="chat-card__category">consideration</span>
-          <span class="chat-card__confirm">logged</span>
-          <span class="chat-card__arrow">›</span>
-        </button>
+        <div class="note-block" data-panel="citizen-children" data-category="household" data-subtype="citizen children" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
+          <div class="block-handle">⠿</div>
+          <div class="block-content">
+            <div class="block-row">
+              <div class="block-text"><span class="block-ph ph-household">Two kids</span>, born in US</div>
+              <div class="block-badges"><span class="block-badge badge-household">×1</span></div>
+            </div>
+          </div>
+        </div>
 
-        <div class="chat-prompt">What else did you hear? Tap a suggestion or type what they said.</div>
+        <div class="note-block" data-panel="consideration" data-category="consideration" data-subtype="consideration" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
+          <div class="block-handle">⠿</div>
+          <div class="block-content">
+            <div class="block-row">
+              <div class="block-text"><span class="block-ph ph-consideration">Nervous when I mentioned the org</span></div>
+              <div class="block-badges"><span class="block-badge badge-consideration">×1</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active input area -->
+        <div class="block-input-wrap" id="block-input-wrap">
+          <div class="block-handle" style="opacity:0.1">⠿</div>
+          <div class="block-input-inner">
+            <div class="block-input" id="block-input" contenteditable="true"
+                 data-placeholder="Type what they said…" role="textbox"
+                 aria-multiline="true" aria-label="Session notes input"></div>
+            <div class="block-input-hint" id="block-input-hint">↵ to log</div>
+          </div>
+        </div>
+
+        <!-- Toggle for pasted content — hidden by default -->
+        <div class="block-toggle-row" id="block-toggle-row" style="display:none">
+          <span class="block-toggle-label">process with LLM</span>
+          <label class="block-toggle-switch">
+            <input type="checkbox" id="llm-toggle" checked>
+            <span class="block-toggle-knob"></span>
+          </label>
+        </div>
 
       </div>
 
-      <div class="chat-suggestions" id="chat-suggestions">
-        <button class="chat-suggestion" data-text="Has WhatsApp, checks regularly">Has WhatsApp</button>
-        <button class="chat-suggestion" data-text="Prefers Spanish">Spanish</button>
-        <button class="chat-suggestion" data-text="Worried about eviction timeline">Eviction urgency</button>
+      <div class="tab-footer" style="display:flex;justify-content:space-between;padding:9px 16px">
+        <span style="font-size:10px;color:var(--color-text-tertiary);font-style:italic" id="notes-footer-hint">tap highlight to explore</span>
+        <span style="font-size:10px;color:var(--color-text-info);cursor:pointer" id="review-btn">Review with client ↗</span>
       </div>
-
-      <div class="chat-composer">
-        <input type="text" class="chat-composer__input" id="chat-input"
-               placeholder="Type what they said…" autocomplete="off" />
-        <button class="chat-composer__send" id="chat-send-btn" aria-label="Send">→</button>
-      </div>
-
-      <div class="tab-footer">No names or status stored · session builds barrier profile only</div>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite">Added to log</div>
@@ -521,26 +617,45 @@
           <textarea class="panel-textarea" placeholder="Which org? What did she say exactly?" rows="3"></textarea>
         </div>
 
-        <!-- API-GENERATED PANEL (populated by JS) -->
+        <!-- UNIFIED BLOCK PANEL — used for all block taps -->
         <div class="panel-section" id="panel-api-generated">
-          <div class="panel-box panel-box--gray" id="api-panel-note">
-            <div class="panel-box__label">Context note</div>
-            <p class="panel-box__text" id="api-panel-note-text"></p>
+
+          <!-- Row 1: What's saved -->
+          <div>
+            <div class="panel-box__label" style="font-size:10px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:6px">What's saved</div>
+            <p style="font-size:13px;line-height:1.5;color:var(--color-text-primary)" id="api-panel-saved"></p>
           </div>
+
+          <!-- Row 2: What's still needed -->
+          <div>
+            <div class="panel-box__label" style="font-size:10px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:6px">What's still needed</div>
+            <p style="font-size:12px;line-height:1.5;color:var(--color-text-warning)" id="api-panel-needed"></p>
+          </div>
+
+          <!-- Row 3: Suggested question -->
           <div class="panel-box panel-box--warning" id="api-panel-question">
-            <div class="panel-box__label">Clarifying question</div>
+            <div class="panel-box__label">Suggested question</div>
             <p class="panel-box__text" id="api-panel-question-text"></p>
           </div>
+
+          <!-- Row 4: Transparency script — only shown if data fear -->
           <div class="panel-box panel-box--success" id="api-panel-script" style="display:none">
             <div class="panel-box__label">Transparency script — say out loud</div>
             <p class="panel-box__text" id="api-panel-script-text"></p>
           </div>
+
+          <!-- Row 5: Eligibility note — only shown for need -->
           <div class="panel-box panel-box--success" id="api-panel-eligibility" style="display:none">
             <div class="panel-box__label">Eligibility — say out loud</div>
             <p class="panel-box__text" id="api-panel-eligibility-text"></p>
           </div>
+
+          <!-- Note textarea -->
           <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-          <div class="source-line">Generated by Gemini · grounded in CMS 2022, NILC, Morey 2012</div>
+
+          <!-- Source citation -->
+          <div class="source-line" id="api-panel-source"></div>
+
         </div>
 
       </div>
@@ -692,10 +807,63 @@ need subtypes: rent/housing · food/supplies · cash assistance · legal aid · 
 household subtypes: citizen children · mixed-status family · single adult · family with children · language preference — dot: household
 consideration: anything qualitative that does not fit above — dot: consideration`;
 
+    /* ── LOADING TEXT ───────────────────────────────────────────── */
+    function getLoadingText(input) {
+      var lower = input.toLowerCase();
+
+      if (lower.match(/scared|fear|afraid|trust|\bice\b|dhs|share|report|deport|detention|arrest|raid|agent|officer|government|authorities|found out|find out|turn her in|turn him in/))
+        return "Noting the safety concern…";
+
+      if (lower.match(/\brent\b|housing|eviction|landlord|apartment|lease|kicked out|nowhere to go|sleeping|shelter|stay|roof|home|\bhouse\b|displaced|moved out|forced out/))
+        return "Logging the housing need…";
+
+      if (lower.match(/food|\beat\b|hungry|pantry|supplies|groceries|meals|starving|children eating|kids eating|nothing to eat|running out/))
+        return "Noting the food situation…";
+
+      if (lower.match(/legal|lawyer|court|attorney|immigration|visa|status|papers|asylum|case|court hearing|immigration hearing|order|removal|detained|detention|represented|deportation order/))
+        return "Adding this to the legal picture…";
+
+      if (lower.match(/health|doctor|hospital|sick|clinic|medical|medicine|prescription|injury|pregnant|prenatal|mental health|therapy|counseling|treatment|emergency room|urgent care/))
+        return "Noting the health situation…";
+
+      if (lower.match(/schedule|night|day|time|hours|morning|evening|daytime|appointment|available|weekday|weekend|shift|work hours|can't come in|during the day|after work/))
+        return "Jotting down the timing…";
+
+      if (lower.match(/cost|money|pay|afford|insurance|fee|bill|expensive|\bbroke\b|no money|cash|funds|income|lost income|lost job|laid off|fired|no work|not working|unemployed|paycheck|wages/))
+        return "Noting the financial barrier…";
+
+      if (lower.match(/kids|children|born|citizen|family|daughter|\bson\b|baby|infant|pregnant|minors|school|childcare|daycare|custody|separated from|kids here|children here/))
+        return "Adding household context…";
+
+      if (lower.match(/spanish|language|dialect|creole|bengali|mixtec|mandarin|cantonese|hindi|portuguese|french|arabic|doesn't speak|no english|limited english|translator|interpreter/))
+        return "Noting the language need…";
+
+      if (lower.match(/transport|\bbus\b|\btrain\b|subway|\bcar\b|ride|far|distance|can't get there|no way to get|getting there|location|too far/))
+        return "Logging the transport barrier…";
+
+      if (lower.match(/document|papers|\bid\b|passport|license|proof|card|social security|birth certificate|no papers|no id|undocumented|no documents/))
+        return "Noting the document situation…";
+
+      if (lower.match(/storm|flood|fire|hurricane|disaster|earthquake|emergency|crisis|lost everything|destroyed|damage|\bpower\b|water|heat|cold/))
+        return "Noting the emergency context…";
+
+      if (lower.match(/nervous|worried|anxious|stressed|crying|upset|overwhelmed|not sure|confused|don't know|hesitant|reluctant|not comfortable/))
+        return "Keeping note of that…";
+
+      if (lower.match(/alone|by herself|by himself|no one|no family|no support|isolated|no network|no community/))
+        return "Noting the support situation…";
+
+      if (lower.match(/whatsapp|phone|call|\btext\b|message|contact|reach|get in touch/))
+        return "Logging the contact preference…";
+
+      return "Jotting that down…";
+    }
+
     /* ── GEMINI CALL ────────────────────────────────────────────── */
     async function callGemini(workerInput, sessionContext) {
       const prompt = `Session so far: ${sessionContext}\n\nWorker input: "${workerInput}"`;
       try {
+        await new Promise(function(r) { setTimeout(r, 5000); });
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
           {
@@ -837,6 +1005,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
       if (hasLanguage)              score += 10;
       if (hasHousehold)             score += 10;
       if (hasTransparencyAddressed) score += 5;
+      score += Math.min(itemsAddedCount * 3, 12);
       currentConfidence = Math.min(97, score);
 
       document.getElementById('confidence-fill').style.width = currentConfidence + '%';
@@ -873,6 +1042,54 @@ consideration: anything qualitative that does not fit above — dot: considerati
       'citizen-children': { badgeClass: 'panel-header__badge--household',     badgeText: 'household · citizen children',  confirmText: 'Confirm',              sourceBelow: '' },
       'consideration':    { badgeClass: 'panel-header__badge--consideration', badgeText: 'consideration',                 confirmText: 'Add to log',           sourceBelow: '' },
       'api-generated':    { badgeClass: 'panel-header__badge--consideration', badgeText: 'logged',                        confirmText: 'Confirm + add to log', sourceBelow: 'Generated by Gemini · CMS 2022, NILC, Morey 2012' }
+    };
+
+    var BLOCK_PANEL_DATA = {
+      'data-fear': {
+        category: 'barrier',
+        subtype: 'data fear',
+        panel_note: 'Data fear is the most common barrier in this network. Lead with the transparency script before naming any resource.',
+        clarifying_question: 'Has someone you know had a bad experience sharing information with an organization?',
+        transparency_script: 'What you tell me stays here. We don\'t record your name or immigration status. We don\'t share anything with DHS or ICE. We only track what type of help people need — never who they are.',
+        eligibility_note: null,
+        source: 'Based on CMS 2022 · 805 UndocuFund model'
+      },
+      'scheduling': {
+        category: 'barrier',
+        subtype: 'scheduling',
+        panel_note: 'Resources matched to evening hours. Confirm specific availability before referring.',
+        clarifying_question: 'Is there a specific evening or weekend time that works better?',
+        transparency_script: null,
+        eligibility_note: null,
+        source: 'Curated network · verified today'
+      },
+      'rent': {
+        category: 'need',
+        subtype: 'rent/housing',
+        panel_note: 'Emergency rent assistance through mutual aid does not require documentation.',
+        clarifying_question: 'Has your landlord given you any written notice, or is it just verbal so far?',
+        transparency_script: null,
+        eligibility_note: 'Emergency rent assistance through local mutual aid does not require immigration documentation. You qualify based on demonstrated need.',
+        source: 'Based on NILC · verified Apr 2025 · Morey 2012'
+      },
+      'citizen-children': {
+        category: 'household',
+        subtype: 'citizen children',
+        panel_note: 'Citizen children open FEMA pathway and Medicaid eligibility that wouldn\'t otherwise apply.',
+        clarifying_question: 'Do the kids have their birth certificates or social security cards accessible?',
+        transparency_script: null,
+        eligibility_note: null,
+        source: 'Based on Morey 2012 · NILC · MOIA 2024'
+      },
+      'consideration': {
+        category: 'consideration',
+        subtype: 'consideration',
+        panel_note: 'Qualitative observation — lead with transparency script before naming any org.',
+        clarifying_question: 'Which organization was mentioned? Did she say anything specific about why?',
+        transparency_script: null,
+        eligibility_note: null,
+        source: 'Qualitative observation — not matched to a source'
+      }
     };
 
     function openPanel(itemEl) {
@@ -975,40 +1192,6 @@ consideration: anything qualitative that does not fit above — dot: considerati
       localStorage.setItem('steadymode_session', JSON.stringify(data));
     }
 
-    /* ── LOCALSTORAGE: RESTORE ONE CHAT TURN ────────────────────── */
-    // Rebuilds a single logged item in the chat thread from a saved loggedItems entry.
-    // Called only during loadSession — does NOT push to loggedItems or trigger saveSession.
-    function restoreChatTurn(item) {
-      var thread = document.getElementById('chat-thread');
-      var prompt = thread.querySelector('.chat-prompt');
-
-      var msg = document.createElement('div');
-      msg.className = 'chat-msg';
-      // Use the stored API-derived label rather than verbatim person input (not saved)
-      msg.textContent = item.label || item.category;
-      msg.dataset.dynamic = 'true';
-
-      var card = document.createElement('button');
-      card.className = 'chat-card';
-      card.dataset.panel = item.panel;
-      card.dataset.dynamic = 'true';
-      card.innerHTML =
-        '<span class="log-dot log-dot--' + item.dot + '"></span>' +
-        '<span class="chat-card__category"></span>' +
-        '<span class="chat-card__confirm">logged</span>' +
-        '<span class="chat-card__arrow">›</span>';
-      card.querySelector('.chat-card__category').textContent = item.category;
-      card.addEventListener('click', function() { openPanel(this); });
-
-      if (prompt) {
-        thread.insertBefore(msg, prompt);
-        thread.insertBefore(card, prompt);
-      } else {
-        thread.appendChild(msg);
-        thread.appendChild(card);
-      }
-    }
-
     /* ── LOCALSTORAGE: LOAD SESSION ─────────────────────────────── */
     function loadSession() {
       // Read the single session key; return immediately if nothing was previously saved
@@ -1062,79 +1245,21 @@ consideration: anything qualitative that does not fit above — dot: considerati
         if (ta) ta.value = data.workerNotes;
       }
 
-      // Re-render each saved logged item in the chat thread;
-      // the five hardcoded items are already present in the HTML — only new ones are stored
+      // Re-render each saved logged item in the notes thread;
+      // the five hardcoded blocks are already present in the HTML — only new ones are stored
       if (Array.isArray(data.loggedItems) && data.loggedItems.length > 0) {
-        data.loggedItems.forEach(function(item) { restoreChatTurn(item); });
+        data.loggedItems.forEach(function(item) { appendBlock(item.label || item.category, item.dot || 'consideration', '', null); });
         // Replace empty array with the restored list so future saves include all items
         loggedItems = data.loggedItems;
       }
-    }
-
-    /* ── ADD CHAT TURN ──────────────────────────────────────────── */
-    function addChatTurn(text, dot, category, panel, apiResult) {
-      var thread = document.getElementById('chat-thread');
-      var prompt = thread.querySelector('.chat-prompt');
-
-      var msg = document.createElement('div');
-      msg.className = 'chat-msg';
-      msg.textContent = text;
-      msg.dataset.dynamic = 'true';  // marks element as runtime-added so Discard can remove it
-
-      var card = document.createElement('button');
-      card.className = 'chat-card';
-      card.dataset.panel = panel;
-      card.dataset.dynamic = 'true'; // marks element as runtime-added so Discard can remove it
-
-      if (apiResult) {
-        card.dataset.apiResult = JSON.stringify(apiResult);
-      }
-
-      card.innerHTML =
-        '<span class="log-dot log-dot--' + dot + '"></span>' +
-        '<span class="chat-card__category"></span>' +
-        '<span class="chat-card__confirm">logged</span>' +
-        '<span class="chat-card__arrow">›</span>';
-      card.querySelector('.chat-card__category').textContent = category;
-
-      card.addEventListener('click', function() {
-        if (this.dataset.apiResult) {
-          openApiPanel(JSON.parse(this.dataset.apiResult), this);
-        } else {
-          openPanel(this);
-        }
-      });
-
-      if (prompt) {
-        thread.insertBefore(msg, prompt);
-        thread.insertBefore(card, prompt);
-      } else {
-        thread.appendChild(msg);
-        thread.appendChild(card);
-      }
-
-      thread.scrollTop = thread.scrollHeight;
-      // Record only the derived label, dot, category, and panel — never verbatim person text
-      loggedItems.push({
-        label:    apiResult ? (apiResult.label || category) : category,
-        dot:      dot,
-        category: category,
-        panel:    panel
-      });
-      incrementProfile(apiResult || null);
     }
 
     /* ── OPEN API-GENERATED PANEL ───────────────────────────────── */
     function openApiPanel(result, cardEl) {
       var meta = PANEL_META['api-generated'];
 
-      var titleText = '';
-      var prev = cardEl.previousElementSibling;
-      if (prev && prev.classList.contains('chat-msg')) {
-        titleText = prev.textContent;
-      } else {
-        titleText = result.label || 'Logged item';
-      }
+      var textEl = cardEl.querySelector ? cardEl.querySelector('.block-text') : null;
+      var titleText = textEl ? textEl.textContent.trim() : (result.label || 'Logged item');
       document.getElementById('panel-title').textContent = titleText;
 
       var badgeClassMap = { barrier: 'panel-header__badge--barrier', need: 'panel-header__badge--need', household: 'panel-header__badge--household', consideration: 'panel-header__badge--consideration' };
@@ -1172,103 +1297,87 @@ consideration: anything qualitative that does not fit above — dot: considerati
       src.textContent = meta.sourceBelow;
       src.style.display = meta.sourceBelow ? 'block' : 'none';
 
+      var sourceMap = {
+        barrier:       'Based on CMS 2022 · 805 UndocuFund model · if unusual confirm before referring',
+        need:          'Based on NILC · verified Apr 2025 · if situation is unusual confirm before referring',
+        household:     'Based on Morey 2012 · NILC · MOIA 2024',
+        consideration: 'Qualitative observation — not matched to a source'
+      };
+      var sourceEl = document.getElementById('api-panel-source');
+      if (sourceEl) sourceEl.textContent = sourceMap[result.category] || sourceMap.consideration;
+
       document.getElementById('side-panel').classList.add('open');
       document.getElementById('panel-overlay').classList.add('visible');
     }
 
-    /* ── HANDLE SEND (async, calls Gemini) ─────────────────────── */
-    async function handleSend() {
-      var input  = document.getElementById('chat-input');
-      var sendBtn = document.getElementById('chat-send-btn');
-      var text   = input.value.trim();
-      if (!text) return;
+    /* ── UNIFIED BLOCK PANEL ────────────────────────────────────── */
+    function openBlockPanel(data, block) {
+      var badgeClassMap = {
+        barrier:       'panel-header__badge--barrier',
+        need:          'panel-header__badge--need',
+        household:     'panel-header__badge--household',
+        consideration: 'panel-header__badge--consideration'
+      };
 
-      input.disabled   = true;
-      sendBtn.disabled = true;
+      // Title from block text
+      var textEl = block.querySelector('.block-text');
+      var title = textEl ? textEl.textContent.trim() : (data.saved || 'Logged item');
+      document.getElementById('panel-title').textContent = title;
 
-      var thread = document.getElementById('chat-thread');
-      var prompt = thread.querySelector('.chat-prompt');
+      // Badge
+      var badge = document.getElementById('panel-badge');
+      badge.className = 'panel-header__badge ' + (badgeClassMap[data.category] || 'panel-header__badge--consideration');
+      badge.textContent = data.category + (data.subtype ? ' · ' + data.subtype : '');
 
-      var msg = document.createElement('div');
-      msg.className = 'chat-msg';
-      msg.textContent = text;
-      if (prompt) { thread.insertBefore(msg, prompt); } else { thread.appendChild(msg); }
+      // Hide all sections, show unified panel
+      document.querySelectorAll('.panel-section').forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById('panel-api-generated').classList.add('active');
 
-      var analyzing = document.createElement('div');
-      analyzing.className = 'chat-analyzing';
-      analyzing.textContent = 'Analyzing…';
-      if (prompt) { thread.insertBefore(analyzing, prompt); } else { thread.appendChild(analyzing); }
-      thread.scrollTop = thread.scrollHeight;
+      // Populate fields
+      var savedEl = document.getElementById('api-panel-saved');
+      if (savedEl) savedEl.textContent = data.saved || '';
 
-      var result = await callGemini(text, sessionContext);
-      analyzing.remove();
+      var neededEl = document.getElementById('api-panel-needed');
+      if (neededEl) neededEl.textContent = data.needed || '';
 
-      if (result) {
-        sessionContext += ', ' + (result.subtype || result.category);
-        var dot      = result.dot || 'consideration';
-        var category = result.category + (result.subtype ? ' · ' + result.subtype : '');
-        var panel    = 'api-generated';
-        addChatTurn(text, dot, category, panel, result);
-        var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
-        if (chatPrompt) chatPrompt.textContent = result.ambiguous
-          ? result.clarifying_question
-          : 'What else did you hear? Tap a suggestion or type what they said.';
-      } else {
-        var cat = categorize(text);
-        addChatTurn(text, cat.dot, cat.category, cat.panel, null);
-        var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
-        if (chatPrompt) chatPrompt.textContent = 'What else did you hear? Tap a suggestion or type what they said.';
+      var qEl = document.getElementById('api-panel-question-text');
+      if (qEl) qEl.textContent = data.clarifying_question || '';
+
+      var scriptBox = document.getElementById('api-panel-script');
+      var scriptText = document.getElementById('api-panel-script-text');
+      if (scriptBox && scriptText) {
+        if (data.transparency_script) {
+          scriptText.textContent = data.transparency_script;
+          scriptBox.style.display = 'block';
+        } else {
+          scriptBox.style.display = 'none';
+        }
       }
 
-      input.value      = '';
-      input.disabled   = false;
-      sendBtn.disabled = false;
-      input.focus();
-    }
-
-    document.getElementById('chat-send-btn').addEventListener('click', handleSend);
-    document.getElementById('chat-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleSend();
-    });
-
-    /* ── SUGGESTION CHIPS (also call Gemini) ───────────────────── */
-    document.querySelectorAll('.chat-suggestion').forEach(function(chip) {
-      chip.addEventListener('click', async function() {
-        var text = chip.dataset.text;
-        var thread = document.getElementById('chat-thread');
-        var prompt = thread.querySelector('.chat-prompt');
-
-        var msg = document.createElement('div');
-        msg.className = 'chat-msg';
-        msg.textContent = text;
-        if (prompt) { thread.insertBefore(msg, prompt); } else { thread.appendChild(msg); }
-
-        var analyzing = document.createElement('div');
-        analyzing.className = 'chat-analyzing';
-        analyzing.textContent = 'Analyzing…';
-        if (prompt) { thread.insertBefore(analyzing, prompt); } else { thread.appendChild(analyzing); }
-        thread.scrollTop = thread.scrollHeight;
-
-        var result = await callGemini(text, sessionContext);
-        analyzing.remove();
-
-        if (result) {
-          sessionContext += ', ' + (result.subtype || result.category);
-          var dot      = result.dot || 'consideration';
-          var category = result.category + (result.subtype ? ' · ' + result.subtype : '');
-          addChatTurn(text, dot, category, 'api-generated', result);
-          var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
-          if (chatPrompt) chatPrompt.textContent = result.ambiguous
-            ? result.clarifying_question
-            : 'What else did you hear? Tap a suggestion or type what they said.';
+      var eligBox = document.getElementById('api-panel-eligibility');
+      var eligText = document.getElementById('api-panel-eligibility-text');
+      if (eligBox && eligText) {
+        if (data.eligibility_note) {
+          eligText.textContent = data.eligibility_note;
+          eligBox.style.display = 'block';
         } else {
-          var cat = categorize(text);
-          addChatTurn(text, cat.dot, cat.category, cat.panel, null);
-          var chatPrompt = document.getElementById('chat-thread').querySelector('.chat-prompt');
-          if (chatPrompt) chatPrompt.textContent = 'What else did you hear? Tap a suggestion or type what they said.';
+          eligBox.style.display = 'none';
         }
-      });
-    });
+      }
+
+      var sourceEl = document.getElementById('api-panel-source');
+      if (sourceEl) sourceEl.textContent = data.source || '';
+
+      // Reset confirm button
+      var confirmBtn = document.getElementById('panel-confirm-btn');
+      confirmBtn.textContent = 'Confirm + add to log';
+      confirmBtn.classList.remove('confirmed');
+      document.getElementById('panel-source-below').style.display = 'none';
+
+      // Open panel
+      document.getElementById('side-panel').classList.add('open');
+      document.getElementById('panel-overlay').classList.add('visible');
+    }
 
     /* ── WORKER NOTES AUTOSAVE ──────────────────────────────────── */
     // Save whenever the worker edits their local notes so changes survive a reload
@@ -1280,11 +1389,337 @@ consideration: anything qualitative that does not fit above — dot: considerati
     // Runs once at page load; reads localStorage and restores state if a session was saved
     loadSession();
 
-    /* ── SCROLL ON LOAD ─────────────────────────────────────────── */
+    /* ── NOTES DATE ─────────────────────────────────────────────── */
     (function() {
-      var thread = document.getElementById('chat-thread');
+      var d = new Date();
+      document.getElementById('notes-date').textContent =
+        'Today · ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    })();
+
+    /* ── DELEGATED BLOCK TAP HANDLER ────────────────────────────── */
+    var BLOCK_SOURCE_MAP = {
+      barrier:       'Based on CMS 2022 · 805 UndocuFund model · if unusual confirm before referring',
+      need:          'Based on NILC · verified Apr 2025 · if situation is unusual confirm before referring',
+      household:     'Based on Morey 2012 · NILC · MOIA 2024',
+      consideration: 'Qualitative observation — not matched to a source'
+    };
+
+    document.getElementById('notes-thread').addEventListener('click', function(e) {
+      var block = e.target.closest('.note-block');
+      if (!block) return;
+
+      var panelId = block.dataset.panel;
+      var data;
+
+      if (panelId === 'api-generated' && block.dataset.apiResult) {
+        try {
+          var r = JSON.parse(block.dataset.apiResult);
+          data = {
+            category:            r.category,
+            subtype:             r.subtype,
+            panel_note:          r.panel_note || '',
+            clarifying_question: r.clarifying_question || '',
+            transparency_script: r.transparency_script || null,
+            eligibility_note:    r.eligibility_note || null,
+            source: BLOCK_SOURCE_MAP[r.category] || BLOCK_SOURCE_MAP.consideration
+          };
+        } catch(err) {
+          data = BLOCK_PANEL_DATA['consideration'];
+        }
+      } else {
+        data = BLOCK_PANEL_DATA[panelId] || BLOCK_PANEL_DATA['consideration'];
+      }
+
+      openBlockPanel(data, block);
+    });
+
+    /* ── ENTER TO LOG ───────────────────────────────────────────── */
+    var isPasted = false;
+
+    document.getElementById('block-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var text = this.innerText.replace(/\n+$/, '').trim();
+        if (!text) return;
+        var useLLM = !isPasted || document.getElementById('llm-toggle').checked;
+        this.innerText = '';
+        document.getElementById('block-toggle-row').style.display = 'none';
+        document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
+        isPasted = false;
+        processBlock(text, useLLM);
+      }
+    });
+
+    /* ── PASTE DETECTION ─────────────────────────────────────────── */
+    document.getElementById('block-input').addEventListener('paste', function() {
+      isPasted = true;
+      setTimeout(function() {
+        document.getElementById('block-toggle-row').style.display = 'flex';
+        document.getElementById('llm-toggle').checked = false;
+        document.getElementById('notes-footer-hint').textContent = 'pasted content — toggle to process';
+      }, 50);
+    });
+
+    /* ── PROCESS BLOCK ───────────────────────────────────────────── */
+    async function processBlock(text, useLLM) {
+      var thread = document.getElementById('notes-thread');
+
+      if (!useLLM) {
+        appendBlock(text, 'consideration', 'consideration', null);
+        return;
+      }
+
+      // Create processing block
+      var procBlock = document.createElement('div');
+      procBlock.className = 'note-block';
+      procBlock.innerHTML =
+        '<div class="block-handle">⠿</div>' +
+        '<div class="block-content">' +
+          '<div class="block-text" style="opacity:0.45">' + escapeHtml(text) + '</div>' +
+          '<div class="block-processing-status" id="proc-status">' +
+            '<div class="block-spinner"></div>' +
+            '<span id="proc-status-text">' + getLoadingText(text) + '</span>' +
+          '</div>' +
+        '</div>';
+
+      var inputWrap = document.getElementById('block-input-wrap');
+      thread.insertBefore(procBlock, inputWrap);
+      thread.scrollTop = thread.scrollHeight;
+      document.getElementById('notes-footer-hint').textContent = 'processing…';
+
+      // Long latency fallback
+      var latencyTimer = setTimeout(function() {
+        var st = document.getElementById('proc-status-text');
+        if (st) st.textContent = 'still reading…';
+      }, 5000);
+
+      var result = await callGemini(text, sessionContext);
+      clearTimeout(latencyTimer);
+      procBlock.remove();
+
+      if (result) {
+        sessionContext += ', ' + (result.subtype || result.category);
+        appendBlock(text, result.category, result.subtype, result);
+      } else {
+        var cat = categorize(text);
+        appendBlock(text, cat.dot === 'barrier' ? 'barrier' : cat.dot === 'need' ? 'need' : cat.dot === 'household' ? 'household' : 'consideration', '', null);
+      }
+
+      document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
+    }
+
+    /* ── APPEND PROCESSED BLOCK ─────────────────────────────────── */
+    function appendBlock(text, category, subtype, apiResult) {
+      var thread = document.getElementById('notes-thread');
+      var inputWrap = document.getElementById('block-input-wrap');
+
+      var block = document.createElement('div');
+      block.className = 'note-block';
+      block.dataset.category = category;
+      block.dataset.subtype = subtype || '';
+      block.dataset.panel = apiResult ? 'api-generated' : 'consideration';
+      if (apiResult) block.dataset.apiResult = JSON.stringify(apiResult);
+
+      var highlightedText = buildHighlightedText(text, category, subtype, apiResult);
+      var badgeClass = 'badge-' + (category || 'consideration');
+
+      block.innerHTML =
+        '<div class="block-handle">⠿</div>' +
+        '<div class="block-content">' +
+          '<div class="block-row">' +
+            '<div class="block-text">' + highlightedText + '</div>' +
+            '<div class="block-badges"><span class="block-badge ' + badgeClass + '">×1</span></div>' +
+          '</div>' +
+        '</div>';
+
+      block.onclick = (function(result) {
+        return function() {
+          if (result) {
+            openBlockPanel({
+              category:            result.category,
+              subtype:             result.subtype,
+              panel_note:          result.panel_note || '',
+              clarifying_question: result.clarifying_question || '',
+              transparency_script: result.transparency_script || null,
+              eligibility_note:    result.eligibility_note || null,
+              source: BLOCK_SOURCE_MAP[result.category] || BLOCK_SOURCE_MAP.consideration
+            }, this);
+          } else {
+            openBlockPanel(BLOCK_PANEL_DATA['consideration'], this);
+          }
+        };
+      })(apiResult);
+
+      thread.insertBefore(block, inputWrap);
+
+      requestAnimationFrame(function() {
+        block.classList.add('flashing');
+        setTimeout(function() { block.classList.remove('flashing'); }, 400);
+      });
+
+      showBanner(category, subtype);
+
+      loggedItems.push({ label: text.slice(0, 60), dot: category, category: category + (subtype ? ' · ' + subtype : ''), panel: block.dataset.panel });
+
+      incrementProfile(apiResult);
+
+      addDragListeners(block);
+
+      thread.scrollTop = thread.scrollHeight;
+    }
+
+    /* ── BUILD HIGHLIGHTED TEXT ─────────────────────────────────── */
+    function buildHighlightedText(text, category, subtype, apiResult) {
+      var phClass = 'block-ph ph-' + (category || 'consideration');
+      var escaped = escapeHtml(text);
+
+      // Try to match apiResult.label first
+      if (apiResult && apiResult.label) {
+        var label = apiResult.label;
+        var escapedLabel = escapeHtml(label);
+        var idx = escaped.toLowerCase().indexOf(escapedLabel.toLowerCase());
+        if (idx !== -1) {
+          return escaped.slice(0, idx) +
+            '<span class="' + phClass + '">' +
+            escaped.slice(idx, idx + escapedLabel.length) +
+            '</span>' +
+            escaped.slice(idx + escapedLabel.length);
+        }
+      }
+
+      // Try to match subtype keywords in the text
+      var keywordMap = {
+        'data fear':    ['scared','fear','share','trust','ice','dhs','report','deport'],
+        'scheduling':   ['night','day','daytime','morning','evening','time','hours','schedule','appointment'],
+        'cost':         ['money','cost','pay','afford','insurance','fee','broke'],
+        'rent/housing': ['rent','housing','eviction','landlord','apartment','home'],
+        'food/supplies':['food','eat','hungry','pantry','groceries'],
+        'legal aid':    ['legal','lawyer','court','attorney','immigration'],
+        'healthcare':   ['health','doctor','hospital','sick','clinic','medical'],
+        'citizen children':['kids','children','born','citizen','family','daughter','son'],
+        'language preference':['spanish','language','dialect','mixtec','creole']
+      };
+
+      var keywords = keywordMap[subtype] || keywordMap[category] || [];
+      var lowerText = text.toLowerCase();
+
+      for (var i = 0; i < keywords.length; i++) {
+        var kw = keywords[i];
+        var ki = lowerText.indexOf(kw);
+        if (ki !== -1) {
+          var start = ki;
+          var end = ki + kw.length;
+          while (start > 0 && /\w/.test(text[start - 1])) start--;
+          while (end < text.length && /\w/.test(text[end])) end++;
+          var escapedFull = escapeHtml(text);
+          return escapedFull.slice(0, start) +
+            '<span class="' + phClass + '">' +
+            escapedFull.slice(start, end) +
+            '</span>' +
+            escapedFull.slice(end);
+        }
+      }
+
+      // Fallback — highlight first meaningful chunk (skip short words)
+      var words = text.split(' ');
+      var chunk = [];
+      for (var w = 0; w < words.length && chunk.length < 3; w++) {
+        if (words[w].length > 3) chunk.push(words[w]);
+      }
+      if (chunk.length > 0) {
+        var chunkStr = chunk.join(' ');
+        var chunkIdx = text.indexOf(chunkStr);
+        if (chunkIdx !== -1) {
+          var e = escapeHtml(text);
+          return e.slice(0, chunkIdx) +
+            '<span class="' + phClass + '">' +
+            e.slice(chunkIdx, chunkIdx + chunkStr.length) +
+            '</span>' +
+            e.slice(chunkIdx + chunkStr.length);
+        }
+      }
+
+      // Last resort — wrap everything
+      return '<span class="' + phClass + '">' + escaped + '</span>';
+    }
+
+    /* ── SHOW BANNER ─────────────────────────────────────────────── */
+    function showBanner(category, subtype) {
+      var banner = document.getElementById('note-banner');
+      var label = subtype || category;
+      var segClass = 'banner-' + (category || 'consideration');
+      banner.innerHTML =
+        '<div class="banner-seg ' + segClass + '">' +
+          '<div class="banner-dot"></div>' +
+          '<span class="banner-label">' + escapeHtml(label) + ' added</span>' +
+        '</div>';
+      banner.classList.add('visible');
+      setTimeout(function() { banner.classList.remove('visible'); }, 2000);
+    }
+
+    /* ── ESCAPE HTML HELPER ──────────────────────────────────────── */
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* ── DRAG TO REORDER ─────────────────────────────────────────── */
+    var dragSrc = null;
+
+    function addDragListeners(block) {
+      var handle = block.querySelector('.block-handle');
+      var longPressTimer;
+
+      handle.addEventListener('pointerdown', function(e) {
+        longPressTimer = setTimeout(function() {
+          dragSrc = block;
+          block.classList.add('block-dragging');
+          block.setAttribute('draggable', 'true');
+          block.dispatchEvent(new DragEvent('dragstart', { bubbles: true }));
+        }, 300);
+      });
+
+      handle.addEventListener('pointerup', function() { clearTimeout(longPressTimer); });
+      handle.addEventListener('pointercancel', function() { clearTimeout(longPressTimer); });
+
+      block.addEventListener('dragstart', function(e) { e.dataTransfer.effectAllowed = 'move'; });
+      block.addEventListener('dragend', function() {
+        block.classList.remove('block-dragging');
+        block.removeAttribute('draggable');
+        document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
+        dragSrc = null;
+      });
+      block.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        if (!dragSrc || dragSrc === block) return;
+        document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
+        var indicator = document.createElement('div');
+        indicator.className = 'drop-indicator';
+        block.parentNode.insertBefore(indicator, block);
+      });
+      block.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (!dragSrc || dragSrc === block) return;
+        document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
+        block.parentNode.insertBefore(dragSrc, block);
+      });
+    }
+
+    document.querySelectorAll('#notes-thread .note-block').forEach(addDragListeners);
+
+    /* ── SCROLL ON LOAD ──────────────────────────────────────────── */
+    (function() {
+      var thread = document.getElementById('notes-thread');
       if (thread) thread.scrollTop = thread.scrollHeight;
     })();
+
+    /* ── REVIEW WITH CLIENT ─────────────────────────────────────── */
+    document.getElementById('review-btn').addEventListener('click', function() {
+      showToast('Review mode — coming soon');
+    });
 
     /* ── WHATSAPP / PRINT / LOG ─────────────────────────────────── */
     document.getElementById('btn-whatsapp').addEventListener('click', function() {
