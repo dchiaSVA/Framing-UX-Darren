@@ -1637,8 +1637,11 @@ consideration: anything qualitative that does not fit above — dot: considerati
   }
 
   /* ── LOCALSTORAGE: SAVE / LOAD ──────────────────────────────── */
+  var SESSION_VERSION = 3; // bump when state shape changes — discards stale saves
+
   function saveSession() {
     var data = {
+      v:               SESSION_VERSION,
       confidence:      currentConfidence,
       itemsAddedCount: itemsAddedCount,
       barrierCount:    barrierCount,
@@ -1667,7 +1670,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
     var data;
     try { data = JSON.parse(raw); } catch(e) { return; }
-    if (!data) return;
+    if (!data || data.v !== SESSION_VERSION) return;
 
     if (typeof data.confidence === 'number') currentConfidence = data.confidence;
     if (typeof data.itemsAddedCount === 'number') {
