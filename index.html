@@ -623,6 +623,35 @@
   }
   .profile-resource__status--ok   { color: var(--color-text-success); }
   .profile-resource__status--warn { color: var(--color-text-warning); }
+  .profile-resource { cursor: pointer; }
+  .profile-resource:active { background: var(--color-border-page); }
+  .profile-resource__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .resource-copy-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-info);
+    background: var(--color-bg-info);
+    border-radius: 4px;
+    padding: 4px 6px;
+    line-height: 1;
+  }
+  .resource-copy-chip svg { display: block; }
+  .banner-next { background: var(--color-bg-info); }
+  .banner-next .banner-dot   { background: var(--color-text-info); }
+  .banner-next .banner-label { color: var(--color-text-info); }
+  @keyframes flash-next-step {
+    0%   { background: var(--color-bg-info); }
+    40%  { background: rgba(147,197,253,0.35); }
+    100% { background: var(--color-bg-info); }
+  }
+  .next-step-card.flashing { animation: flash-next-step 0.7s ease; }
 
   .profile-dim__count {
     font-size: 10px;
@@ -941,22 +970,6 @@
     line-height: 1.5;
     color: var(--color-text-primary);
   }
-  .panel-textarea {
-    width: 100%;
-    min-height: 72px;
-    background: var(--color-bg-page);
-    border: 1px solid var(--color-border-input);
-    border-radius: 8px;
-    padding: 9px 11px;
-    font-size: 13px;
-    color: var(--color-text-primary);
-    line-height: 1.5;
-    outline: none;
-    resize: none;
-    font-family: inherit;
-  }
-  .panel-textarea::placeholder { color: var(--color-text-tertiary); }
-
   /* ── INTRO SCREEN ─────────────────────────────────────────── */
   .intro-screen {
     position: absolute;
@@ -1203,31 +1216,7 @@
         <button class="side-panel__close" id="panel-close" aria-label="Close">✕</button>
       </div>
       <div class="side-panel__body">
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div class="panel-item-header">
-            <span class="panel-item__subtype" id="panel-item-subtype"></span>
-            <span class="profile-item__depth" id="panel-item-depth"></span>
-          </div>
-          <div id="panel-needed-wrap">
-            <div class="panel-field-label">Still needed</div>
-            <p class="panel-field-text" style="color:var(--color-text-warning)" id="panel-needed"></p>
-          </div>
-          <div class="panel-box panel-box--warning" id="panel-question-wrap">
-            <div class="panel-box-label">Suggested question</div>
-            <p class="panel-box-text" id="panel-question"></p>
-          </div>
-          <div class="panel-box panel-box--success" id="panel-eligibility-wrap" style="display:none">
-            <div class="panel-box-label">Eligibility — say out loud</div>
-            <p class="panel-box-text" id="panel-eligibility"></p>
-          </div>
-          <div class="panel-box panel-box--success" id="panel-script-wrap" style="display:none">
-            <div class="panel-box-label">Transparency script — say out loud</div>
-            <p class="panel-box-text" id="panel-script"></p>
-          </div>
-          <div id="panel-resources"></div>
-          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-          <div style="font-size:11px;color:var(--color-text-tertiary)" id="panel-source"></div>
-        </div>
+        <div id="panel-body-content" style="display:flex;flex-direction:column;gap:14px"></div>
       </div>
       <div class="side-panel__footer">
         <button id="panel-confirm-btn" class="panel-confirm">Confirm + add to log</button>
@@ -1471,15 +1460,15 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
   /* ── KEYWORD MAP (fallback) ─────────────────────────────────── */
   var KEYWORD_MAP = [
-    { keywords: ['fear','scared','share','trust','ice','dhs'],              dot: 'barrier',      category: 'barrier · data fear',          panel: 'data-fear' },
-    { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'], dot: 'barrier', category: 'barrier · scheduling', panel: 'scheduling' },
-    { keywords: ['cost','money','pay','afford','insurance','fee'],           dot: 'barrier',      category: 'barrier · cost',               panel: 'consideration' },
-    { keywords: ['rent','housing','eviction','landlord','apartment'],        dot: 'need',         category: 'need · rent/housing',          panel: 'rent' },
-    { keywords: ['food','supplies','pantry','eat','hungry'],                 dot: 'need',         category: 'need · food/supplies',         panel: 'consideration' },
-    { keywords: ['legal','lawyer','court','immigration','attorney'],         dot: 'need',         category: 'need · legal aid',             panel: 'consideration' },
-    { keywords: ['health','doctor','hospital','sick','medical','clinic'],    dot: 'need',         category: 'need · healthcare',            panel: 'consideration' },
-    { keywords: ['kids','children','born','citizen','family','daughter','son'], dot: 'household', category: 'household · citizen children', panel: 'citizen-children' },
-    { keywords: ['spanish','english','language','dialect','creole','bengali'], dot: 'household',  category: 'household · language',         panel: 'consideration' }
+    { keywords: ['fear','scared','share','trust','ice','dhs'],              dot: 'barrier',   subtype: 'data fear',        category: 'barrier · data fear',          panel: 'data-fear' },
+    { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'], dot: 'barrier', subtype: 'scheduling', category: 'barrier · scheduling', panel: 'scheduling' },
+    { keywords: ['cost','money','pay','afford','insurance','fee'],           dot: 'barrier',   subtype: 'cost',             category: 'barrier · cost',               panel: 'consideration' },
+    { keywords: ['rent','housing','eviction','landlord','apartment'],        dot: 'need',      subtype: 'rent/housing',     category: 'need · rent/housing',          panel: 'rent' },
+    { keywords: ['food','supplies','pantry','eat','hungry'],                 dot: 'need',      subtype: 'food/supplies',    category: 'need · food/supplies',         panel: 'consideration' },
+    { keywords: ['legal','lawyer','court','immigration','attorney'],         dot: 'need',      subtype: 'legal aid',        category: 'need · legal aid',             panel: 'consideration' },
+    { keywords: ['health','doctor','hospital','sick','medical','clinic'],    dot: 'need',      subtype: 'healthcare',       category: 'need · healthcare',            panel: 'consideration' },
+    { keywords: ['kids','children','born','citizen','family','daughter','son'], dot: 'household', subtype: 'citizen children', category: 'household · citizen children', panel: 'citizen-children' },
+    { keywords: ['spanish','english','language','dialect','creole','bengali'], dot: 'household', subtype: 'language preference', category: 'household · language',      panel: 'consideration' }
   ];
 
   function categorize(text) {
@@ -1793,14 +1782,18 @@ consideration: anything qualitative that does not fit above — dot: considerati
           if (RESOURCE_MAP[item.subtype]) {
             bodyHtml += '<div class="profile-resources">';
             RESOURCE_MAP[item.subtype].forEach(function(res) {
+              var copyVal = res.name + (res.phone ? ' · ' + res.phone : '');
               bodyHtml +=
-                '<div class="profile-resource">' +
+                '<div class="profile-resource" data-copy="' + escapeHtml(copyVal) + '">' +
                   '<div class="profile-resource__info">' +
                     '<div class="profile-resource__name">' + escapeHtml(res.name) + '</div>' +
                     '<div class="profile-resource__meta">' + escapeHtml(res.meta) + '</div>' +
                     (res.phone ? '<div class="profile-resource__phone">' + escapeHtml(res.phone) + '</div>' : '') +
                   '</div>' +
-                  '<div class="profile-resource__status profile-resource__status--' + res.status + '">' + escapeHtml(res.statusLabel) + '</div>' +
+                  '<div class="profile-resource__right">' +
+                    '<div class="profile-resource__status profile-resource__status--' + res.status + '">' + escapeHtml(res.statusLabel) + '</div>' +
+                    '<div class="resource-copy-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>' +
+                  '</div>' +
                 '</div>';
             });
             bodyHtml += '</div>';
@@ -1848,16 +1841,75 @@ consideration: anything qualitative that does not fit above — dot: considerati
     return null;
   }
 
+  /* ── COPY TO CLIPBOARD ─────────────────────────────────────── */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Copied — paste into WeChat');
+      }).catch(function() { fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); showToast('Copied — paste into WeChat'); }
+    catch(e) { showToast('Long-press to copy manually'); }
+    document.body.removeChild(ta);
+  }
+
+  // Delegate copy taps on profile tab and panel
+  document.getElementById('tab-profile').addEventListener('click', function(e) {
+    var card = e.target.closest('[data-copy]');
+    if (card) copyText(card.dataset.copy);
+  });
+  document.getElementById('side-panel').addEventListener('click', function(e) {
+    var card = e.target.closest('[data-copy]');
+    if (card) copyText(card.dataset.copy);
+  });
+
+  /* ── NEXT STEP WITH CHANGE DETECTION ────────────────────────── */
+  var prevNextStepText = null;
+
+  function showNextStepBanner() {
+    var banner = document.getElementById('note-banner');
+    if (!banner) return;
+    banner.innerHTML =
+      '<div class="banner-seg banner-next">' +
+        '<div class="banner-dot"></div>' +
+        '<span class="banner-label">Next step updated</span>' +
+      '</div>';
+    banner.classList.add('visible');
+    setTimeout(function() { banner.classList.remove('visible'); }, 2200);
+  }
+
   function updateNextStep() {
     var bar    = document.getElementById('next-step-bar');
     var textEl = document.getElementById('next-step-text');
     if (!bar || !textEl) return;
     var text = getNextStep();
     if (text) {
+      var changed = prevNextStepText !== null && text !== prevNextStepText;
       textEl.textContent = text;
       bar.style.display = '';
+      if (changed) {
+        showNextStepBanner();
+        var card = bar.querySelector('.next-step-card');
+        if (card) {
+          card.classList.remove('flashing');
+          void card.offsetWidth;
+          card.classList.add('flashing');
+          card.addEventListener('animationend', function() { card.classList.remove('flashing'); }, { once: true });
+        }
+      }
+      prevNextStepText = text;
     } else {
       bar.style.display = 'none';
+      prevNextStepText = null;
     }
   }
 
@@ -1896,8 +1948,22 @@ consideration: anything qualitative that does not fit above — dot: considerati
    *
    * Cap 97 — the research is clear no tool closes the gap completely
    */
-  function incrementProfile(result) {
+  function incrementProfile(result, fallbackCat, fallbackSub) {
     itemsAddedCount++;
+
+    // For keyword-fallback blocks (result=null), synthesize a minimal result
+    // so the panel has something to show
+    if (!result && fallbackCat && fallbackCat !== 'consideration') {
+      result = {
+        category: fallbackCat,
+        subtype: fallbackSub || '',
+        label: fallbackSub || fallbackCat,
+        panel_note: null,
+        clarifying_question: null,
+        eligibility_note: null,
+        transparency_script: null
+      };
+    }
 
     if (result) {
       // Need depth + profileItems
@@ -2026,80 +2092,92 @@ consideration: anything qualitative that does not fit above — dot: considerati
   }
 
   /* ── OPEN BLOCK PANEL ───────────────────────────────────────── */
-  function openBlockPanel(data, block) {
-    var badgeMap = { barrier:'badge--barrier', need:'badge--need', household:'badge--household', consideration:'badge--consideration' };
+  function openBlockPanel(cat, sub, apiResult) {
+    var badgeMap    = { barrier:'badge--barrier', need:'badge--need', household:'badge--household', consideration:'badge--consideration' };
     var dotColorMap = { barrier:'var(--color-ph-barrier-text)', need:'var(--color-ph-need-text)', household:'var(--color-ph-household-text)', consideration:'var(--color-ph-consideration-text)' };
-    var cat = data.category || 'consideration';
-    var sub = data.subtype || '';
 
-    // Header dot + badge
+    // Header
     document.getElementById('panel-header-dot').style.background = dotColorMap[cat] || dotColorMap.consideration;
     document.getElementById('panel-header-category').textContent = cat;
     var badge = document.getElementById('panel-badge');
     badge.className = 'panel-header__pill ' + (badgeMap[cat] || 'badge--consideration');
     badge.textContent = sub || cat;
 
-    // Look up live profileItems entry for this subtype
-    var dimArr = cat === 'need' ? profileItems.need : cat === 'household' ? profileItems.household : cat === 'barrier' ? profileItems.barrier : [];
+    // Look up live profileItems entry — safety dim handled separately
+    var dimKey = (cat === 'barrier' || cat === 'need' || cat === 'household') ? cat : (cat === 'language' ? 'language' : null);
+    var dimArr = dimKey ? profileItems[dimKey] : [];
     var entry = null;
     for (var i = 0; i < dimArr.length; i++) {
       if (dimArr[i].subtype === sub) { entry = dimArr[i]; break; }
     }
-
-    var depth    = entry ? entry.depth    : (data.depth    || 0);
-    var needed   = entry ? entry.needed   : (data.needed   || '');
-    var question = entry ? entry.question : (data.clarifying_question || '');
-    var elig     = entry ? entry.eligibility        : (data.eligibility_note   || null);
-    var script   = entry ? entry.transparency_script: (data.transparency_script || null);
-    var source   = entry ? entry.source   : (data.source   || '');
-
-    // Subtype + depth pill
-    document.getElementById('panel-item-subtype').textContent = sub || cat;
-    var depthEl = document.getElementById('panel-item-depth');
-    if (depth >= 2)      { depthEl.textContent = 'Actionable'; depthEl.className = 'profile-item__depth depth--actionable'; }
-    else if (depth >= 1) { depthEl.textContent = 'Surface';    depthEl.className = 'profile-item__depth depth--surface'; }
-    else                 { depthEl.textContent = 'Unconfirmed';depthEl.className = 'profile-item__depth depth--unconfirmed'; }
-
-    // Needed
-    var nw = document.getElementById('panel-needed-wrap');
-    document.getElementById('panel-needed').textContent = needed;
-    nw.style.display = needed ? '' : 'none';
-
-    // Question
-    var qw = document.getElementById('panel-question-wrap');
-    document.getElementById('panel-question').textContent = question;
-    qw.style.display = question ? '' : 'none';
-
-    // Eligibility
-    var ew = document.getElementById('panel-eligibility-wrap');
-    document.getElementById('panel-eligibility').textContent = elig || '';
-    ew.style.display = elig ? 'block' : 'none';
-
-    // Transparency script
-    var sw = document.getElementById('panel-script-wrap');
-    document.getElementById('panel-script').textContent = script || '';
-    sw.style.display = script ? 'block' : 'none';
-
-    // Inline resources
-    var resEl = document.getElementById('panel-resources');
-    if (RESOURCE_MAP[sub]) {
-      var rHtml = '<div class="profile-resources">';
-      RESOURCE_MAP[sub].forEach(function(res) {
-        rHtml += '<div class="profile-resource">' +
-          '<div class="profile-resource__info">' +
-            '<div class="profile-resource__name">' + escapeHtml(res.name) + '</div>' +
-            '<div class="profile-resource__meta">' + escapeHtml(res.meta) + '</div>' +
-            (res.phone ? '<div class="profile-resource__phone">' + escapeHtml(res.phone) + '</div>' : '') +
-          '</div>' +
-          '<div class="profile-resource__status profile-resource__status--' + res.status + '">' + escapeHtml(res.statusLabel) + '</div>' +
-        '</div>';
-      });
-      resEl.innerHTML = rHtml + '</div>';
-    } else {
-      resEl.innerHTML = '';
+    // Also check language array
+    if (!entry && cat === 'household') {
+      for (var j = 0; j < profileItems.language.length; j++) {
+        if (profileItems.language[j].subtype === sub) { entry = profileItems.language[j]; break; }
+      }
     }
 
-    document.getElementById('panel-source').textContent = source;
+    var ar = apiResult || {};
+    var depth    = entry ? entry.depth    : 0;
+    var needed   = entry ? entry.needed   : (ar.panel_note || '');
+    var question = entry ? entry.question : (ar.clarifying_question || '');
+    var elig     = entry ? entry.eligibility         : (ar.eligibility_note    || null);
+    var script   = entry ? entry.transparency_script : (ar.transparency_script || null);
+    var source   = entry ? entry.source   : '';
+
+    // Depth
+    var depthClass, depthLabel, itemDotColor;
+    if      (depth >= 2) { depthClass = 'depth--actionable'; depthLabel = 'Actionable';  itemDotColor = 'var(--color-text-success)'; }
+    else if (depth >= 1) { depthClass = 'depth--surface';    depthLabel = 'Surface';     itemDotColor = 'var(--color-text-warning)'; }
+    else                 { depthClass = 'depth--unconfirmed'; depthLabel = 'Unconfirmed'; itemDotColor = 'var(--color-text-tertiary)'; }
+
+    // Build body HTML — mirrors renderProfile item rendering exactly
+    var html = '';
+
+    // Subtype row + depth pill
+    html += '<div class="panel-item-header">' +
+              '<span class="panel-item__subtype">' + escapeHtml(sub || cat) + '</span>' +
+              '<span class="profile-item__depth ' + depthClass + '">' + depthLabel + '</span>' +
+            '</div>';
+
+    if (needed) {
+      html += '<div class="profile-item__needed">' + escapeHtml(needed) + '</div>';
+    }
+    if (question) {
+      html += '<div class="profile-item__question">Ask: "' + escapeHtml(question) + '"</div>';
+    }
+    if (elig) {
+      html += '<div class="profile-item__eligibility">' + escapeHtml(elig) + '</div>';
+    }
+    if (script) {
+      html += '<div class="profile-item__script">Say out loud: "' + escapeHtml(script) + '"</div>';
+    }
+
+    if (RESOURCE_MAP[sub]) {
+      html += '<div class="profile-resources">';
+      RESOURCE_MAP[sub].forEach(function(res) {
+        var copyVal = res.name + (res.phone ? ' · ' + res.phone : '');
+        html +=
+          '<div class="profile-resource" data-copy="' + escapeHtml(copyVal) + '">' +
+            '<div class="profile-resource__info">' +
+              '<div class="profile-resource__name">' + escapeHtml(res.name) + '</div>' +
+              '<div class="profile-resource__meta">' + escapeHtml(res.meta) + '</div>' +
+              (res.phone ? '<div class="profile-resource__phone">' + escapeHtml(res.phone) + '</div>' : '') +
+            '</div>' +
+            '<div class="profile-resource__right">' +
+              '<div class="profile-resource__status profile-resource__status--' + res.status + '">' + escapeHtml(res.statusLabel) + '</div>' +
+              '<div class="resource-copy-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>' +
+            '</div>' +
+          '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (source) {
+      html += '<div class="profile-item__source">' + escapeHtml(source) + '</div>';
+    }
+
+    document.getElementById('panel-body-content').innerHTML = html;
 
     var btn = document.getElementById('panel-confirm-btn');
     btn.textContent = 'Confirm + add to log';
@@ -2127,24 +2205,21 @@ consideration: anything qualitative that does not fit above — dot: considerati
   document.getElementById('notes-thread').addEventListener('click', function(e) {
     var block = e.target.closest('.note-block');
     if (!block) return;
-    var data;
+
+    var cat = block.dataset.category || 'consideration';
+    var sub = block.dataset.subtype  || '';
+
+    var apiResult = null;
     if (block.dataset.apiResult) {
-      try {
-        var r = JSON.parse(block.dataset.apiResult);
-        data = {
-          category: r.category, subtype: r.subtype,
-          saved: r.panel_note || '',
-          needed: r.clarifying_question ? 'Consider asking: ' + r.clarifying_question : '',
-          clarifying_question: r.clarifying_question || '',
-          transparency_script: r.transparency_script || null,
-          eligibility_note: r.eligibility_note || null,
-          source: BLOCK_SOURCE_MAP[r.category] || BLOCK_SOURCE_MAP.consideration
-        };
-      } catch(err) { data = BLOCK_PANEL_DATA['consideration']; }
-    } else {
-      data = BLOCK_PANEL_DATA[block.dataset.panel] || BLOCK_PANEL_DATA['consideration'];
+      try { apiResult = JSON.parse(block.dataset.apiResult); } catch(err) {}
     }
-    openBlockPanel(data, block);
+    // API result may carry a more specific subtype than the dataset fallback
+    if (apiResult) {
+      cat = apiResult.category || cat;
+      sub = apiResult.subtype  || sub;
+    }
+
+    openBlockPanel(cat, sub, apiResult);
   });
 
   /* ── PROCESS BLOCK ──────────────────────────────────────────── */
@@ -2187,7 +2262,8 @@ consideration: anything qualitative that does not fit above — dot: considerati
       appendBlock(text, result.category, result.subtype, result);
     } else {
       var cat = categorize(text);
-      appendBlock(text, cat.dot === 'barrier' ? 'barrier' : cat.dot === 'need' ? 'need' : cat.dot === 'household' ? 'household' : 'consideration', '', null);
+      var fbCat = (cat.dot === 'barrier' || cat.dot === 'need' || cat.dot === 'household') ? cat.dot : 'consideration';
+      appendBlock(text, fbCat, cat.subtype || '', null);
     }
 
     document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
@@ -2241,7 +2317,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
       panel: block.dataset.panel
     });
 
-    incrementProfile(apiResult);
+    incrementProfile(apiResult, category, subtype);
     addDragListeners(block);
     saveSession();
 
