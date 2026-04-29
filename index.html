@@ -244,6 +244,115 @@
   /* ── SESSION TAB ──────────────────────────────────────────── */
   #tab-session { background: var(--color-bg-page); }
 
+  /* ── OFFLINE BAR ─────────────────────────────────────────── */
+  .offline-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    background: var(--color-bg-danger);
+    flex-shrink: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+  }
+  .offline-bar.visible {
+    max-height: 40px;
+    padding: 7px 14px;
+    border-bottom: 0.5px solid var(--color-border-card);
+  }
+  .offline-bar.syncing { background: var(--color-bg-info); }
+  .offline-bar__dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    background: var(--color-text-danger);
+  }
+  .offline-bar.syncing .offline-bar__dot { background: var(--color-text-info); }
+  .offline-bar__text {
+    font-size: 11px; font-weight: 500;
+    color: var(--color-text-danger);
+    flex: 1;
+  }
+  .offline-bar.syncing .offline-bar__text { color: var(--color-text-info); }
+  .offline-bar__count {
+    font-size: 10px;
+    color: var(--color-text-danger);
+    background: rgba(0,0,0,0.06);
+    border-radius: 10px;
+    padding: 1px 7px;
+  }
+  .offline-bar.syncing .offline-bar__count { color: var(--color-text-info); }
+
+  /* ── OFFLINE TOGGLE (in header) ─────────────────────────── */
+  .offline-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 0.5px solid var(--color-border-input);
+    border-radius: 20px;
+    padding: 3px 9px 3px 6px;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .offline-toggle:active { opacity: 0.7; }
+  .offline-toggle.is-offline {
+    background: var(--color-bg-danger);
+    border-color: var(--color-text-danger);
+    color: var(--color-text-danger);
+  }
+  .offline-toggle__dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--color-text-success);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .offline-toggle.is-offline .offline-toggle__dot { background: var(--color-text-danger); }
+
+  /* ── SKIP NOTE (unrelated input) ────────────────────────── */
+  .skip-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px 0 32px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    animation: fadein-skip 0.2s ease;
+  }
+  @keyframes fadein-skip {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .skip-note__text {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    flex: 1;
+  }
+  .skip-note__dismiss {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    background: none;
+    border: none;
+    padding: 2px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: inherit;
+    opacity: 0.6;
+  }
+  .skip-note__dismiss:active { opacity: 1; }
+
+  /* ── QUEUED BLOCK STATE ──────────────────────────────────── */
+  .note-block.queued { opacity: 0.55; }
+  .badge-queued {
+    background: var(--color-ph-consideration);
+    color: var(--color-ph-consideration-text);
+  }
+
   .note-banner {
     display: flex;
     overflow: hidden;
@@ -552,10 +661,25 @@
     text-transform: uppercase;
     padding: 2px 6px;
     border-radius: 4px;
+    flex-shrink: 0;
   }
-  .depth--surface    { background: var(--color-bg-warning); color: var(--color-text-warning); }
-  .depth--actionable { background: var(--color-bg-success); color: var(--color-text-success); }
-  .depth--unconfirmed{ background: var(--color-border-page); color: var(--color-text-tertiary); }
+  .depth--surface    { background: var(--color-border-page);  color: var(--color-text-tertiary); }
+  .depth--actionable { background: var(--color-bg-warning);   color: var(--color-text-warning); }
+  .depth--indepth    { background: var(--color-bg-success);   color: var(--color-text-success); }
+
+  /* coverage tag on note blocks */
+  .block-coverage {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .block-coverage.depth--surface    { background: var(--color-border-page);  color: var(--color-text-tertiary); }
+  .block-coverage.depth--actionable { background: var(--color-bg-warning);   color: var(--color-text-warning); }
+  .block-coverage.depth--indepth    { background: var(--color-bg-success);   color: var(--color-text-success); }
 
   .profile-item__needed {
     font-size: 12px;
@@ -1064,6 +1188,25 @@
     margin-top: -4px;
   }
   .intro-error.visible { display: block; }
+  .intro-select {
+    width: 100%;
+    background: var(--color-bg-page);
+    border: 0.5px solid var(--color-border-input);
+    border-radius: 8px;
+    padding: 11px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A7F78' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+  }
+  .intro-select:focus { border-color: var(--color-accent); }
+  .intro-select option { color: var(--color-text-primary); }
 </style>
 </head>
 <body>
@@ -1081,8 +1224,20 @@
                placeholder="AIza…" autocomplete="off" spellcheck="false" />
         <div class="intro-error" id="intro-error">Key looks too short — double-check and try again.</div>
         <div class="intro-hint">Stored on this device only · never sent anywhere except Google</div>
-        <button id="api-key-submit" class="intro-btn" disabled>Get started →</button>
       </div>
+      <div class="intro-card">
+        <div class="intro-card__label">Working Borough</div>
+        <select id="borough-select" class="intro-select">
+          <option value="">Select borough…</option>
+          <option value="bronx">The Bronx</option>
+          <option value="brooklyn">Brooklyn</option>
+          <option value="manhattan">Manhattan</option>
+          <option value="queens">Queens</option>
+          <option value="staten-island">Staten Island</option>
+        </select>
+        <div class="intro-hint">Used to surface nearby resources · stays on this device</div>
+      </div>
+      <button id="api-key-submit" class="intro-btn" disabled>Get started →</button>
       <div class="intro-footnote">
         Free key at <strong>aistudio.google.com</strong><br>
         Select <strong>Gemini 2.5 Flash</strong> or newer
@@ -1092,12 +1247,23 @@
     <!-- ── STATUS BAR ─────────────────────────────────────── -->
     <div class="status-bar">
       <span id="status-time">9:41</span>
-      <div class="status-bar__icons"><span>•••</span><span>📶</span><span>100%</span></div>
+      <div class="status-bar__icons"><span>•••</span><span id="status-wifi">📶</span><span>100%</span></div>
     </div>
 
     <!-- ── APP HEADER ─────────────────────────────────────── -->
     <div class="app-header">
       <div class="app-header__title">Steady Mode</div>
+      <button class="offline-toggle" id="offline-toggle" aria-label="Toggle offline mode">
+        <span class="offline-toggle__dot"></span>
+        <span id="offline-toggle-label">Online</span>
+      </button>
+    </div>
+
+    <!-- ── OFFLINE BAR ────────────────────────────────────── -->
+    <div class="offline-bar" id="offline-bar">
+      <span class="offline-bar__dot"></span>
+      <span class="offline-bar__text" id="offline-bar-text">No internet · notes are queued</span>
+      <span class="offline-bar__count" id="offline-bar-count" style="display:none"></span>
     </div>
 
     <!-- ── TAB NAV ────────────────────────────────────────── -->
@@ -1264,7 +1430,8 @@ CATEGORIES:
 barrier subtypes: data fear · scheduling · cost · documentation gap · transportation · language — dot: barrier
 need subtypes: rent/housing · food/supplies · cash assistance · legal aid · healthcare · childcare — dot: need
 household subtypes: citizen children · mixed-status family · single adult · family with children · language preference — dot: household
-consideration: anything qualitative that does not fit above — dot: consideration`;
+consideration: anything qualitative that does not fit above — dot: consideration
+unrelated: input is gibberish, a test, food/random objects, or has no connection to disaster relief or the person being helped — return {"category":"unrelated"} with all other fields as empty strings or null`;
 
   /* ── LOADING TEXT ───────────────────────────────────────────── */
   function getLoadingText(input) {
@@ -1756,9 +1923,9 @@ consideration: anything qualitative that does not fit above — dot: considerati
           else                       itemDotColor = 'var(--color-text-tertiary)';
 
           var depthClass, depthLabel;
-          if      (item.depth >= 2) { depthClass = 'depth--actionable'; depthLabel = 'Actionable'; }
-          else if (item.depth >= 1) { depthClass = 'depth--surface';    depthLabel = 'Surface'; }
-          else                       { depthClass = 'depth--unconfirmed'; depthLabel = 'Unconfirmed'; }
+          if      (item.depth >= 2) { depthClass = 'depth--indepth';    depthLabel = 'In-depth'; }
+          else if (item.depth >= 1) { depthClass = 'depth--actionable'; depthLabel = 'Actionable'; }
+          else                       { depthClass = 'depth--surface';    depthLabel = 'Surface'; }
 
           var bodyHtml =
             '<div class="profile-item__name">' +
@@ -1952,7 +2119,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
     itemsAddedCount++;
 
     // For keyword-fallback blocks (result=null), synthesize a minimal result
-    // so the panel has something to show
+    // so the panel has something to show; mark as fallback so depth starts at Surface
     if (!result && fallbackCat && fallbackCat !== 'consideration') {
       result = {
         category: fallbackCat,
@@ -1961,14 +2128,18 @@ consideration: anything qualitative that does not fit above — dot: considerati
         panel_note: null,
         clarifying_question: null,
         eligibility_note: null,
-        transparency_script: null
+        transparency_script: null,
+        _fallback: true
       };
     }
 
     if (result) {
+      // depth: real API result → Actionable (1), fallback → Surface (0)
+      var baseDepth = result._fallback ? 0 : 1;
+
       // Need depth + profileItems
       if (result.category === 'need') {
-        var nd = result.subtype ? 2 : 1;
+        var nd = baseDepth;
         needDepth = Math.max(needDepth, nd);
         needCount = Math.max(needCount, 1);
         if (result.subtype) {
@@ -1990,7 +2161,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
       // Barrier depth + data fear + profileItems
       if (result.category === 'barrier') {
-        var bd = result.subtype ? 2 : 1;
+        var bd = baseDepth;
         barrierDepth = Math.max(barrierDepth, bd);
         if (result.subtype === 'data fear') {
           dataFearPresent = true;
@@ -2035,7 +2206,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
             profileItems.language.push({
               subtype: result.subtype,
               label: result.label || result.subtype,
-              depth: 1,
+              depth: baseDepth,
               needed: null,
               question: result.clarifying_question || null,
               eligibility: null,
@@ -2049,7 +2220,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
             profileItems.household.push({
               subtype: result.subtype || 'household',
               label: result.label || result.subtype,
-              depth: confirmedSubtypes.indexOf(result.subtype) !== -1 ? 2 : 1,
+              depth: baseDepth,
               needed: result.panel_note || null,
               question: result.clarifying_question || null,
               eligibility: null,
@@ -2092,6 +2263,7 @@ consideration: anything qualitative that does not fit above — dot: considerati
   }
 
   /* ── OPEN BLOCK PANEL ───────────────────────────────────────── */
+  var panelOpenCat = null, panelOpenSub = null;
   function openBlockPanel(cat, sub, apiResult) {
     var badgeMap    = { barrier:'badge--barrier', need:'badge--need', household:'badge--household', consideration:'badge--consideration' };
     var dotColorMap = { barrier:'var(--color-ph-barrier-text)', need:'var(--color-ph-need-text)', household:'var(--color-ph-household-text)', consideration:'var(--color-ph-consideration-text)' };
@@ -2127,9 +2299,9 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
     // Depth
     var depthClass, depthLabel, itemDotColor;
-    if      (depth >= 2) { depthClass = 'depth--actionable'; depthLabel = 'Actionable';  itemDotColor = 'var(--color-text-success)'; }
-    else if (depth >= 1) { depthClass = 'depth--surface';    depthLabel = 'Surface';     itemDotColor = 'var(--color-text-warning)'; }
-    else                 { depthClass = 'depth--unconfirmed'; depthLabel = 'Unconfirmed'; itemDotColor = 'var(--color-text-tertiary)'; }
+    if      (depth >= 2) { depthClass = 'depth--indepth';    depthLabel = 'In-depth';   itemDotColor = 'var(--color-text-success)'; }
+    else if (depth >= 1) { depthClass = 'depth--actionable'; depthLabel = 'Actionable'; itemDotColor = 'var(--color-text-warning)'; }
+    else                 { depthClass = 'depth--surface';    depthLabel = 'Surface';    itemDotColor = 'var(--color-text-tertiary)'; }
 
     // Build body HTML — mirrors renderProfile item rendering exactly
     var html = '';
@@ -2179,6 +2351,9 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
     document.getElementById('panel-body-content').innerHTML = html;
 
+    panelOpenCat = cat;
+    panelOpenSub = sub;
+
     var btn = document.getElementById('panel-confirm-btn');
     btn.textContent = 'Confirm + add to log';
     btn.classList.remove('confirmed');
@@ -2197,7 +2372,29 @@ consideration: anything qualitative that does not fit above — dot: considerati
   document.getElementById('panel-confirm-btn').addEventListener('click', function() {
     this.textContent = 'Added ✓';
     this.classList.add('confirmed');
-    incrementProfile(null);
+
+    // Bump depth to In-depth (2) for the open profileItems entry
+    var dims = { barrier: profileItems.barrier, need: profileItems.need, household: profileItems.household, language: profileItems.language };
+    var arr = dims[panelOpenCat] || [];
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].subtype === panelOpenSub) {
+        arr[i].depth = 2;
+        break;
+      }
+    }
+
+    // Update coverage tag on matching blocks in the thread
+    var blocks = document.querySelectorAll('.note-block');
+    blocks.forEach(function(bl) {
+      if (bl.dataset.category === panelOpenCat && bl.dataset.subtype === panelOpenSub) {
+        bl.dataset.depth = 2;
+        var tag = bl.querySelector('.block-coverage');
+        if (tag) { tag.className = 'block-coverage depth--indepth'; tag.textContent = 'In-depth'; }
+      }
+    });
+
+    renderProfile();
+    saveSession();
     setTimeout(closePanel, 600);
   });
 
@@ -2222,12 +2419,213 @@ consideration: anything qualitative that does not fit above — dot: considerati
     openBlockPanel(cat, sub, apiResult);
   });
 
+  /* ── OFFLINE MODE ───────────────────────────────────────────── */
+  var isOffline = false;
+  var offlineQueue = []; // { text, blockEl } — blocks waiting to be analyzed
+
+  function setOffline(offline) {
+    isOffline = offline;
+    var bar     = document.getElementById('offline-bar');
+    var toggle  = document.getElementById('offline-toggle');
+    var label   = document.getElementById('offline-toggle-label');
+
+    var wifiEl = document.getElementById('status-wifi');
+    if (offline) {
+      bar.classList.add('visible');
+      bar.classList.remove('syncing');
+      toggle.classList.add('is-offline');
+      label.textContent = 'Offline';
+      document.getElementById('offline-bar-text').textContent = 'No internet · notes are queued';
+      document.getElementById('offline-bar-count').style.display = 'none';
+      if (wifiEl) wifiEl.textContent = '🚫';
+    } else {
+      toggle.classList.remove('is-offline');
+      label.textContent = 'Online';
+      if (wifiEl) wifiEl.textContent = '📶';
+      if (offlineQueue.length > 0) {
+        drainOfflineQueue();
+      } else {
+        bar.classList.remove('visible');
+      }
+    }
+  }
+
+  function updateOfflineCount() {
+    var countEl = document.getElementById('offline-bar-count');
+    if (offlineQueue.length > 0) {
+      countEl.textContent = offlineQueue.length + ' queued';
+      countEl.style.display = '';
+    } else {
+      countEl.style.display = 'none';
+    }
+  }
+
+  async function drainOfflineQueue() {
+    if (offlineQueue.length === 0) {
+      document.getElementById('offline-bar').classList.remove('visible');
+      return;
+    }
+    var bar = document.getElementById('offline-bar');
+    var total = offlineQueue.length;
+    bar.classList.add('syncing');
+    document.getElementById('offline-bar-text').textContent =
+      'Back online · analyzing ' + total + ' queued note' + (total > 1 ? 's' : '') + '…';
+    document.getElementById('offline-bar-count').style.display = 'none';
+
+    while (offlineQueue.length > 0) {
+      var item = offlineQueue.shift();
+      await analyzeQueuedBlock(item.text, item.blockEl);
+      // small gap between API calls so we don't hammer the endpoint
+      if (offlineQueue.length > 0) await new Promise(function(r) { setTimeout(r, 600); });
+    }
+
+    bar.classList.remove('visible', 'syncing');
+    showToast('All queued notes analyzed');
+  }
+
+  async function analyzeQueuedBlock(text, blockEl) {
+    // Show spinner inside the existing queued block
+    var contentEl = blockEl.querySelector('.block-content');
+    var origHtml = contentEl.innerHTML;
+    var spinRow = document.createElement('div');
+    spinRow.className = 'block-processing-status';
+    spinRow.innerHTML = '<div class="block-spinner"></div><span>' + getLoadingText(text) + '</span>';
+    contentEl.appendChild(spinRow);
+    blockEl.classList.remove('queued');
+
+    var result = null;
+    try {
+      result = await callGemini(text, sessionContext);
+    } catch(e) { result = null; }
+
+    spinRow.remove();
+
+    var category, subtype;
+    if (result && result.category) {
+      category = result.category;
+      subtype  = result.subtype || '';
+    } else {
+      var cat  = categorize(text);
+      category = (cat.dot === 'barrier' || cat.dot === 'need' || cat.dot === 'household') ? cat.dot : 'consideration';
+      subtype  = cat.subtype || '';
+      result   = null;
+    }
+
+    // Update block dataset
+    blockEl.dataset.category = category;
+    blockEl.dataset.subtype  = subtype;
+    if (result) blockEl.dataset.apiResult = JSON.stringify(result);
+
+    // Re-render block content
+    var highlightedText = buildHighlightedText(text, category, subtype, result);
+    var badgeClass = 'badge-' + category;
+    contentEl.innerHTML =
+      '<div class="block-row">' +
+        '<div class="block-text">' + highlightedText + '</div>' +
+        '<div class="block-badges"><span class="block-badge ' + badgeClass + '">×1</span></div>' +
+      '</div>';
+
+    if (result) sessionContext += ', ' + (result.subtype || result.category);
+    showBanner(category, subtype);
+    incrementProfile(result, category, subtype);
+    addDragListeners(blockEl);
+    saveSession();
+
+    requestAnimationFrame(function() {
+      blockEl.classList.add('flashing');
+      setTimeout(function() { blockEl.classList.remove('flashing'); }, 500);
+    });
+  }
+
+  // Manual toggle (prototype)
+  document.getElementById('offline-toggle').addEventListener('click', function() {
+    setOffline(!isOffline);
+  });
+
+  // Real network events
+  window.addEventListener('offline', function() { setOffline(true); });
+  window.addEventListener('online',  function() { setOffline(false); });
+
+  /* ── SKIP NOTE ──────────────────────────────────────────────── */
+  function isObviousGibberish(text) {
+    var t = text.trim();
+    if (t.length < 2) return true;
+    // High ratio of consonant clusters with no vowels = gibberish
+    var noVowels = t.replace(/[aeiouáéíóúüñ\s]/gi, '');
+    if (noVowels.length / t.length > 0.82) return true;
+    // Keyboard smash pattern: 6+ chars with no spaces and no common word shape
+    if (t.length >= 6 && !/\s/.test(t) && !/[aeiou]{1}/i.test(t)) return true;
+    return false;
+  }
+
+  function showSkipNote(text) {
+    var thread   = document.getElementById('notes-thread');
+    var inputWrap = document.getElementById('block-input-wrap');
+    var note = document.createElement('div');
+    note.className = 'skip-note';
+
+    var preview = text.length > 28 ? text.slice(0, 28) + '…' : text;
+    note.innerHTML =
+      '<span class="skip-note__text">"' + escapeHtml(preview) + '" — doesn\'t look session-related</span>' +
+      '<button class="skip-note__dismiss" aria-label="Dismiss">✕</button>';
+
+    note.querySelector('.skip-note__dismiss').addEventListener('click', function() {
+      note.style.transition = 'opacity 0.15s';
+      note.style.opacity = '0';
+      setTimeout(function() { note.remove(); }, 150);
+    });
+
+    thread.insertBefore(note, inputWrap);
+    thread.scrollTop = thread.scrollHeight;
+
+    // Auto-dismiss after 6s
+    setTimeout(function() {
+      if (note.parentNode) {
+        note.style.transition = 'opacity 0.3s';
+        note.style.opacity = '0';
+        setTimeout(function() { note.remove(); }, 300);
+      }
+    }, 6000);
+  }
+
   /* ── PROCESS BLOCK ──────────────────────────────────────────── */
   async function processBlock(text, useLLM) {
     var thread = document.getElementById('notes-thread');
 
     if (!useLLM) {
       appendBlock(text, 'consideration', 'consideration', null);
+      return;
+    }
+
+    // Gibberish check — don't even call the API
+    if (isObviousGibberish(text)) {
+      showSkipNote(text);
+      document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
+      return;
+    }
+
+    // Offline — queue the block for later analysis
+    if (isOffline) {
+      var qBlock = document.createElement('div');
+      qBlock.className = 'note-block queued';
+      qBlock.dataset.category = 'consideration';
+      qBlock.dataset.subtype  = '';
+      qBlock.innerHTML =
+        '<div class="block-handle">⠿</div>' +
+        '<div class="block-content">' +
+          '<div class="block-row">' +
+            '<div class="block-text" style="opacity:0.6">' + escapeHtml(text) + '</div>' +
+            '<div class="block-badges"><span class="block-badge badge-queued">queued</span></div>' +
+          '</div>' +
+        '</div>';
+      var inputWrap = document.getElementById('block-input-wrap');
+      thread.insertBefore(qBlock, inputWrap);
+      thread.scrollTop = thread.scrollHeight;
+      hideEmptyState();
+      addDragListeners(qBlock);
+      offlineQueue.push({ text: text, blockEl: qBlock });
+      updateOfflineCount();
+      document.getElementById('notes-footer-hint').textContent = 'offline — will analyze when back online';
       return;
     }
 
@@ -2257,7 +2655,9 @@ consideration: anything qualitative that does not fit above — dot: considerati
     clearTimeout(latencyTimer);
     procBlock.remove();
 
-    if (result) {
+    if (result && result.category === 'unrelated') {
+      showSkipNote(text);
+    } else if (result) {
       sessionContext += ', ' + (result.subtype || result.category);
       appendBlock(text, result.category, result.subtype, result);
     } else {
@@ -2291,13 +2691,21 @@ consideration: anything qualitative that does not fit above — dot: considerati
     hideEmptyState();
     var highlightedText = buildHighlightedText(text, category, subtype, apiResult);
     var badgeClass = 'badge-' + (category || 'consideration');
+    // Surface if no real API result, Actionable if API gave us structured data
+    var initDepth = (apiResult && apiResult.category && apiResult.category !== 'consideration') ? 1 : 0;
+    block.dataset.depth = initDepth;
+    var covClass = initDepth >= 2 ? 'depth--indepth' : initDepth >= 1 ? 'depth--actionable' : 'depth--surface';
+    var covLabel = initDepth >= 2 ? 'In-depth' : initDepth >= 1 ? 'Actionable' : 'Surface';
 
     block.innerHTML =
       '<div class="block-handle">⠿</div>' +
       '<div class="block-content">' +
         '<div class="block-row">' +
           '<div class="block-text">' + highlightedText + '</div>' +
-          '<div class="block-badges"><span class="block-badge ' + badgeClass + '">×1</span></div>' +
+          '<div class="block-badges">' +
+            '<span class="block-coverage ' + covClass + '">' + covLabel + '</span>' +
+            '<span class="block-badge ' + badgeClass + '">×1</span>' +
+          '</div>' +
         '</div>' +
       '</div>';
 
@@ -2437,12 +2845,14 @@ consideration: anything qualitative that does not fit above — dot: considerati
   });
 
   document.getElementById('btn-reset-key').addEventListener('click', function() {
-    try { localStorage.removeItem('steady_api_key'); } catch(e) {}
-    activeApiKey = '';
-    var input = document.getElementById('api-key-input');
-    input.value = '';
+    try { localStorage.removeItem('steady_api_key'); localStorage.removeItem('steady_borough'); } catch(e) {}
+    activeApiKey  = '';
+    activeBorough = '';
+    document.getElementById('api-key-input').value = '';
+    document.getElementById('borough-select').value = '';
     document.getElementById('api-key-submit').disabled = true;
     document.getElementById('intro-error').classList.remove('visible');
+    document.querySelector('.app-header__title').textContent = 'Steady Mode';
     document.getElementById('intro-screen').classList.remove('hidden');
   });
 
@@ -2454,18 +2864,28 @@ consideration: anything qualitative that does not fit above — dot: considerati
   });
 
   /* ── API KEY / INTRO SCREEN ─────────────────────────────────── */
+  var activeBorough = '';
+  var BOROUGH_LABELS = {
+    'bronx': 'The Bronx', 'brooklyn': 'Brooklyn',
+    'manhattan': 'Manhattan', 'queens': 'Queens', 'staten-island': 'Staten Island'
+  };
+
   (function() {
-    var input  = document.getElementById('api-key-input');
-    var btn    = document.getElementById('api-key-submit');
-    var errEl  = document.getElementById('intro-error');
-    var screen = document.getElementById('intro-screen');
+    var input    = document.getElementById('api-key-input');
+    var select   = document.getElementById('borough-select');
+    var btn      = document.getElementById('api-key-submit');
+    var errEl    = document.getElementById('intro-error');
+    var screen   = document.getElementById('intro-screen');
 
     function isValidKey(k) { return k && k.length >= 20; }
+    function canSubmit() { return isValidKey(input.value.trim()) && select.value !== ''; }
+    function refreshBtn() { btn.disabled = !canSubmit(); }
 
     input.addEventListener('input', function() {
-      btn.disabled = !isValidKey(this.value.trim());
       errEl.classList.remove('visible');
+      refreshBtn();
     });
+    select.addEventListener('change', refreshBtn);
 
     input.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && !btn.disabled) btn.click();
@@ -2473,24 +2893,41 @@ consideration: anything qualitative that does not fit above — dot: considerati
 
     btn.addEventListener('click', function() {
       var key = input.value.trim();
-      if (!isValidKey(key)) {
-        errEl.classList.add('visible');
-        return;
-      }
+      if (!isValidKey(key)) { errEl.classList.add('visible'); return; }
       activeApiKey = key;
-      try { localStorage.setItem('steady_api_key', key); } catch(e) {}
+      activeBorough = select.value;
+      try {
+        localStorage.setItem('steady_api_key', key);
+        localStorage.setItem('steady_borough', activeBorough);
+      } catch(e) {}
+      applyBorough(activeBorough);
       screen.classList.add('hidden');
     });
 
-    var saved = '';
-    try { saved = localStorage.getItem('steady_api_key') || ''; } catch(e) {}
-    if (saved && isValidKey(saved)) {
-      activeApiKey = saved;
+    // Restore saved key + borough
+    var savedKey = '', savedBorough = '';
+    try {
+      savedKey     = localStorage.getItem('steady_api_key')  || '';
+      savedBorough = localStorage.getItem('steady_borough')  || '';
+    } catch(e) {}
+
+    if (savedKey && isValidKey(savedKey) && savedBorough) {
+      activeApiKey   = savedKey;
+      activeBorough  = savedBorough;
+      select.value   = savedBorough;
+      applyBorough(activeBorough);
       // stay hidden
     } else {
       screen.classList.remove('hidden');
     }
   })();
+
+  function applyBorough(borough) {
+    var label = BOROUGH_LABELS[borough] || borough;
+    // Show borough in app header
+    var headerEl = document.querySelector('.app-header__title');
+    if (headerEl) headerEl.textContent = 'Steady Mode · ' + label;
+  }
 
   /* ── SESSION STARTERS ───────────────────────────────────────── */
   document.querySelectorAll('.session-starter').forEach(function(btn) {
