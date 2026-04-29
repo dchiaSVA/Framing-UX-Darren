@@ -1,777 +1,1247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Steady Mode</title>
-  <style>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Steady Mode</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23C4622D'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' fill='white'>S</text></svg>">
+<style>
+  :root {
+    --color-bg-page:    #FAF7F2;
+    --color-bg-chrome:  #F2EDE6;
+    --color-bg-warning: #fffbeb;
+    --color-bg-success: #f0fdf4;
+    --color-bg-info:    #eff6ff;
+    --color-bg-danger:  #fef2f2;
+    --color-text-primary:   #1A1614;
+    --color-text-secondary: #4A4540;
+    --color-text-tertiary:  #8A7F78;
+    --color-text-warning:   #92400e;
+    --color-text-success:   #166534;
+    --color-text-info:      #1d4ed8;
+    --color-text-danger:    #991b1b;
+    --color-accent:         #C4622D;
+    --color-border-page:    rgba(26,22,20,0.07);
+    --color-border-chrome:  rgba(26,22,20,0.08);
+    --color-border-card:    rgba(26,22,20,0.10);
+    --color-border-input:   rgba(26,22,20,0.15);
+    --color-ph-barrier:        #e8e0f7;
+    --color-ph-barrier-text:   #3C3489;
+    --color-ph-need:           #d6f0e8;
+    --color-ph-need-text:      #085041;
+    --color-ph-household:      #fce8d5;
+    --color-ph-household-text: #633806;
+    --color-ph-consideration:  #f0efec;
+    --color-ph-consideration-text: #5F5E5A;
+    --color-flash: rgba(209,186,155,0.22);
+    --color-toast-bg:   #1c1c1e;
+    --color-toast-text: #f9f9f9;
+  }
+  @media (prefers-color-scheme: dark) {
     :root {
-      --color-background-primary:   #ffffff;
-      --color-background-secondary: #f4f4f5;
-      --color-background-info:      #eff6ff;
-      --color-background-warning:   #fffbeb;
-      --color-background-success:   #f0fdf4;
-      --color-background-danger:    #fef2f2;
-      --color-text-primary:   #111111;
-      --color-text-secondary: #444444;
-      --color-text-tertiary:  #767676;
-      --color-text-info:      #1d4ed8;
-      --color-text-warning:   #92400e;
-      --color-text-success:   #166534;
-      --color-text-danger:    #991b1b;
-      --color-border-secondary: rgba(0, 0, 0, 0.15);
-      --color-border-tertiary:  rgba(0, 0, 0, 0.08);
-      --color-dot-barrier:       var(--color-text-danger);
-      --color-dot-need:          var(--color-text-success);
-      --color-dot-household:     #6d28d9;
-      --color-dot-consideration: var(--color-text-tertiary);
-      --color-tag-visual-bg:    var(--color-background-info);
-      --color-tag-visual-text:  var(--color-text-info);
-      --color-tag-context-bg:   var(--color-background-secondary);
-      --color-tag-context-text: var(--color-text-tertiary);
-      --color-chrome-bg:     #f4f4f5;
-      --color-chrome-border: rgba(0, 0, 0, 0.10);
-      --color-tab-active-text:      var(--color-text-primary);
-      --color-tab-active-indicator: var(--color-text-primary);
-      --color-tab-inactive-text:    var(--color-text-tertiary);
-      --color-toast-bg:   #1c1c1e;
-      --color-toast-text: #f9f9f9;
+      --color-bg-page:    #1c1c1e;
+      --color-bg-chrome:  #2c2c2e;
+      --color-bg-warning: #3d2e00;
+      --color-bg-success: #052e16;
+      --color-bg-info:    #1e3a5f;
+      --color-bg-danger:  #450a0a;
+      --color-text-primary:   #f0ece8;
+      --color-text-secondary: #c8c0b8;
+      --color-text-tertiary:  #8a8a8e;
+      --color-text-warning:   #fcd34d;
+      --color-text-success:   #86efac;
+      --color-text-info:      #93c5fd;
+      --color-text-danger:    #fca5a5;
+      --color-accent:         #D4733E;
+      --color-border-page:    rgba(255,255,255,0.06);
+      --color-border-chrome:  rgba(255,255,255,0.08);
+      --color-border-card:    rgba(255,255,255,0.10);
+      --color-border-input:   rgba(255,255,255,0.15);
+      --color-toast-bg:   #f0f0f0;
+      --color-toast-text: #111111;
     }
+  }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --color-background-primary:   #1c1c1e;
-        --color-background-secondary: #2c2c2e;
-        --color-background-info:      #1e3a5f;
-        --color-background-warning:   #3d2e00;
-        --color-background-success:   #052e16;
-        --color-background-danger:    #450a0a;
-        --color-text-primary:   #f0f0f0;
-        --color-text-secondary: #c8c8c8;
-        --color-text-tertiary:  #8a8a8e;
-        --color-text-info:      #93c5fd;
-        --color-text-warning:   #fcd34d;
-        --color-text-success:   #86efac;
-        --color-text-danger:    #fca5a5;
-        --color-border-secondary: rgba(255, 255, 255, 0.15);
-        --color-border-tertiary:  rgba(255, 255, 255, 0.08);
-        --color-dot-household: #a78bfa;
-        --color-chrome-bg:     #2c2c2e;
-        --color-chrome-border: rgba(255, 255, 255, 0.08);
-        --color-toast-bg:   #f0f0f0;
-        --color-toast-text: #111111;
-      }
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--color-bg-page);
+    color: var(--color-text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-    button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
-    textarea { resize: none; font: inherit; }
-    input { font: inherit; }
+  .phone {
+    width: 100%;
+    max-width: 390px;
+    height: 100vh;
+    background: var(--color-bg-page);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
 
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.5;
-      color: var(--color-text-primary);
-      background-color: var(--color-background-secondary);
-      -webkit-font-smoothing: antialiased;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    .text-secondary { font-size: 12px; color: var(--color-text-secondary); }
-    .text-tertiary  { font-size: 12px; color: var(--color-text-tertiary); }
-    .text-label     { font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-tertiary); }
-    .text-medium    { font-weight: 500; }
-
+  @media (min-width: 480px) {
+    body { padding: 24px 0; }
     .phone {
-      width: 100%;
-      max-width: 390px;
-      min-height: 100dvh;
-      background: var(--color-background-primary);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      height: calc(100vh - 48px);
+      max-height: 844px;
+      border-radius: 20px;
+      border: 1px solid var(--color-border-page);
     }
+  }
 
-    .status-bar {
-      background: var(--color-chrome-bg);
-      border-bottom: 1px solid var(--color-chrome-border);
-      padding: 10px 20px 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .status-bar__time { font-size: 12px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.01em; }
-    .status-bar__indicators { display: flex; gap: 6px; align-items: center; }
-    .status-bar__indicator { font-size: 11px; color: var(--color-text-secondary); }
+  /* ── STATUS BAR ───────────────────────────────────────────── */
+  .status-bar {
+    height: 32px;
+    background: var(--color-bg-chrome);
+    border-bottom: 0.5px solid var(--color-border-chrome);
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+    letter-spacing: -0.01em;
+  }
+  .status-bar__icons {
+    display: flex;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.5px;
+  }
 
-    .app-header {
-      background: var(--color-chrome-bg);
-      border-bottom: 1px solid var(--color-chrome-border);
-      padding: 14px 20px 12px;
-      flex-shrink: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .app-header__title    { font-size: 14px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.01em; }
-    .app-header__subtitle { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; letter-spacing: 0.02em; }
-    .app-header__confidence { font-size: 11px; color: var(--color-text-tertiary); font-weight: 500; white-space: nowrap; }
-    .app-header__confidence.confident { color: var(--color-text-success); }
+  /* ── APP HEADER ───────────────────────────────────────────── */
+  .app-header {
+    background: var(--color-bg-chrome);
+    border-bottom: 0.5px solid var(--color-border-chrome);
+    padding: 9px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-shrink: 0;
+  }
+  .app-header__title {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+  }
+  .app-header__match {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-accent);
+  }
 
-    .tab-nav {
-      display: flex;
-      background: var(--color-chrome-bg);
-      border-bottom: 1px solid var(--color-chrome-border);
-      flex-shrink: 0;
-    }
-    .tab-btn {
-      flex: 1;
-      padding: 11px 4px 10px;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--color-tab-inactive-text);
-      border-bottom: 2px solid transparent;
-      text-align: center;
-      background: none;
-      border-top: none; border-left: none; border-right: none;
-      margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .tab-btn.active { font-weight: 500; color: var(--color-tab-active-text); border-bottom-color: var(--color-tab-active-indicator); }
+  /* ── TAB NAV ──────────────────────────────────────────────── */
+  .tab-nav {
+    display: flex;
+    background: var(--color-bg-chrome);
+    border-bottom: 0.5px solid var(--color-border-chrome);
+    flex-shrink: 0;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn.active {
+    color: var(--color-text-primary);
+    border-bottom-color: var(--color-accent);
+  }
 
-    .tab-content { display: none; flex: 1; flex-direction: column; overflow: hidden; background: var(--color-background-secondary); min-height: 0; }
-    .tab-content.active { display: flex; }
-    .tab-content__inner { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
-    .tab-footer { flex-shrink: 0; padding: 9px 16px; font-size: 10px; font-weight: 400; color: var(--color-text-tertiary); text-align: center; background: var(--color-background-primary); border-top: 1px solid var(--color-border-tertiary); letter-spacing: 0.01em; }
+  /* ── TAB CONTENT BASE ─────────────────────────────────────── */
+  .tab-content {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--color-bg-page);
+  }
+  .tab-content.active { display: flex; }
 
-    .log-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .log-dot--barrier       { background: var(--color-dot-barrier); }
-    .log-dot--need          { background: var(--color-dot-need); }
-    .log-dot--household     { background: var(--color-dot-household); }
-    .log-dot--consideration { background: var(--color-dot-consideration); }
+  /* ── NOTES TAB ────────────────────────────────────────────── */
+  .notes-tab-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .note-card {
+    background: var(--color-bg-chrome);
+    border: 0.5px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .note-card--info { background: var(--color-bg-info); }
+  .note-card__meta {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    margin-bottom: 6px;
+  }
+  .note-card__meta--info {
+    color: var(--color-text-info);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .note-card__text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+  .worker-notes__label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 6px;
+  }
+  .worker-notes__textarea {
+    width: 100%;
+    min-height: 96px;
+    background: var(--color-bg-page);
+    border: 1px solid var(--color-border-input);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    resize: vertical;
+    outline: none;
+  }
+  .worker-notes__textarea::placeholder {
+    color: var(--color-text-tertiary);
+  }
+  .notes-tab-footer {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: 4px 0 8px;
+    font-style: italic;
+  }
 
-    .chat-thread { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 14px 14px 8px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+  /* ── SESSION TAB ──────────────────────────────────────────── */
+  #tab-session { background: var(--color-bg-page); }
 
-    .chat-msg { align-self: flex-end; max-width: 78%; padding: 8px 12px; background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 14px 14px 4px 14px; font-size: 13px; line-height: 1.45; color: var(--color-text-primary); word-wrap: break-word; }
+  .note-banner {
+    display: flex;
+    overflow: hidden;
+    flex-shrink: 0;
+    max-height: 0;
+    transition: max-height 0.2s ease;
+  }
+  .note-banner.visible { max-height: 34px; }
+  .banner-seg {
+    flex: 1;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .banner-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .banner-label { font-size: 10px; font-weight: 500; }
+  .banner-barrier      { background: var(--color-ph-barrier); }
+  .banner-barrier .banner-dot   { background: var(--color-ph-barrier-text); }
+  .banner-barrier .banner-label { color: var(--color-ph-barrier-text); }
+  .banner-need         { background: var(--color-ph-need); }
+  .banner-need .banner-dot      { background: var(--color-ph-need-text); }
+  .banner-need .banner-label    { color: var(--color-ph-need-text); }
+  .banner-household    { background: var(--color-ph-household); }
+  .banner-household .banner-dot   { background: var(--color-ph-household-text); }
+  .banner-household .banner-label { color: var(--color-ph-household-text); }
+  .banner-consideration{ background: var(--color-ph-consideration); }
+  .banner-consideration .banner-dot   { background: var(--color-ph-consideration-text); }
+  .banner-consideration .banner-label { color: var(--color-ph-consideration-text); }
 
-    .chat-card { align-self: flex-start; max-width: 86%; display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 12px; background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 4px 14px 14px 14px; cursor: pointer; text-align: left; transition: background 0.1s; -webkit-tap-highlight-color: transparent; margin-top: -4px; }
-    .chat-card:active { background: var(--color-background-secondary); }
-    .chat-card__category { font-size: 12px; font-weight: 500; color: var(--color-text-primary); flex: 1; min-width: 0; }
-    .chat-card__confirm  { font-size: 10px; color: var(--color-text-tertiary); letter-spacing: 0.02em; flex-shrink: 0; }
-    .chat-card__arrow    { font-size: 16px; line-height: 1; color: var(--color-text-tertiary); flex-shrink: 0; }
+  .notes-thread {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 14px 8px 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-page);
+  }
+  .notes-date {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: 0 0 14px 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
 
-    .chat-analyzing { align-self: flex-start; font-size: 12px; color: var(--color-text-tertiary); font-style: italic; padding: 4px 4px 2px; }
+  .note-block {
+    display: flex;
+    align-items: flex-start;
+    padding: 4px 14px 4px 0;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    transition: background 0.4s ease;
+    background: transparent;
+    flex-shrink: 0;
+  }
+  .note-block.flashing { background: var(--color-flash); }
+  .block-handle {
+    width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 5px;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    opacity: 0.15;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  .note-block:hover .block-handle { opacity: 0.4; }
+  .block-content { flex: 1; min-width: 0; }
+  .block-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .block-text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    flex: 1;
+  }
+  .block-badges {
+    display: flex;
+    gap: 3px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .block-badge {
+    font-size: 10px;
+    font-weight: 500;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+  }
+  .badge-barrier       { background: var(--color-ph-barrier);       color: var(--color-ph-barrier-text); }
+  .badge-need          { background: var(--color-ph-need);          color: var(--color-ph-need-text); }
+  .badge-household     { background: var(--color-ph-household);     color: var(--color-ph-household-text); }
+  .badge-consideration { background: var(--color-ph-consideration); color: var(--color-ph-consideration-text); }
 
-    .chat-prompt { align-self: flex-start; max-width: 86%; font-size: 12px; color: var(--color-text-tertiary); line-height: 1.5; padding: 4px 4px 2px; font-style: italic; }
+  .block-ph {
+    border-radius: 3px;
+    padding: 1px 3px;
+    cursor: pointer;
+    display: inline;
+    position: relative;
+  }
+  .block-ph::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+  }
+  .ph-barrier       { background: var(--color-ph-barrier);       color: var(--color-ph-barrier-text); }
+  .ph-need          { background: var(--color-ph-need);          color: var(--color-ph-need-text); }
+  .ph-household     { background: var(--color-ph-household);     color: var(--color-ph-household-text); }
+  .ph-consideration { background: var(--color-ph-consideration); color: var(--color-ph-consideration-text); }
 
-    .chat-suggestions { flex-shrink: 0; display: flex; gap: 6px; overflow-x: auto; padding: 8px 14px; background: var(--color-background-primary); border-top: 1px solid var(--color-border-tertiary); scrollbar-width: none; }
-    .chat-suggestions::-webkit-scrollbar { display: none; }
-    .chat-suggestion { flex-shrink: 0; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: 14px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; transition: background 0.1s; -webkit-tap-highlight-color: transparent; }
-    .chat-suggestion:active { background: var(--color-background-secondary); }
+  .block-processing-status {
+    font-size: 11px;
+    color: var(--color-text-info);
+    font-style: italic;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .block-spinner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-text-info);
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .drop-indicator {
+    height: 2px;
+    background: var(--color-text-info);
+    border-radius: 1px;
+    margin: 0 14px 18px 32px;
+    pointer-events: none;
+  }
+  .block-dragging { opacity: 0.4; }
 
-    .chat-composer { flex-shrink: 0; display: flex; gap: 8px; padding: 8px 14px 10px; background: var(--color-background-primary); border-top: 1px solid var(--color-border-tertiary); }
-    .chat-composer__input { flex: 1; height: 38px; padding: 0 13px; background: var(--color-background-secondary); border: 1px solid transparent; border-radius: 19px; font-size: 13px; color: var(--color-text-primary); outline: none; }
-    .chat-composer__input::placeholder { color: var(--color-text-tertiary); }
-    .chat-composer__input:focus { border-color: var(--color-border-secondary); }
-    .chat-composer__send { width: 38px; height: 38px; border-radius: 50%; background: var(--color-text-primary); color: var(--color-background-primary); font-size: 16px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; transition: opacity 0.1s; }
-    .chat-composer__send:active  { opacity: 0.75; }
-    .chat-composer__send:disabled { opacity: 0.35; pointer-events: none; }
+  .block-input-wrap {
+    display: flex;
+    align-items: flex-start;
+    padding: 4px 14px 4px 0;
+    flex-shrink: 0;
+  }
+  .block-input:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-text-tertiary);
+    pointer-events: none;
+  }
 
-    .toast { position: absolute; bottom: 56px; left: 50%; transform: translateX(-50%) translateY(4px); background: var(--color-toast-bg); color: var(--color-toast-text); padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 200; }
-    .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* Toggle knob */
+  #llm-toggle:checked + #toggle-knob { background: var(--color-accent); }
+  #toggle-knob::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: transform 0.2s;
+  }
+  #llm-toggle:checked + #toggle-knob::before {
+    transform: translateX(14px);
+  }
 
-    .panel-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
-    .panel-overlay.visible { opacity: 1; pointer-events: auto; }
+  /* Tab footer (Session) */
+  .tab-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 16px;
+    font-size: 10px;
+    flex-shrink: 0;
+    border-top: 0.5px solid var(--color-border-page);
+    background: var(--color-bg-page);
+  }
+  .tab-footer #notes-footer-hint {
+    color: var(--color-text-tertiary);
+    font-style: italic;
+  }
+  .tab-footer #review-btn {
+    color: var(--color-accent);
+    cursor: pointer;
+    font-weight: 500;
+  }
 
-    .side-panel { position: absolute; top: 0; right: 0; width: 86%; height: 100%; background: var(--color-background-primary); z-index: 101; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.25s ease; overflow: hidden; }
-    .side-panel.open { transform: translateX(0); }
+  /* ── PROFILE TAB ──────────────────────────────────────────── */
+  .profile-tab-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .confidence-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .confidence-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+  .confidence-pct {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+  .confidence-track {
+    height: 5px;
+    background: var(--color-border-page);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .confidence-fill {
+    height: 100%;
+    background: var(--color-accent);
+    width: 75%;
+    transition: width 0.5s ease;
+  }
 
-    .panel-header { display: flex; align-items: flex-start; gap: 10px; padding: 13px 14px 11px; border-bottom: 1px solid var(--color-border-tertiary); flex-shrink: 0; background: var(--color-chrome-bg); }
-    .panel-close { font-size: 20px; line-height: 1; color: var(--color-text-tertiary); flex-shrink: 0; padding: 1px 4px 1px 0; background: none; border: none; }
-    .panel-close:active { color: var(--color-text-primary); }
-    .panel-header__info  { flex: 1; min-width: 0; }
-    .panel-header__title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); line-height: 1.35; }
-    .panel-header__badge { display: inline-block; margin-top: 4px; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.02em; }
-    .panel-header__badge--barrier       { background: var(--color-background-danger);    color: var(--color-text-danger); }
-    .panel-header__badge--need          { background: var(--color-background-success);   color: var(--color-text-success); }
-    .panel-header__badge--household     { background: var(--color-background-info);      color: var(--color-text-info); }
-    .panel-header__badge--consideration { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+  /* ── PROFILE DIMENSIONS ──────────────────────────────────────── */
+  .profile-dims { display: flex; flex-direction: column; gap: 10px; }
 
-    .panel-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 14px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .profile-dim {
+    background: var(--color-bg-chrome);
+    border: 0.5px solid var(--color-border-card);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .profile-dim__header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    border-bottom: 0.5px solid var(--color-border-page);
+  }
+  .profile-dim__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .profile-dim__label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
 
-    .panel-section { display: none; flex-direction: column; gap: 12px; }
-    .panel-section.active { display: flex; }
+  .profile-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 0.5px solid var(--color-border-page);
+  }
+  .profile-item:last-child { border-bottom: none; }
+  .profile-item__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .profile-item__body { flex: 1; min-width: 0; }
+  .profile-item__name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .profile-item__depth {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .depth--surface    { background: var(--color-bg-warning); color: var(--color-text-warning); }
+  .depth--actionable { background: var(--color-bg-success); color: var(--color-text-success); }
+  .depth--unconfirmed{ background: var(--color-border-page); color: var(--color-text-tertiary); }
 
-    .source-line { font-size: 10px; color: var(--color-text-tertiary); font-weight: 400; }
+  .profile-item__needed {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.45;
+    margin-bottom: 5px;
+  }
+  .profile-item__question {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+  .profile-item__eligibility {
+    font-size: 12px;
+    color: var(--color-text-success);
+    background: var(--color-bg-success);
+    border-radius: 6px;
+    padding: 8px 10px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .profile-item__source {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-top: 5px;
+  }
 
-    .bar-chart { display: flex; flex-direction: column; gap: 8px; }
-    .bar-row { display: flex; align-items: center; gap: 8px; }
-    .bar-label { font-size: 11px; color: var(--color-text-secondary); width: 88px; flex-shrink: 0; }
-    .bar-track { flex: 1; height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
-    .bar-fill  { height: 100%; background: var(--color-text-primary); border-radius: 3px; opacity: 0.55; }
-    .bar-pct   { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); width: 28px; text-align: right; flex-shrink: 0; }
+  .profile-resources { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+  .profile-resource {
+    background: var(--color-bg-page);
+    border: 0.5px solid var(--color-border-card);
+    border-radius: 7px;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .profile-resource__info { flex: 1; min-width: 0; }
+  .profile-resource__name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+  }
+  .profile-resource__meta {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+  }
+  .profile-resource__phone {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-top: 1px;
+  }
+  .profile-resource__status {
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .profile-resource__status--ok   { color: var(--color-text-success); }
+  .profile-resource__status--warn { color: var(--color-text-warning); }
 
-    .avail-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--color-border-tertiary); border-radius: 8px; overflow: hidden; }
-    .avail-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
-    .avail-item:last-child { border-bottom: none; }
-    .avail-name  { font-size: 12px; color: var(--color-text-primary); flex: 1; padding-right: 8px; }
-    .avail-badge { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; white-space: nowrap; }
-    .avail-badge--available  { background: var(--color-background-success);   color: var(--color-text-success); }
-    .avail-badge--low        { background: var(--color-background-warning);   color: var(--color-text-warning); }
-    .avail-badge--ineligible { background: var(--color-background-danger);    color: var(--color-text-danger); }
-    .avail-badge--eligible   { background: var(--color-background-success);   color: var(--color-text-success); }
-    .avail-badge--pathway    { background: var(--color-background-info);      color: var(--color-text-info); }
-    .avail-badge--status     { background: var(--color-background-danger);    color: var(--color-text-danger); }
-    .avail-badge--daytime    { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+  .profile-dim__count {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-left: auto;
+  }
+  .profile-dim__empty {
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+  }
+  .profile-item__script {
+    font-size: 12px;
+    color: var(--color-text-warning);
+    background: var(--color-bg-warning);
+    border-radius: 6px;
+    padding: 8px 10px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
 
-    .panel-box { border-radius: 8px; padding: 11px 13px; }
-    .panel-box--warning { background: var(--color-background-warning); }
-    .panel-box--success { background: var(--color-background-success); }
-    .panel-box--gray    { background: var(--color-background-secondary); }
-    .panel-box__label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
-    .panel-box--warning .panel-box__label { color: var(--color-text-warning); }
-    .panel-box--success .panel-box__label { color: var(--color-text-success); }
-    .panel-box--gray    .panel-box__label { color: var(--color-text-tertiary); }
-    .panel-box__text { font-size: 13px; line-height: 1.5; color: var(--color-text-primary); }
+  /* ── SESSION EMPTY STATE ─────────────────────────────────────── */
+  .session-empty {
+    padding: 18px 14px 6px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .session-empty__label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+  }
+  .session-starters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .session-starter {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-chrome);
+    border: 0.5px solid var(--color-border-card);
+    border-radius: 20px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .session-starter:active { background: var(--color-border-page); }
 
-    .panel-textarea { width: 100%; min-height: 72px; background: var(--color-background-primary); border: 1px solid var(--color-border-secondary); border-radius: 8px; padding: 9px 11px; font-size: 13px; color: var(--color-text-primary); line-height: 1.5; outline: none; }
-    .panel-textarea::placeholder { color: var(--color-text-tertiary); }
-    .panel-textarea:focus { border-color: var(--color-text-tertiary); }
+  /* ── PANEL ITEM HEADER ───────────────────────────────────────── */
+  .panel-item-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .panel-item__subtype {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+  }
 
-    .panel-confirm-wrap { flex-shrink: 0; padding: 12px 14px; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); display: flex; flex-direction: column; gap: 6px; }
-    .panel-confirm-btn { width: 100%; padding: 12px; background: var(--color-text-primary); color: var(--color-background-primary); border-radius: 8px; font-size: 14px; font-weight: 500; text-align: center; border: none; cursor: pointer; transition: opacity 0.1s; }
-    .panel-confirm-btn:active  { opacity: 0.75; }
-    .panel-confirm-btn.confirmed { opacity: 0.6; pointer-events: none; }
-    .panel-source-below { font-size: 10px; color: var(--color-text-tertiary); text-align: center; }
+  /* ── NEXT STEP HINT ──────────────────────────────────────────── */
+  .next-step-bar {
+    flex-shrink: 0;
+    padding: 0 14px 10px;
+  }
+  .next-step-card {
+    background: var(--color-bg-info);
+    border-left: 3px solid var(--color-text-info);
+    border-radius: 0 7px 7px 0;
+    padding: 9px 12px;
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+  }
+  .next-step__label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-info);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .next-step__text {
+    font-size: 12px;
+    color: var(--color-text-primary);
+    line-height: 1.45;
+  }
 
-    .divider { height: 1px; background: var(--color-border-tertiary); flex-shrink: 0; }
+  .suggested-question-box {
+    background: var(--color-bg-warning);
+    border-radius: 8px;
+    padding: 11px 13px;
+  }
+  .suggested-question-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-warning);
+    margin-bottom: 5px;
+  }
+  .suggested-question-text {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+  }
 
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .profile-chip { background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 12px; }
-    .profile-chip__label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-tertiary); margin-bottom: 3px; }
-    .profile-chip__value { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .action-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .btn-success {
+    flex: 1;
+    background: var(--color-bg-success);
+    color: var(--color-text-success);
+    border: 1px solid var(--color-bg-success);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .btn-secondary {
+    background: var(--color-bg-chrome);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .profile-footer {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: 4px 0 8px;
+    font-style: italic;
+  }
 
-    .confidence-wrap  { display: flex; flex-direction: column; gap: 8px; }
-    .confidence-row   { display: flex; justify-content: space-between; align-items: baseline; }
-    .confidence-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
-    .confidence-pct   { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
-    .confidence-track { height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
-    .confidence-fill  { height: 100%; background: var(--color-text-success); border-radius: 3px; width: 75%; transition: width 0.5s ease; }
+  /* ── TOAST ────────────────────────────────────────────────── */
+  .toast {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-toast-bg);
+    color: var(--color-toast-text);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 200;
+    white-space: nowrap;
+    max-width: 86%;
+  }
+  .toast.visible { opacity: 1; }
 
-    .script-block { display: flex; flex-direction: column; gap: 6px; }
-    .script-block__header  { display: flex; flex-direction: column; gap: 2px; }
-    .script-block__label   { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-primary); }
-    .script-block__sublabel { font-size: 10px; color: var(--color-text-tertiary); letter-spacing: 0.03em; }
-    .script-block__text    { font-size: 13px; font-style: italic; color: var(--color-text-primary); line-height: 1.6; padding: 10px 12px; background: var(--color-background-secondary); border-radius: 8px; }
-    .script-block__source  { font-size: 10px; color: var(--color-text-tertiary); }
+  /* ── SIDE PANEL ───────────────────────────────────────────── */
+  .panel-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .panel-overlay.visible { opacity: 1; pointer-events: auto; }
 
-    .resource-card { background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 5px; }
-    .resource-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .resource-name   { font-size: 13px; font-weight: 500; color: var(--color-text-primary); flex: 1; line-height: 1.3; }
-    .resource-why    { font-size: 11px; color: var(--color-text-secondary); line-height: 1.45; }
-    .resource-source { font-size: 10px; color: var(--color-text-tertiary); }
+  .side-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 78%;
+    background: var(--color-bg-page);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border: 0.5px solid var(--color-border-card);
+    border-bottom: none;
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.28s ease;
+    pointer-events: none;
+  }
+  .side-panel.open { transform: translateY(0); pointer-events: auto; }
+  .side-panel__grabber {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-border-input);
+    margin: 8px auto 0;
+    flex-shrink: 0;
+  }
+  .side-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px 14px;
+    border-bottom: 0.5px solid var(--color-border-chrome);
+    flex-shrink: 0;
+  }
+  .panel-header__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .panel-header__category {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+  }
+  .panel-header__pill {
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 3px 9px;
+    flex-shrink: 0;
+  }
+  .side-panel__close {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+  .badge--barrier       { background: var(--color-ph-barrier);       color: var(--color-ph-barrier-text); }
+  .badge--need          { background: var(--color-ph-need);          color: var(--color-ph-need-text); }
+  .badge--household     { background: var(--color-ph-household);     color: var(--color-ph-household-text); }
+  .badge--consideration { background: var(--color-ph-consideration); color: var(--color-ph-consideration-text); }
 
-    .action-row { display: flex; gap: 8px; }
-    .btn-action { flex: 1; padding: 11px 8px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; border: none; transition: opacity 0.1s; }
-    .btn-action:active    { opacity: 0.75; }
-    .btn-action--green    { background: var(--color-text-success); color: var(--color-background-primary); }
-    .btn-action--blue     { background: var(--color-text-info);    color: var(--color-background-primary); }
-    .btn-action--blue:disabled { opacity: 0.55; pointer-events: none; }
-    .btn-action--secondary { background: transparent; border: 1px solid var(--color-border-secondary); color: var(--color-text-secondary); }
+  .side-panel__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+  }
+  .side-panel__footer {
+    padding: 12px 14px;
+    border-top: 0.5px solid var(--color-border-chrome);
+    background: var(--color-bg-page);
+    flex-shrink: 0;
+  }
+  .panel-confirm {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-text-primary);
+    color: var(--color-bg-page);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .panel-confirm.confirmed {
+    background: var(--color-text-success);
+    color: var(--color-bg-success);
+  }
 
-    .note { background: var(--color-background-primary); border-radius: 8px; border: 1px solid var(--color-border-tertiary); padding: 12px 14px; }
-    .note__header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-    .note__from   { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
-    .note__time   { font-size: 10px; color: var(--color-text-tertiary); }
-    .note__body   { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
-    .note--alert  { background: var(--color-background-info); border: 1px solid var(--color-border-tertiary); }
-    .note--alert .note__from { font-size: 11px; font-weight: 500; color: var(--color-text-info); text-transform: uppercase; letter-spacing: 0.04em; }
-    .note--alert .note__body { color: var(--color-text-primary); }
+  .panel-field-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 5px;
+  }
+  .panel-field-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+  .panel-box {
+    border-radius: 8px;
+    padding: 11px 13px;
+  }
+  .panel-box--warning { background: var(--color-bg-warning); }
+  .panel-box--success { background: var(--color-bg-success); }
+  .panel-box-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .panel-box--warning .panel-box-label { color: var(--color-text-warning); }
+  .panel-box--success .panel-box-label { color: var(--color-text-success); }
+  .panel-box-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+  .panel-textarea {
+    width: 100%;
+    min-height: 72px;
+    background: var(--color-bg-page);
+    border: 1px solid var(--color-border-input);
+    border-radius: 8px;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+  }
+  .panel-textarea::placeholder { color: var(--color-text-tertiary); }
 
-    .worker-notes { display: flex; flex-direction: column; gap: 6px; }
-    .worker-notes__textarea { width: 100%; min-height: 96px; background: var(--color-background-primary); border: 1px solid var(--color-border-secondary); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--color-text-primary); line-height: 1.5; outline: none; }
-    .worker-notes__textarea::placeholder { color: var(--color-text-tertiary); }
-    .worker-notes__textarea:focus { border-color: var(--color-text-tertiary); }
-
-    /* Generated panel section for API results */
-    .panel-section--generated { display: flex; flex-direction: column; gap: 12px; }
-
-    /* ── NOTES / BLOCK INTERFACE ──────────────────────────────────── */
-    .note-banner { display: flex; overflow: hidden; flex-shrink: 0; max-height: 0; transition: max-height 0.2s ease; }
-    .note-banner.visible { max-height: 34px; }
-    .banner-seg { flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px; }
-    .banner-seg + .banner-seg { border-left: 0.5px solid rgba(255,255,255,0.4); }
-    .banner-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .banner-label { font-size: 10px; font-weight: 500; }
-    .banner-barrier { background: #e8e0f7; }
-    .banner-barrier .banner-dot { background: #3C3489; }
-    .banner-barrier .banner-label { color: #3C3489; }
-    .banner-need { background: #d6f0e8; }
-    .banner-need .banner-dot { background: #085041; }
-    .banner-need .banner-label { color: #085041; }
-    .banner-household { background: #fce8d5; }
-    .banner-household .banner-dot { background: #633806; }
-    .banner-household .banner-label { color: #633806; }
-    .banner-consideration { background: #f0efec; }
-    .banner-consideration .banner-dot { background: #5F5E5A; }
-    .banner-consideration .banner-label { color: #5F5E5A; }
-
-    .notes-thread { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 14px 14px 8px 0; display: flex; flex-direction: column; min-height: 0; }
-    .notes-date { font-size: 11px; color: var(--color-text-tertiary); padding: 0 14px 12px 32px; }
-
-    .note-block { display: flex; align-items: flex-start; padding: 4px 14px 4px 0; margin-bottom: 10px; border-radius: 5px; transition: background 0.4s ease; cursor: default; -webkit-tap-highlight-color: transparent; }
-    .note-block.flashing { background: rgba(209,186,155,0.22); }
-
-    .block-handle { width: 32px; min-height: 32px; display: flex; align-items: flex-start; justify-content: center; padding-top: 5px; flex-shrink: 0; font-size: 13px; color: var(--color-text-tertiary); opacity: 0.15; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none; }
-    .note-block:hover .block-handle { opacity: 0.4; }
-    .note-block.dragging .block-handle { opacity: 0.7; }
-
-    .block-content { flex: 1; min-width: 0; }
-    .block-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-    .block-text { font-size: 13px; line-height: 1.7; color: var(--color-text-primary); flex: 1; min-width: 0; }
-    .block-badges { display: flex; gap: 3px; flex-shrink: 0; margin-top: 3px; flex-wrap: wrap; justify-content: flex-end; }
-
-    .block-badge { font-size: 10px; font-weight: 500; min-width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
-    .badge-barrier { background: #e8e0f7; color: #3C3489; }
-    .badge-need { background: #d6f0e8; color: #085041; }
-    .badge-household { background: #fce8d5; color: #633806; }
-    .badge-consideration { background: #f0efec; color: #5F5E5A; }
-
-    .block-ph { border-radius: 3px; padding: 1px 3px; cursor: pointer; -webkit-tap-highlight-color: transparent; position: relative; display: inline; }
-    .block-ph::after { content: ''; position: absolute; inset: -6px; }
-    .ph-barrier { background: #e8e0f7; color: #3C3489; }
-    .ph-need { background: #d6f0e8; color: #085041; }
-    .ph-household { background: #fce8d5; color: #633806; }
-    .ph-consideration { background: #f0efec; color: #5F5E5A; }
-
-    .block-processing-status { font-size: 11px; color: var(--color-text-info); font-style: italic; margin-top: 4px; display: flex; align-items: center; gap: 5px; }
-    .block-spinner { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--color-text-info); border-top-color: transparent; flex-shrink: 0; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .block-dragging { opacity: 0.95; border: 0.5px solid var(--color-border-secondary); border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .block-ghost { opacity: 0.2; }
-    .drop-indicator { height: 2px; background: var(--color-text-info); border-radius: 1px; margin: 0 14px 10px 32px; pointer-events: none; }
-
-    .block-input-wrap { display: flex; align-items: flex-start; padding: 4px 14px 8px 0; gap: 0; flex-shrink: 0; }
-    .block-input-inner { flex: 1; min-width: 0; }
-    .block-input { font-size: 13px; line-height: 1.7; color: var(--color-text-primary); outline: none; min-height: 22px; max-height: 120px; overflow-y: auto; word-break: break-word; }
-    .block-input:empty::before { content: attr(data-placeholder); color: var(--color-text-tertiary); pointer-events: none; }
-    .block-input-hint { font-size: 11px; color: var(--color-text-tertiary); font-style: italic; margin-top: 3px; }
-
-    .block-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 14px 8px 32px; flex-shrink: 0; }
-    .block-toggle-label { font-size: 11px; color: var(--color-text-tertiary); }
-    .block-toggle-switch { position: relative; width: 32px; height: 18px; flex-shrink: 0; }
-    .block-toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .block-toggle-knob { position: absolute; inset: 0; border-radius: 9px; background: var(--color-border-secondary); transition: background 0.2s; cursor: pointer; }
-    .block-toggle-knob::before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; top: 2px; border-radius: 50%; background: white; transition: transform 0.2s; }
-    .block-toggle-switch input:checked + .block-toggle-knob { background: var(--color-text-info); }
-    .block-toggle-switch input:checked + .block-toggle-knob::before { transform: translateX(14px); }
-
-  </style>
+  /* ── INTRO SCREEN ─────────────────────────────────────────── */
+  .intro-screen {
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg-page);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 36px 28px;
+    gap: 28px;
+    border-radius: inherit;
+  }
+  .intro-screen.hidden { display: none; }
+  .intro-wordmark {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+  .intro-tagline {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .intro-card {
+    background: var(--color-bg-chrome);
+    border: 0.5px solid var(--color-border-card);
+    border-radius: 12px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .intro-card__label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+  .intro-input {
+    width: 100%;
+    background: var(--color-bg-page);
+    border: 1px solid var(--color-border-input);
+    border-radius: 8px;
+    padding: 11px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    outline: none;
+    letter-spacing: 0.04em;
+  }
+  .intro-input::placeholder { color: var(--color-text-tertiary); }
+  .intro-input:focus { border-color: var(--color-accent); }
+  .intro-hint {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+  }
+  .intro-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--color-text-primary);
+    color: var(--color-bg-page);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 2px;
+    transition: opacity 0.15s;
+  }
+  .intro-btn:active { opacity: 0.8; }
+  .intro-btn:disabled { opacity: 0.4; cursor: default; }
+  .intro-footnote {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+    text-align: center;
+  }
+  .intro-footnote strong {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+  .intro-error {
+    font-size: 11px;
+    color: var(--color-text-danger);
+    display: none;
+    margin-top: -4px;
+  }
+  .intro-error.visible { display: block; }
+</style>
 </head>
 <body>
-
   <div class="phone">
 
-    <div class="status-bar">
-      <span class="status-bar__time" id="status-time">9:41</span>
-      <div class="status-bar__indicators">
-        <span class="status-bar__indicator">●●●</span>
-        <span class="status-bar__indicator">WiFi</span>
-        <span class="status-bar__indicator">⬛</span>
+    <!-- ── INTRO SCREEN ──────────────────────────────────── -->
+    <div class="intro-screen hidden" id="intro-screen">
+      <div>
+        <div class="intro-wordmark">Steady Mode</div>
+        <div class="intro-tagline">Decision support for frontline workers.<br>Paste a Gemini API key to get started.</div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-card__label">Gemini API Key</div>
+        <input type="password" id="api-key-input" class="intro-input"
+               placeholder="AIza…" autocomplete="off" spellcheck="false" />
+        <div class="intro-error" id="intro-error">Key looks too short — double-check and try again.</div>
+        <div class="intro-hint">Stored on this device only · never sent anywhere except Google</div>
+        <button id="api-key-submit" class="intro-btn" disabled>Get started →</button>
+      </div>
+      <div class="intro-footnote">
+        Free key at <strong>aistudio.google.com</strong><br>
+        Select <strong>Gemini 2.5 Flash</strong> or newer
       </div>
     </div>
 
+    <!-- ── STATUS BAR ─────────────────────────────────────── -->
+    <div class="status-bar">
+      <span id="status-time">9:41</span>
+      <div class="status-bar__icons"><span>•••</span><span>📶</span><span>100%</span></div>
+    </div>
+
+    <!-- ── APP HEADER ─────────────────────────────────────── -->
     <div class="app-header">
       <div class="app-header__title">Steady Mode</div>
-      <div class="app-header__subtitle">CBO Decision Support</div>
-      <div class="app-header__confidence">
-        Match <span id="header-confidence-pct">75%</span>
-      </div>
     </div>
 
-    <nav class="tab-nav" role="tablist">
-      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes"  data-tab="notes">Notes</button>
-      <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-chat"   data-tab="chat">Chat</button>
-      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-output" data-tab="output">Output</button>
-    </nav>
-
-    <!-- NOTES TAB -->
-    <div class="tab-content" id="tab-notes" role="tabpanel">
-      <div class="tab-content__inner">
-        <div class="note">
-          <div class="note__header">
-            <span class="note__from">From: Maria R. · 8:45am</span>
-          </div>
-          <p class="note__body">"She came in last month for food assistance. Very cautious about sharing info. Prefers Spanish. Has two young kids."</p>
-        </div>
-        <div class="note note--alert">
-          <div class="note__header">
-            <span class="note__from">Network alert</span>
-            <span class="note__time">updated today</span>
-          </div>
-          <p class="note__body">"BronxWorks rent assistance now accepting walk-ins Tue/Thu evenings. No docs required."</p>
-        </div>
-        <div class="worker-notes">
-          <span class="text-label">Your notes</span>
-          <textarea class="worker-notes__textarea"
-            placeholder="Met briefly at community event last week. Said she's been struggling since the storm."
-            rows="4"></textarea>
-        </div>
-      </div>
-      <div class="tab-footer">Notes stay on this device only · not logged without confirmation</div>
+    <!-- ── TAB NAV ────────────────────────────────────────── -->
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn active" data-tab="session" role="tab" aria-selected="true">Session</button>
+      <button class="tab-btn" data-tab="profile" role="tab" aria-selected="false">Profile</button>
     </div>
 
-    <!-- SESSION TAB -->
-    <div class="tab-content active" id="tab-chat" role="tabpanel">
-
-      <!-- Note banner — appears briefly after block is processed -->
+    <!-- ── TAB 2 — SESSION ────────────────────────────────── -->
+    <div id="tab-session" class="tab-content active" role="tabpanel">
       <div class="note-banner" id="note-banner"></div>
 
-      <!-- Scrollable blocks area -->
       <div class="notes-thread" id="notes-thread">
         <div class="notes-date" id="notes-date"></div>
 
-        <!-- Five hardcoded blocks -->
-        <div class="note-block" data-panel="data-fear" data-category="barrier" data-subtype="data fear" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
-          <div class="block-handle">⠿</div>
-          <div class="block-content">
-            <div class="block-row">
-              <div class="block-text"><span class="block-ph ph-barrier">Scared to share her information</span> with anyone</div>
-              <div class="block-badges"><span class="block-badge badge-barrier">×1</span></div>
-            </div>
+        <div class="session-empty" id="session-empty">
+          <div class="session-empty__label">Start by typing what you hear, or tap a suggestion</div>
+          <div class="session-starters">
+            <button class="session-starter" data-text="She's scared to share her information with anyone">Scared to share info</button>
+            <button class="session-starter" data-text="Works nights, can't do daytime appointments">Works nights only</button>
+            <button class="session-starter" data-text="Needs help with rent after the storm">Needs rent help</button>
+            <button class="session-starter" data-text="Two kids born in the US">Has US-born kids</button>
+            <button class="session-starter" data-text="Prefers to speak Spanish">Speaks Spanish</button>
           </div>
         </div>
 
-        <div class="note-block" data-panel="scheduling" data-category="barrier" data-subtype="scheduling" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
-          <div class="block-handle">⠿</div>
-          <div class="block-content">
-            <div class="block-row">
-              <div class="block-text"><span class="block-ph ph-barrier">Works nights</span>, can't do daytime</div>
-              <div class="block-badges"><span class="block-badge badge-barrier">×1</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="note-block" data-panel="rent" data-category="need" data-subtype="rent/housing" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
-          <div class="block-handle">⠿</div>
-          <div class="block-content">
-            <div class="block-row">
-              <div class="block-text"><span class="block-ph ph-need">Needs help with rent</span> after the storm</div>
-              <div class="block-badges"><span class="block-badge badge-need">×1</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="note-block" data-panel="citizen-children" data-category="household" data-subtype="citizen children" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
-          <div class="block-handle">⠿</div>
-          <div class="block-content">
-            <div class="block-row">
-              <div class="block-text"><span class="block-ph ph-household">Two kids</span>, born in US</div>
-              <div class="block-badges"><span class="block-badge badge-household">×1</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="note-block" data-panel="consideration" data-category="consideration" data-subtype="consideration" onclick="openBlockPanel(BLOCK_PANEL_DATA[this.dataset.panel],this)">
-          <div class="block-handle">⠿</div>
-          <div class="block-content">
-            <div class="block-row">
-              <div class="block-text"><span class="block-ph ph-consideration">Nervous when I mentioned the org</span></div>
-              <div class="block-badges"><span class="block-badge badge-consideration">×1</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Active input area -->
         <div class="block-input-wrap" id="block-input-wrap">
           <div class="block-handle" style="opacity:0.1">⠿</div>
-          <div class="block-input-inner">
+          <div class="block-input-inner" style="flex:1;min-width:0">
             <div class="block-input" id="block-input" contenteditable="true"
                  data-placeholder="Type what they said…" role="textbox"
-                 aria-multiline="true" aria-label="Session notes input"></div>
-            <div class="block-input-hint" id="block-input-hint">↵ to log</div>
+                 aria-multiline="true" aria-label="Session notes input"
+                 style="font-size:13px;line-height:1.7;color:var(--color-text-primary);outline:none;min-height:22px;max-height:120px;overflow-y:auto;word-break:break-word;"></div>
+            <div id="block-input-hint" style="font-size:11px;color:var(--color-text-tertiary);font-style:italic;margin-top:3px">↵ to log</div>
           </div>
         </div>
 
-        <!-- Toggle for pasted content — hidden by default -->
-        <div class="block-toggle-row" id="block-toggle-row" style="display:none">
-          <span class="block-toggle-label">process with LLM</span>
-          <label class="block-toggle-switch">
-            <input type="checkbox" id="llm-toggle" checked>
-            <span class="block-toggle-knob"></span>
+        <div class="block-toggle-row" id="block-toggle-row" style="display:none;align-items:center;justify-content:space-between;padding:4px 14px 8px 32px;flex-shrink:0">
+          <span style="font-size:11px;color:var(--color-text-tertiary)">process with LLM</span>
+          <label style="position:relative;width:32px;height:18px;flex-shrink:0">
+            <input type="checkbox" id="llm-toggle" checked style="opacity:0;width:0;height:0">
+            <span id="toggle-knob" style="position:absolute;inset:0;border-radius:9px;background:var(--color-border-input);cursor:pointer;transition:background 0.2s"></span>
           </label>
         </div>
-
       </div>
 
-      <div class="tab-footer" style="display:flex;justify-content:space-between;padding:9px 16px">
-        <span style="font-size:10px;color:var(--color-text-tertiary);font-style:italic" id="notes-footer-hint">tap highlight to explore</span>
-        <span style="font-size:10px;color:var(--color-text-info);cursor:pointer" id="review-btn">Review with client ↗</span>
+      <div class="next-step-bar" id="next-step-bar">
+        <div class="next-step-card">
+          <span class="next-step__label">Next</span>
+          <span class="next-step__text" id="next-step-text"></span>
+        </div>
+      </div>
+
+      <div class="tab-footer">
+        <span id="notes-footer-hint">tap highlight to explore</span>
+        <span id="review-btn">Review with client ↗</span>
       </div>
     </div>
 
-    <div class="toast" id="toast" role="status" aria-live="polite">Added to log</div>
+    <!-- ── TAB 3 — PROFILE ────────────────────────────────── -->
+    <div id="tab-profile" class="tab-content" role="tabpanel">
+      <div class="profile-tab-inner">
 
+        <div class="profile-dims" id="profile-dims"></div>
+
+        <div class="suggested-question-box">
+          <div class="suggested-question-label">SUGGESTED QUESTION</div>
+          <div id="suggested-question" class="suggested-question-text">Is there an evening or weekend time that works better for you?</div>
+        </div>
+
+        <div class="action-row">
+          <button id="btn-referral" class="btn-success">Make referral</button>
+          <button id="btn-close-session" class="btn-secondary">Close session</button>
+        </div>
+
+        <div class="profile-footer">No personal data logged · sources shown for each resource</div>
+
+        <button id="btn-reset-session" style="
+          background: none;
+          border: none;
+          font-family: inherit;
+          font-size: 11px;
+          color: var(--color-text-tertiary);
+          cursor: pointer;
+          text-decoration: underline;
+          padding: 4px 0 0;
+          align-self: center;
+        ">Reset session</button>
+
+        <button id="btn-reset-key" style="
+          background: none;
+          border: none;
+          font-family: inherit;
+          font-size: 11px;
+          color: var(--color-text-tertiary);
+          cursor: pointer;
+          text-decoration: underline;
+          padding: 4px 0 12px;
+          align-self: center;
+        ">Change API key</button>
+      </div>
+    </div>
+
+    <!-- ── TOAST ──────────────────────────────────────────── -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ── PANEL OVERLAY + SIDE PANEL ─────────────────────── -->
     <div class="panel-overlay" id="panel-overlay"></div>
 
-    <!-- SIDE PANEL -->
-    <div class="side-panel" id="side-panel" aria-modal="true" role="dialog">
-
-      <div class="panel-header">
-        <button class="panel-close" id="panel-close" aria-label="Close panel">✕</button>
-        <div class="panel-header__info">
-          <div class="panel-header__title" id="panel-title"></div>
-          <span class="panel-header__badge" id="panel-badge"></span>
+    <div class="side-panel" id="side-panel">
+      <div class="side-panel__grabber"></div>
+      <div class="side-panel__header">
+        <span class="panel-header__dot" id="panel-header-dot"></span>
+        <span class="panel-header__category" id="panel-header-category"></span>
+        <span class="panel-header__pill" id="panel-badge"></span>
+        <button class="side-panel__close" id="panel-close" aria-label="Close">✕</button>
+      </div>
+      <div class="side-panel__body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="panel-item-header">
+            <span class="panel-item__subtype" id="panel-item-subtype"></span>
+            <span class="profile-item__depth" id="panel-item-depth"></span>
+          </div>
+          <div id="panel-needed-wrap">
+            <div class="panel-field-label">Still needed</div>
+            <p class="panel-field-text" style="color:var(--color-text-warning)" id="panel-needed"></p>
+          </div>
+          <div class="panel-box panel-box--warning" id="panel-question-wrap">
+            <div class="panel-box-label">Suggested question</div>
+            <p class="panel-box-text" id="panel-question"></p>
+          </div>
+          <div class="panel-box panel-box--success" id="panel-eligibility-wrap" style="display:none">
+            <div class="panel-box-label">Eligibility — say out loud</div>
+            <p class="panel-box-text" id="panel-eligibility"></p>
+          </div>
+          <div class="panel-box panel-box--success" id="panel-script-wrap" style="display:none">
+            <div class="panel-box-label">Transparency script — say out loud</div>
+            <p class="panel-box-text" id="panel-script"></p>
+          </div>
+          <div id="panel-resources"></div>
+          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
+          <div style="font-size:11px;color:var(--color-text-tertiary)" id="panel-source"></div>
         </div>
       </div>
-
-      <div class="panel-body">
-
-        <!-- DATA FEAR -->
-        <div class="panel-section" id="panel-data-fear">
-          <div class="bar-chart">
-            <div class="bar-row"><span class="bar-label">Data fear</span><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><span class="bar-pct">74%</span></div>
-            <div class="bar-row"><span class="bar-label">Scheduling</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><span class="bar-pct">58%</span></div>
-            <div class="bar-row"><span class="bar-label">Cost</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-pct">41%</span></div>
-            <div class="bar-row"><span class="bar-label">Documentation</span><div class="bar-track"><div class="bar-fill" style="width:29%"></div></div><span class="bar-pct">29%</span></div>
-          </div>
-          <div class="source-line">Network sessions this week · CMS 2022</div>
-          <div class="panel-box panel-box--warning">
-            <div class="panel-box__label">Clarifying question</div>
-            <p class="panel-box__text">Has someone you know had a bad experience sharing information with an organization?</p>
-          </div>
-          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-        </div>
-
-        <!-- SCHEDULING -->
-        <div class="panel-section" id="panel-scheduling">
-          <div class="avail-list">
-            <div class="avail-item"><span class="avail-name">BronxWorks Tue/Thu eve</span><span class="avail-badge avail-badge--available">Available</span></div>
-            <div class="avail-item"><span class="avail-name">Make the Road evenings</span><span class="avail-badge avail-badge--available">Available</span></div>
-            <div class="avail-item"><span class="avail-name">NYIC Queens evening</span><span class="avail-badge avail-badge--low">Low capacity</span></div>
-            <div class="avail-item"><span class="avail-name">Catholic Charities</span><span class="avail-badge avail-badge--daytime">Daytime only</span></div>
-          </div>
-          <div class="source-line">Curated network · verified today</div>
-          <div class="panel-box panel-box--warning">
-            <div class="panel-box__label">Clarifying question</div>
-            <p class="panel-box__text">Is there a specific evening or weekend time that works best — weekdays or weekends?</p>
-          </div>
-          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-        </div>
-
-        <!-- RENT -->
-        <div class="panel-section" id="panel-rent">
-          <div class="avail-list">
-            <div class="avail-item"><span class="avail-name">Mutual aid fund (no docs)</span><span class="avail-badge avail-badge--available">Available</span></div>
-            <div class="avail-item"><span class="avail-name">BronxWorks emergency</span><span class="avail-badge avail-badge--available">Available</span></div>
-            <div class="avail-item"><span class="avail-name">FEMA direct (requires status)</span><span class="avail-badge avail-badge--ineligible">Ineligible</span></div>
-            <div class="avail-item"><span class="avail-name">FEMA via citizen child</span><span class="avail-badge avail-badge--eligible">Eligible</span></div>
-          </div>
-          <div class="source-line">NILC · verified Apr 2025 · Morey 2012</div>
-          <div class="panel-box panel-box--success">
-            <div class="panel-box__label">Eligibility — say out loud</div>
-            <p class="panel-box__text">Emergency rent assistance through local mutual aid does not require immigration documentation. You qualify based on demonstrated need.</p>
-          </div>
-          <div class="panel-box panel-box--warning">
-            <div class="panel-box__label">Clarifying question</div>
-            <p class="panel-box__text">Has your landlord given you any written notice, or is it just verbal so far?</p>
-          </div>
-          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-        </div>
-
-        <!-- CITIZEN CHILDREN -->
-        <div class="panel-section" id="panel-citizen-children">
-          <div class="avail-list">
-            <div class="avail-item"><span class="avail-name">FEMA application (for kids)</span><span class="avail-badge avail-badge--pathway">Opens pathway</span></div>
-            <div class="avail-item"><span class="avail-name">Medicaid for citizen children</span><span class="avail-badge avail-badge--eligible">Eligible</span></div>
-            <div class="avail-item"><span class="avail-name">School enrollment support</span><span class="avail-badge avail-badge--available">Available</span></div>
-            <div class="avail-item"><span class="avail-name">Cash assistance (parent)</span><span class="avail-badge avail-badge--status">Status required</span></div>
-          </div>
-          <div class="source-line">Morey 2012 · NILC · MOIA 2024</div>
-          <div class="panel-box panel-box--warning">
-            <div class="panel-box__label">Clarifying question</div>
-            <p class="panel-box__text">Do the kids have their birth certificates or social security cards accessible?</p>
-          </div>
-          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-        </div>
-
-        <!-- CONSIDERATION -->
-        <div class="panel-section" id="panel-consideration">
-          <div class="panel-box panel-box--gray">
-            <div class="panel-box__label">Context note</div>
-            <p class="panel-box__text">Qualitative observation — logged as session context. Worth remembering when deciding which org to recommend first.</p>
-          </div>
-          <div class="panel-box panel-box--warning">
-            <div class="panel-box__label">Practical note</div>
-            <p class="panel-box__text">Consider leading with the transparency script before naming any org. Let her ask which org rather than you naming one first.</p>
-          </div>
-          <textarea class="panel-textarea" placeholder="Which org? What did she say exactly?" rows="3"></textarea>
-        </div>
-
-        <!-- UNIFIED BLOCK PANEL — used for all block taps -->
-        <div class="panel-section" id="panel-api-generated">
-
-          <!-- Row 1: What's saved -->
-          <div>
-            <div class="panel-box__label" style="font-size:10px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:6px">What's saved</div>
-            <p style="font-size:13px;line-height:1.5;color:var(--color-text-primary)" id="api-panel-saved"></p>
-          </div>
-
-          <!-- Row 2: What's still needed -->
-          <div>
-            <div class="panel-box__label" style="font-size:10px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:6px">What's still needed</div>
-            <p style="font-size:12px;line-height:1.5;color:var(--color-text-warning)" id="api-panel-needed"></p>
-          </div>
-
-          <!-- Row 3: Suggested question -->
-          <div class="panel-box panel-box--warning" id="api-panel-question">
-            <div class="panel-box__label">Suggested question</div>
-            <p class="panel-box__text" id="api-panel-question-text"></p>
-          </div>
-
-          <!-- Row 4: Transparency script — only shown if data fear -->
-          <div class="panel-box panel-box--success" id="api-panel-script" style="display:none">
-            <div class="panel-box__label">Transparency script — say out loud</div>
-            <p class="panel-box__text" id="api-panel-script-text"></p>
-          </div>
-
-          <!-- Row 5: Eligibility note — only shown for need -->
-          <div class="panel-box panel-box--success" id="api-panel-eligibility" style="display:none">
-            <div class="panel-box__label">Eligibility — say out loud</div>
-            <p class="panel-box__text" id="api-panel-eligibility-text"></p>
-          </div>
-
-          <!-- Note textarea -->
-          <textarea class="panel-textarea" placeholder="Note response…" rows="3"></textarea>
-
-          <!-- Source citation -->
-          <div class="source-line" id="api-panel-source"></div>
-
-        </div>
-
+      <div class="side-panel__footer">
+        <button id="panel-confirm-btn" class="panel-confirm">Confirm + add to log</button>
       </div>
-
-      <div class="panel-confirm-wrap">
-        <button class="panel-confirm-btn" id="panel-confirm-btn">Confirm + add to log</button>
-        <div class="panel-source-below" id="panel-source-below"></div>
-      </div>
-
-    </div>
-
-    <!-- OUTPUT TAB -->
-    <div class="tab-content" id="tab-output" role="tabpanel">
-      <div class="tab-content__inner">
-
-        <div class="profile-grid">
-          <div class="profile-chip">
-            <div class="profile-chip__label">Primary</div>
-            <div class="profile-chip__value" id="chip-primary">Data fear</div>
-          </div>
-          <div class="profile-chip">
-            <div class="profile-chip__label">Secondary</div>
-            <div class="profile-chip__value" id="chip-secondary">Scheduling</div>
-          </div>
-          <div class="profile-chip">
-            <div class="profile-chip__label">Need</div>
-            <div class="profile-chip__value" id="chip-need">Rent / housing</div>
-          </div>
-          <div class="profile-chip">
-            <div class="profile-chip__label">Language</div>
-            <div class="profile-chip__value" id="chip-language">Spanish</div>
-          </div>
-        </div>
-
-        <div class="confidence-wrap">
-          <div class="confidence-row">
-            <span class="confidence-label">Match confidence</span>
-            <span class="confidence-pct" id="confidence-pct">75%</span>
-          </div>
-          <div class="confidence-track">
-            <div class="confidence-fill" id="confidence-fill"></div>
-          </div>
-        </div>
-
-        <div class="panel-box panel-box--warning">
-          <div class="panel-box__label">Suggested next question</div>
-          <p class="panel-box__text" id="suggested-question">Is there an evening or weekend time that works better for you?</p>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="script-block">
-          <div class="script-block__header">
-            <span class="script-block__label">Transparency script — say out loud</span>
-            <span class="script-block__sublabel">For data fear + rent assistance</span>
-          </div>
-          <p class="script-block__text">"What you tell me stays here. We don't record your name or immigration status. We don't share anything with DHS or ICE. We only track what type of help people need — never who they are."</p>
-          <span class="script-block__source">CMS 2022 · 805 UndocuFund model</span>
-        </div>
-
-        <!-- Generated script appended here by JS if API returns one -->
-        <div id="generated-scripts-container"></div>
-
-        <div class="divider"></div>
-
-        <div class="resource-card">
-          <div class="resource-header">
-            <span class="resource-name">Make the Road NY — Brooklyn</span>
-            <span class="avail-badge avail-badge--available">Available</span>
-          </div>
-          <p class="resource-why">Evening hours · strict no-share policy · rent assistance · Spanish</p>
-          <span class="resource-source">Curated network · verified this month · (718) 418-7690</span>
-        </div>
-
-        <div class="resource-card">
-          <div class="resource-header">
-            <span class="resource-name">BronxWorks — Tue/Thu evenings</span>
-            <span class="avail-badge avail-badge--available">Available</span>
-          </div>
-          <p class="resource-why">Walk-in evenings · no docs required · rent + family services</p>
-          <span class="resource-source">Network alert today · (718) 508-3000</span>
-        </div>
-
-        <div class="resource-card">
-          <div class="resource-header">
-            <span class="resource-name">NYIC Queens clinic</span>
-            <span class="avail-badge avail-badge--low">Low capacity</span>
-          </div>
-          <p class="resource-why">Evening screening · no status required · legal + housing</p>
-          <span class="resource-source">Curated network · verified Feb 2025 · walk-in</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="action-row">
-          <button class="btn-action btn-action--green" id="btn-whatsapp">Forward via WhatsApp</button>
-          <button class="btn-action btn-action--secondary" id="btn-print">Print</button>
-        </div>
-
-        <div class="action-row">
-          <button class="btn-action btn-action--blue" id="btn-log-session">Confirm + log session</button>
-          <button class="btn-action btn-action--secondary" id="btn-discard">Discard</button>
-        </div>
-
-      </div>
-      <div class="tab-footer">No personal data in log · sources shown for each resource</div>
     </div>
 
   </div>
 
-  <script>
+<script>
+  /* ── API CONFIG ─────────────────────────────────────────────── */
+  const GEMINI_API_KEY = "";   // leave blank — key is entered at runtime
+  var activeApiKey = '';
 
-    /* ── API CONFIG ─────────────────────────────────────────────── */
-    const GEMINI_API_KEY = "AIzaSyAq2qu8fJmdXJbEhEU0_zEQu4bSpdgXtPE";
-
-    const SYSTEM_PROMPT = `You are a decision-support assistant for CBO frontline workers and promotoras working with undocumented Hispanic immigrants in New York City.
+  const SYSTEM_PROMPT = `You are a decision-support assistant for CBO frontline workers and promotoras working with undocumented Hispanic immigrants in New York City.
 
 You never interact with immigrants directly. You support the worker only.
 
@@ -807,993 +1277,1159 @@ need subtypes: rent/housing · food/supplies · cash assistance · legal aid · 
 household subtypes: citizen children · mixed-status family · single adult · family with children · language preference — dot: household
 consideration: anything qualitative that does not fit above — dot: consideration`;
 
-    /* ── LOADING TEXT ───────────────────────────────────────────── */
-    function getLoadingText(input) {
-      var lower = input.toLowerCase();
+  /* ── LOADING TEXT ───────────────────────────────────────────── */
+  function getLoadingText(input) {
+    var lower = input.toLowerCase();
 
-      if (lower.match(/scared|fear|afraid|trust|\bice\b|dhs|share|report|deport|detention|arrest|raid|agent|officer|government|authorities|found out|find out|turn her in|turn him in/))
-        return "Noting the safety concern…";
+    if (lower.match(/scared|fear|afraid|trust|\bice\b|dhs|share|report|deport|detention|arrest|raid|agent|officer|government|authorities|found out|find out|turn her in|turn him in/))
+      return "Noting the safety concern…";
 
-      if (lower.match(/\brent\b|housing|eviction|landlord|apartment|lease|kicked out|nowhere to go|sleeping|shelter|stay|roof|home|\bhouse\b|displaced|moved out|forced out/))
-        return "Logging the housing need…";
+    if (lower.match(/\brent\b|housing|eviction|landlord|apartment|lease|kicked out|nowhere to go|sleeping|shelter|stay|roof|home|\bhouse\b|displaced|moved out|forced out/))
+      return "Logging the housing need…";
 
-      if (lower.match(/food|\beat\b|hungry|pantry|supplies|groceries|meals|starving|children eating|kids eating|nothing to eat|running out/))
-        return "Noting the food situation…";
+    if (lower.match(/food|\beat\b|hungry|pantry|supplies|groceries|meals|starving|children eating|kids eating|nothing to eat|running out/))
+      return "Noting the food situation…";
 
-      if (lower.match(/legal|lawyer|court|attorney|immigration|visa|status|papers|asylum|case|court hearing|immigration hearing|order|removal|detained|detention|represented|deportation order/))
-        return "Adding this to the legal picture…";
+    if (lower.match(/legal|lawyer|court|attorney|immigration|visa|status|papers|asylum|case|court hearing|immigration hearing|order|removal|detained|detention|represented|deportation order/))
+      return "Adding this to the legal picture…";
 
-      if (lower.match(/health|doctor|hospital|sick|clinic|medical|medicine|prescription|injury|pregnant|prenatal|mental health|therapy|counseling|treatment|emergency room|urgent care/))
-        return "Noting the health situation…";
+    if (lower.match(/health|doctor|hospital|sick|clinic|medical|medicine|prescription|injury|pregnant|prenatal|mental health|therapy|counseling|treatment|emergency room|urgent care/))
+      return "Noting the health situation…";
 
-      if (lower.match(/schedule|night|day|time|hours|morning|evening|daytime|appointment|available|weekday|weekend|shift|work hours|can't come in|during the day|after work/))
-        return "Jotting down the timing…";
+    if (lower.match(/schedule|night|day|time|hours|morning|evening|daytime|appointment|available|weekday|weekend|shift|work hours|can't come in|during the day|after work/))
+      return "Jotting down the timing…";
 
-      if (lower.match(/cost|money|pay|afford|insurance|fee|bill|expensive|\bbroke\b|no money|cash|funds|income|lost income|lost job|laid off|fired|no work|not working|unemployed|paycheck|wages/))
-        return "Noting the financial barrier…";
+    if (lower.match(/cost|money|pay|afford|insurance|fee|bill|expensive|\bbroke\b|no money|cash|funds|income|lost income|lost job|laid off|fired|no work|not working|unemployed|paycheck|wages/))
+      return "Noting the financial barrier…";
 
-      if (lower.match(/kids|children|born|citizen|family|daughter|\bson\b|baby|infant|pregnant|minors|school|childcare|daycare|custody|separated from|kids here|children here/))
-        return "Adding household context…";
+    if (lower.match(/kids|children|born|citizen|family|daughter|\bson\b|baby|infant|pregnant|minors|school|childcare|daycare|custody|separated from|kids here|children here/))
+      return "Adding household context…";
 
-      if (lower.match(/spanish|language|dialect|creole|bengali|mixtec|mandarin|cantonese|hindi|portuguese|french|arabic|doesn't speak|no english|limited english|translator|interpreter/))
-        return "Noting the language need…";
+    if (lower.match(/spanish|language|dialect|creole|bengali|mixtec|mandarin|cantonese|hindi|portuguese|french|arabic|doesn't speak|no english|limited english|translator|interpreter/))
+      return "Noting the language need…";
 
-      if (lower.match(/transport|\bbus\b|\btrain\b|subway|\bcar\b|ride|far|distance|can't get there|no way to get|getting there|location|too far/))
-        return "Logging the transport barrier…";
+    if (lower.match(/transport|\bbus\b|\btrain\b|subway|\bcar\b|ride|far|distance|can't get there|no way to get|getting there|location|too far/))
+      return "Logging the transport barrier…";
 
-      if (lower.match(/document|papers|\bid\b|passport|license|proof|card|social security|birth certificate|no papers|no id|undocumented|no documents/))
-        return "Noting the document situation…";
+    if (lower.match(/document|papers|\bid\b|passport|license|proof|card|social security|birth certificate|no papers|no id|undocumented|no documents/))
+      return "Noting the document situation…";
 
-      if (lower.match(/storm|flood|fire|hurricane|disaster|earthquake|emergency|crisis|lost everything|destroyed|damage|\bpower\b|water|heat|cold/))
-        return "Noting the emergency context…";
+    if (lower.match(/storm|flood|fire|hurricane|disaster|earthquake|emergency|crisis|lost everything|destroyed|damage|\bpower\b|water|heat|cold/))
+      return "Noting the emergency context…";
 
-      if (lower.match(/nervous|worried|anxious|stressed|crying|upset|overwhelmed|not sure|confused|don't know|hesitant|reluctant|not comfortable/))
-        return "Keeping note of that…";
+    if (lower.match(/nervous|worried|anxious|stressed|crying|upset|overwhelmed|not sure|confused|don't know|hesitant|reluctant|not comfortable/))
+      return "Keeping note of that…";
 
-      if (lower.match(/alone|by herself|by himself|no one|no family|no support|isolated|no network|no community/))
-        return "Noting the support situation…";
+    if (lower.match(/alone|by herself|by himself|no one|no family|no support|isolated|no network|no community/))
+      return "Noting the support situation…";
 
-      if (lower.match(/whatsapp|phone|call|\btext\b|message|contact|reach|get in touch/))
-        return "Logging the contact preference…";
+    if (lower.match(/whatsapp|phone|call|\btext\b|message|contact|reach|get in touch/))
+      return "Logging the contact preference…";
 
-      return "Jotting that down…";
-    }
+    return "Jotting that down…";
+  }
 
-    /* ── GEMINI CALL ────────────────────────────────────────────── */
-    async function callGemini(workerInput, sessionContext) {
-      const prompt = `Session so far: ${sessionContext}\n\nWorker input: "${workerInput}"`;
-      try {
-        await new Promise(function(r) { setTimeout(r, 5000); });
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.3, maxOutputTokens: 400 }
-            })
-          }
-        );
-        const data = await response.json();
-        const text = data.candidates[0].content.parts[0].text;
-        const clean = text.replace(/```json|```/g, "").trim();
-        return JSON.parse(clean);
-      } catch(e) {
+  /* ── GEMINI CALL ────────────────────────────────────────────── */
+  async function callGemini(workerInput, sessionContext) {
+    const prompt = `Session so far: ${sessionContext}\n\nWorker input: "${workerInput}"`;
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${activeApiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 600,
+              responseMimeType: "application/json"
+            }
+          })
+        }
+      );
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        console.error('[Gemini] API error:', data.error || data);
+        showToast('API error — check console');
         return null;
       }
-    }
 
-    /* ── SESSION STATE ──────────────────────────────────────────── */
-    var sessionContext = "data fear, scheduling, rent/housing, citizen children";
-    var barrierCount  = 2;
-    var needCount     = 1;
-    var chipPrimary   = "Data fear";
-    var chipSecondary = "Scheduling";
-    var chipNeed      = "Rent / housing";
-    var chipLanguage  = "Spanish";
-    var loggedItems   = [];          // new items only; hardcoded five are in the HTML
-
-    /* ── CONFIDENCE FLAGS ───────────────────────────────────────── */
-    // Initialized to reflect the five hardcoded session items already on screen.
-    // base 30 + hasNeed 25 + hasBarrier 20 = 75 (matches initial currentConfidence below).
-    var hasNeed                  = true;   // rent/housing need is in the hardcoded items
-    var hasBarrier               = true;   // data fear + scheduling are in the hardcoded items
-    var hasLanguage              = false;
-    var hasHousehold             = false;
-    var hasTransparencyAddressed = false;
-
-    /* ── CLOCK ──────────────────────────────────────────────────── */
-    function updateClock() {
-      var t = new Date();
-      document.getElementById('status-time').textContent =
-        t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-    updateClock();
-    setInterval(updateClock, 10000);
-
-    /* ── TAB SWITCHING ──────────────────────────────────────────── */
-    document.querySelectorAll('.tab-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.tab-btn').forEach(function(b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        document.querySelectorAll('.tab-content').forEach(function(c) {
-          c.classList.remove('active');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-      });
-    });
-
-    /* ── TOAST ──────────────────────────────────────────────────── */
-    var toastTimer;
-    function showToast(msg) {
-      var toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('visible');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function() { toast.classList.remove('visible'); }, 2500);
-    }
-
-    /* ── PROFILE UPDATE ─────────────────────────────────────────── */
-    var itemsAddedCount = 0;
-    var currentConfidence = 75;
-    var QUESTION_CYCLE = [
-      'Is there an evening or weekend time that works better for you?',
-      'Has someone you know had a bad experience with an organization?',
-      'Would it help if I explained exactly what we keep and what we don\'t?',
-      'Is there a time of day that works better — evenings or weekends?'
-    ];
-
-    function updateProfileChips(result) {
-      if (!result) return;
-      if (result.category === 'barrier') {
-        if (barrierCount === 0) {
-          chipPrimary = result.subtype;
-          document.getElementById('chip-primary').textContent = result.subtype;
-        } else if (barrierCount === 1) {
-          chipSecondary = result.subtype;
-          document.getElementById('chip-secondary').textContent = result.subtype;
-        }
-        barrierCount++;
-      }
-      if (result.category === 'need' && needCount === 0) {
-        chipNeed = result.subtype;
-        document.getElementById('chip-need').textContent = result.subtype;
-        needCount++;
-      }
-      if (result.category === 'household' && result.subtype === 'language preference') {
-        document.getElementById('chip-language').textContent = result.label || result.subtype;
-      }
-    }
-
-    function incrementProfile(result) {
-      itemsAddedCount++;
-
-      // Update session flags from the new item before recalculating confidence
-      if (result) {
-        if (result.category === 'need')    hasNeed    = true;
-        if (result.category === 'barrier') hasBarrier = true;
-        if (result.category === 'household' && result.subtype === 'language preference')
-          hasLanguage = true;
-        if (result.category === 'household' && (
-              result.subtype === 'citizen children'    ||
-              result.subtype === 'mixed-status family' ||
-              result.subtype === 'family with children'))
-          hasHousehold = true;
-        if (result.category === 'barrier' && result.subtype === 'data fear' && result.transparency_script)
-          hasTransparencyAddressed = true;
+      const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!raw) {
+        console.error('[Gemini] Unexpected response shape:', data);
+        return null;
       }
 
-      /*
-       * Research-grounded confidence formula — recalculated from scratch on every add
-       * base 30    minimum signal without any categorized data
-       * +25 hasNeed: eligibility pathway requires knowing what resource to match (Morey 2012, NILC)
-       * +20 hasBarrier: match only works when actual barrier is known not assumed (CMS 2022)
-       * +10 hasLanguage: language mismatch breaks last-mile delivery (Méndez et al. 2020)
-       * +10 hasHousehold: opens or closes eligibility pathways (Morey 2012)
-       *  +5 hasTransparencyAddressed: data fear unaddressed means match won't be used (CMS 2022)
-       * cap at 97
-       */
-      var score = 30;
-      if (hasNeed)                  score += 25;
-      if (hasBarrier)               score += 20;
-      if (hasLanguage)              score += 10;
-      if (hasHousehold)             score += 10;
-      if (hasTransparencyAddressed) score += 5;
-      score += Math.min(itemsAddedCount * 3, 12);
-      currentConfidence = Math.min(97, score);
+      const clean = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+      console.log('[Gemini] result:', parsed);
+      return parsed;
+    } catch(e) {
+      console.error('[Gemini] fetch/parse error:', e);
+      showToast('Network error — using keyword fallback');
+      return null;
+    }
+  }
 
-      document.getElementById('confidence-fill').style.width = currentConfidence + '%';
-      document.getElementById('confidence-pct').textContent  = currentConfidence + '%';
-      var headerEl = document.getElementById('header-confidence-pct');
-      headerEl.textContent = currentConfidence + '%';
-      headerEl.parentElement.classList.toggle('confident', currentConfidence >= 75);
+  /* ── SESSION STATE ──────────────────────────────────────────── */
+  var sessionContext = "";
+  var barrierCount = 0, needCount = 0;
+  var chipPrimary = "", chipSecondary = "", chipNeed = "", chipLanguage = "";
+  var loggedItems = [];
+  var itemsAddedCount = 0, currentConfidence = 30;
 
-      var idx = itemsAddedCount % QUESTION_CYCLE.length;
-      document.getElementById('suggested-question').textContent = QUESTION_CYCLE[idx];
-      if (result) updateProfileChips(result);
-      if (result && result.transparency_script) {
-        var container = document.getElementById('generated-scripts-container');
-        var div = document.createElement('div');
-        div.className = 'script-block';
-        div.style.marginTop = '4px';
-        div.innerHTML =
-          '<div class="script-block__header">' +
-            '<span class="script-block__label">Generated script — ' + (result.subtype || '') + '</span>' +
-          '</div>' +
-          '<p class="script-block__text">' + result.transparency_script + '</p>' +
-          '<span class="script-block__source">Generated by Gemini · CMS 2022 model</span>';
-        container.appendChild(div);
+  var barrierDepth = 0, needDepth = 0, householdDepth = 0;
+  var languageDepth = 0, transparencyDepth = 0, dataFearPresent = false;
+
+  /* ── PROFILE ITEMS — per-dimension logged items ─────────────── */
+  var profileItems = { barrier: [], need: [], household: [], language: [] };
+
+  /* ── RESOURCE MAP ───────────────────────────────────────────── */
+  var RESOURCE_MAP = {
+    'rent/housing': [
+      { name: 'Make the Road NY — Brooklyn', meta: 'Evening hours · strict no-share policy · rent · Spanish', phone: '(718) 418-7690', status: 'ok', statusLabel: 'Available' },
+      { name: 'BronxWorks — Tue/Thu evenings', meta: 'Walk-in evenings · no docs required · rent + family services', phone: '(718) 508-3000', status: 'ok', statusLabel: 'Available' },
+      { name: 'NYIC Queens clinic', meta: 'Evening screening · no status required · legal + housing', phone: null, status: 'warn', statusLabel: 'Low capacity' }
+    ]
+  };
+
+  var QUESTION_CYCLE = [
+    'Is there an evening or weekend time that works better for you?',
+    'Has someone you know had a bad experience with an organization?',
+    'Would it help if I explained exactly what we keep and what we don\'t?',
+    'Is there a time of day that works better — evenings or weekends?'
+  ];
+
+  /* ── BLOCK PANEL DATA ───────────────────────────────────────── */
+  var BLOCK_PANEL_DATA = {
+    'data-fear': {
+      category: 'barrier',
+      subtype: 'data fear',
+      saved: 'Scared to share her information with anyone',
+      needed: 'Source of fear — past experience, rumor, or something she heard?',
+      panel_note: 'Data fear is the most common barrier in this network. Lead with the transparency script before naming any resource.',
+      clarifying_question: 'Has someone you know had a bad experience sharing information with an organization?',
+      transparency_script: 'What you tell me stays here. We don\'t record your name or immigration status. We don\'t share anything with DHS or ICE. We only track what type of help people need — never who they are.',
+      eligibility_note: null,
+      source: 'Based on CMS 2022 · 805 UndocuFund model'
+    },
+    'scheduling': {
+      category: 'barrier',
+      subtype: 'scheduling',
+      saved: 'Works nights, can\'t do daytime appointments',
+      needed: 'Which days or times actually work — weekday evenings or weekends?',
+      panel_note: 'Resources matched to evening hours. Confirm specific availability before referring.',
+      clarifying_question: 'Is there a specific evening or weekend time that works better?',
+      transparency_script: null,
+      eligibility_note: null,
+      source: 'Curated network · verified today'
+    },
+    'rent': {
+      category: 'need',
+      subtype: 'rent/housing',
+      saved: 'Needs help with rent after the storm',
+      needed: 'Written notice or verbal only? How urgent is the timeline?',
+      panel_note: 'Emergency rent assistance through mutual aid does not require documentation.',
+      clarifying_question: 'Has your landlord given you any written notice, or is it just verbal so far?',
+      transparency_script: null,
+      eligibility_note: 'Emergency rent assistance through local mutual aid does not require immigration documentation. You qualify based on demonstrated need.',
+      source: 'Based on NILC · verified Apr 2025 · Morey 2012'
+    },
+    'citizen-children': {
+      category: 'household',
+      subtype: 'citizen children',
+      saved: 'Two kids, born in US',
+      needed: 'Are birth certificates or social security cards accessible?',
+      panel_note: 'Citizen children open FEMA pathway and Medicaid eligibility that wouldn\'t otherwise apply.',
+      clarifying_question: 'Do the kids have their birth certificates or social security cards accessible?',
+      transparency_script: null,
+      eligibility_note: null,
+      source: 'Based on Morey 2012 · NILC · MOIA 2024'
+    },
+    'consideration': {
+      category: 'consideration',
+      subtype: 'consideration',
+      saved: 'Nervous when org was mentioned',
+      needed: 'Which org specifically? What did she say or do?',
+      panel_note: 'Qualitative observation — lead with transparency script before naming any org.',
+      clarifying_question: 'Which organization was mentioned? Did she say anything specific about why?',
+      transparency_script: null,
+      eligibility_note: null,
+      source: 'Qualitative observation — not matched to a source'
+    }
+  };
+
+  var BLOCK_SOURCE_MAP = {
+    barrier:       'Based on CMS 2022 · 805 UndocuFund model · if unusual confirm before referring',
+    need:          'Based on NILC · verified Apr 2025 · if situation is unusual confirm before referring',
+    household:     'Based on Morey 2012 · NILC · MOIA 2024',
+    consideration: 'Qualitative observation — not matched to a source'
+  };
+
+  /* ── KEYWORD MAP (fallback) ─────────────────────────────────── */
+  var KEYWORD_MAP = [
+    { keywords: ['fear','scared','share','trust','ice','dhs'],              dot: 'barrier',      category: 'barrier · data fear',          panel: 'data-fear' },
+    { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'], dot: 'barrier', category: 'barrier · scheduling', panel: 'scheduling' },
+    { keywords: ['cost','money','pay','afford','insurance','fee'],           dot: 'barrier',      category: 'barrier · cost',               panel: 'consideration' },
+    { keywords: ['rent','housing','eviction','landlord','apartment'],        dot: 'need',         category: 'need · rent/housing',          panel: 'rent' },
+    { keywords: ['food','supplies','pantry','eat','hungry'],                 dot: 'need',         category: 'need · food/supplies',         panel: 'consideration' },
+    { keywords: ['legal','lawyer','court','immigration','attorney'],         dot: 'need',         category: 'need · legal aid',             panel: 'consideration' },
+    { keywords: ['health','doctor','hospital','sick','medical','clinic'],    dot: 'need',         category: 'need · healthcare',            panel: 'consideration' },
+    { keywords: ['kids','children','born','citizen','family','daughter','son'], dot: 'household', category: 'household · citizen children', panel: 'citizen-children' },
+    { keywords: ['spanish','english','language','dialect','creole','bengali'], dot: 'household',  category: 'household · language',         panel: 'consideration' }
+  ];
+
+  function categorize(text) {
+    var lower = text.toLowerCase();
+    for (var i = 0; i < KEYWORD_MAP.length; i++) {
+      var rule = KEYWORD_MAP[i];
+      for (var j = 0; j < rule.keywords.length; j++) {
+        if (lower.indexOf(rule.keywords[j]) !== -1) return rule;
       }
-      // Persist updated confidence, question index, and chip state after every add or confirm
-      saveSession();
+    }
+    return { dot: 'consideration', category: 'consideration', panel: 'consideration' };
+  }
+
+  /* ── ESCAPE HTML ────────────────────────────────────────────── */
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  /* ── BUILD HIGHLIGHTED TEXT ─────────────────────────────────── */
+  function buildHighlightedText(text, category, subtype, apiResult) {
+    var phClass = 'block-ph ph-' + (category || 'consideration');
+    var escaped = escapeHtml(text);
+
+    if (apiResult && apiResult.label) {
+      var label = apiResult.label;
+      var escapedLabel = escapeHtml(label);
+      var idx = escaped.toLowerCase().indexOf(escapedLabel.toLowerCase());
+      if (idx !== -1) {
+        return escaped.slice(0, idx) +
+          '<span class="' + phClass + '">' +
+          escaped.slice(idx, idx + escapedLabel.length) +
+          '</span>' +
+          escaped.slice(idx + escapedLabel.length);
+      }
     }
 
-    /* ── PANEL OPEN / CLOSE ─────────────────────────────────────── */
-    var PANEL_META = {
-      'data-fear':        { badgeClass: 'panel-header__badge--barrier',       badgeText: 'barrier · data fear',           confirmText: 'Confirm + add to log', sourceBelow: 'CMS 2022 · 805 UndocuFund model' },
-      'scheduling':       { badgeClass: 'panel-header__badge--barrier',       badgeText: 'barrier · scheduling',          confirmText: 'Confirm',              sourceBelow: '' },
-      'rent':             { badgeClass: 'panel-header__badge--need',           badgeText: 'need · rent/housing',           confirmText: 'Confirm',              sourceBelow: '' },
-      'citizen-children': { badgeClass: 'panel-header__badge--household',     badgeText: 'household · citizen children',  confirmText: 'Confirm',              sourceBelow: '' },
-      'consideration':    { badgeClass: 'panel-header__badge--consideration', badgeText: 'consideration',                 confirmText: 'Add to log',           sourceBelow: '' },
-      'api-generated':    { badgeClass: 'panel-header__badge--consideration', badgeText: 'logged',                        confirmText: 'Confirm + add to log', sourceBelow: 'Generated by Gemini · CMS 2022, NILC, Morey 2012' }
+    var keywordMap = {
+      'data fear':    ['scared','fear','share','trust','ice','dhs','report','deport'],
+      'scheduling':   ['night','day','daytime','morning','evening','time','hours','schedule','appointment'],
+      'cost':         ['money','cost','pay','afford','insurance','fee','broke'],
+      'rent/housing': ['rent','housing','eviction','landlord','apartment','home'],
+      'food/supplies':['food','eat','hungry','pantry','groceries'],
+      'legal aid':    ['legal','lawyer','court','attorney','immigration'],
+      'healthcare':   ['health','doctor','hospital','sick','clinic','medical'],
+      'citizen children':['kids','children','born','citizen','family','daughter','son'],
+      'language preference':['spanish','language','dialect','mixtec','creole']
     };
 
-    var BLOCK_PANEL_DATA = {
-      'data-fear': {
-        category: 'barrier',
-        subtype: 'data fear',
-        panel_note: 'Data fear is the most common barrier in this network. Lead with the transparency script before naming any resource.',
-        clarifying_question: 'Has someone you know had a bad experience sharing information with an organization?',
-        transparency_script: 'What you tell me stays here. We don\'t record your name or immigration status. We don\'t share anything with DHS or ICE. We only track what type of help people need — never who they are.',
-        eligibility_note: null,
-        source: 'Based on CMS 2022 · 805 UndocuFund model'
-      },
-      'scheduling': {
-        category: 'barrier',
-        subtype: 'scheduling',
-        panel_note: 'Resources matched to evening hours. Confirm specific availability before referring.',
-        clarifying_question: 'Is there a specific evening or weekend time that works better?',
-        transparency_script: null,
-        eligibility_note: null,
-        source: 'Curated network · verified today'
-      },
-      'rent': {
-        category: 'need',
-        subtype: 'rent/housing',
-        panel_note: 'Emergency rent assistance through mutual aid does not require documentation.',
-        clarifying_question: 'Has your landlord given you any written notice, or is it just verbal so far?',
-        transparency_script: null,
-        eligibility_note: 'Emergency rent assistance through local mutual aid does not require immigration documentation. You qualify based on demonstrated need.',
-        source: 'Based on NILC · verified Apr 2025 · Morey 2012'
-      },
-      'citizen-children': {
-        category: 'household',
-        subtype: 'citizen children',
-        panel_note: 'Citizen children open FEMA pathway and Medicaid eligibility that wouldn\'t otherwise apply.',
-        clarifying_question: 'Do the kids have their birth certificates or social security cards accessible?',
-        transparency_script: null,
-        eligibility_note: null,
-        source: 'Based on Morey 2012 · NILC · MOIA 2024'
-      },
-      'consideration': {
-        category: 'consideration',
-        subtype: 'consideration',
-        panel_note: 'Qualitative observation — lead with transparency script before naming any org.',
-        clarifying_question: 'Which organization was mentioned? Did she say anything specific about why?',
-        transparency_script: null,
-        eligibility_note: null,
-        source: 'Qualitative observation — not matched to a source'
-      }
-    };
+    var keywords = keywordMap[subtype] || keywordMap[category] || [];
+    var lowerText = text.toLowerCase();
 
-    function openPanel(itemEl) {
-      var panelId  = itemEl.dataset.panel || 'consideration';
-      var meta     = PANEL_META[panelId] || PANEL_META['consideration'];
-      var titleText = '';
-      var prev = itemEl.previousElementSibling;
-      if (prev && prev.classList.contains('chat-msg')) {
-        titleText = prev.textContent;
-      } else {
-        titleText = meta.badgeText;
+    for (var i = 0; i < keywords.length; i++) {
+      var kw = keywords[i];
+      var ki = lowerText.indexOf(kw);
+      if (ki !== -1) {
+        var start = ki;
+        var end = ki + kw.length;
+        while (start > 0 && /\w/.test(text[start - 1])) start--;
+        while (end < text.length && /\w/.test(text[end])) end++;
+        var escapedFull = escapeHtml(text);
+        return escapedFull.slice(0, start) +
+          '<span class="' + phClass + '">' +
+          escapedFull.slice(start, end) +
+          '</span>' +
+          escapedFull.slice(end);
       }
-      document.getElementById('panel-title').textContent = titleText;
-      var badge = document.getElementById('panel-badge');
-      badge.className = 'panel-header__badge ' + meta.badgeClass;
-      badge.textContent = meta.badgeText;
-      document.querySelectorAll('.panel-section').forEach(function(s) { s.classList.remove('active'); });
-      document.getElementById('panel-' + panelId).classList.add('active');
-      var confirmBtn = document.getElementById('panel-confirm-btn');
-      confirmBtn.textContent = meta.confirmText;
-      confirmBtn.classList.remove('confirmed');
-      var src = document.getElementById('panel-source-below');
-      src.textContent = meta.sourceBelow;
-      src.style.display = meta.sourceBelow ? 'block' : 'none';
-      document.getElementById('side-panel').classList.add('open');
-      document.getElementById('panel-overlay').classList.add('visible');
     }
 
-    function closePanel() {
-      document.getElementById('side-panel').classList.remove('open');
-      document.getElementById('panel-overlay').classList.remove('visible');
+    var words = text.split(' ');
+    var chunk = [];
+    for (var w = 0; w < words.length && chunk.length < 3; w++) {
+      if (words[w].length > 3) chunk.push(words[w]);
+    }
+    if (chunk.length > 0) {
+      var chunkStr = chunk.join(' ');
+      var chunkIdx = text.indexOf(chunkStr);
+      if (chunkIdx !== -1) {
+        var e = escapeHtml(text);
+        return e.slice(0, chunkIdx) +
+          '<span class="' + phClass + '">' +
+          e.slice(chunkIdx, chunkIdx + chunkStr.length) +
+          '</span>' +
+          e.slice(chunkIdx + chunkStr.length);
+      }
     }
 
-    document.querySelectorAll('#chat-thread .chat-card').forEach(function(card) {
-      card.addEventListener('click', function() { openPanel(card); });
-    });
-    document.getElementById('panel-close').addEventListener('click', closePanel);
-    document.getElementById('panel-overlay').addEventListener('click', closePanel);
+    return '<span class="' + phClass + '">' + escaped + '</span>';
+  }
 
-    /* ── CONFIRM BUTTON ─────────────────────────────────────────── */
-    document.getElementById('panel-confirm-btn').addEventListener('click', function() {
-      this.textContent = 'Added ✓';
-      this.classList.add('confirmed');
-      incrementProfile(null);
-      setTimeout(function() { closePanel(); }, 600);
+  /* ── DRAG TO REORDER ─────────────────────────────────────────── */
+  function addDragListeners(block) {
+    var handle = block.querySelector('.block-handle');
+    if (!handle) return;
+
+    var isDragging = false;
+    var longPressTimer = null;
+    var capturedId = null;
+
+    handle.addEventListener('pointerdown', function(e) {
+      e.preventDefault();
+      capturedId = e.pointerId;
+      longPressTimer = setTimeout(function() {
+        isDragging = true;
+        block.classList.add('block-dragging');
+        try { handle.setPointerCapture(capturedId); } catch(err) {}
+      }, 280);
     });
 
-    /* ── KEYWORD MAP (fallback) ─────────────────────────────────── */
-    var KEYWORD_MAP = [
-      { keywords: ['fear','scared','share','trust','ice','dhs'],              dot: 'barrier',      category: 'barrier · data fear',          panel: 'data-fear' },
-      { keywords: ['schedule','night','day','time','hours','morning','evening','daytime'], dot: 'barrier', category: 'barrier · scheduling', panel: 'scheduling' },
-      { keywords: ['cost','money','pay','afford','insurance','fee'],           dot: 'barrier',      category: 'barrier · cost',               panel: 'consideration' },
-      { keywords: ['rent','housing','eviction','landlord','apartment'],        dot: 'need',         category: 'need · rent/housing',          panel: 'rent' },
-      { keywords: ['food','supplies','pantry','eat','hungry'],                 dot: 'need',         category: 'need · food/supplies',         panel: 'consideration' },
-      { keywords: ['legal','lawyer','court','immigration','attorney'],         dot: 'need',         category: 'need · legal aid',             panel: 'consideration' },
-      { keywords: ['health','doctor','hospital','sick','medical','clinic'],    dot: 'need',         category: 'need · healthcare',            panel: 'consideration' },
-      { keywords: ['kids','children','born','citizen','family','daughter','son'], dot: 'household', category: 'household · citizen children', panel: 'citizen-children' },
-      { keywords: ['spanish','english','language','dialect','creole','bengali'], dot: 'household',  category: 'household · language',         panel: 'consideration' }
-    ];
-
-    function categorize(text) {
-      var lower = text.toLowerCase();
-      for (var i = 0; i < KEYWORD_MAP.length; i++) {
-        var rule = KEYWORD_MAP[i];
-        for (var j = 0; j < rule.keywords.length; j++) {
-          if (lower.indexOf(rule.keywords[j]) !== -1) return rule;
-        }
-      }
-      return { dot: 'consideration', category: 'consideration', panel: 'consideration' };
-    }
-
-    /* ── LOCALSTORAGE: SAVE SESSION ─────────────────────────────── */
-    function saveSession() {
-      var ta = document.querySelector('.worker-notes__textarea');
-      // Build one object with all restorable state.
-      // loggedItems holds only API-derived labels and metadata —
-      // no verbatim person text and no raw API responses are stored.
-      var data = {
-        confidence:      currentConfidence,
-        itemsAddedCount: itemsAddedCount,
-        barrierCount:    barrierCount,
-        needCount:       needCount,
-        chipPrimary:     chipPrimary,
-        chipSecondary:   chipSecondary,
-        chipNeed:        chipNeed,
-        chipLanguage:    chipLanguage,
-        // sessionContext is the running subtype list passed to Gemini to avoid repeating questions
-        sessionContext:  sessionContext,
-        // workerNotes is device-only; saved so workers don't lose in-progress notes on reload
-        workerNotes:     ta ? ta.value : '',
-        loggedItems:     loggedItems,
-        // confidence flags — required to recalculate correctly when new items are added after restore
-        hasNeed:                  hasNeed,
-        hasBarrier:               hasBarrier,
-        hasLanguage:              hasLanguage,
-        hasHousehold:             hasHousehold,
-        hasTransparencyAddressed: hasTransparencyAddressed
-      };
-      // Serialize the whole object to JSON and write it under one fixed key — one key, one object
-      localStorage.setItem('steadymode_session', JSON.stringify(data));
-    }
-
-    /* ── LOCALSTORAGE: LOAD SESSION ─────────────────────────────── */
-    function loadSession() {
-      // Read the single session key; return immediately if nothing was previously saved
-      var raw = localStorage.getItem('steadymode_session');
-      if (!raw) return;
-
-      var data;
-      try {
-        // Parse the stored JSON string back into a JS object so fields can be read individually
-        data = JSON.parse(raw);
-      } catch(e) { return; }
-      if (!data) return;
-
-      // Restore confidence score and sync the bar, percentage label, and header indicator
-      if (typeof data.confidence === 'number') {
-        currentConfidence = data.confidence;
-        document.getElementById('confidence-fill').style.width = currentConfidence + '%';
-        document.getElementById('confidence-pct').textContent  = currentConfidence + '%';
-        var headerEl = document.getElementById('header-confidence-pct');
-        headerEl.textContent = currentConfidence + '%';
-        headerEl.parentElement.classList.toggle('confident', currentConfidence >= 75);
-      }
-      // Restore item counter so the question cycle resumes from where it left off
-      if (typeof data.itemsAddedCount === 'number') {
-        itemsAddedCount = data.itemsAddedCount;
-        document.getElementById('suggested-question').textContent =
-          QUESTION_CYCLE[itemsAddedCount % QUESTION_CYCLE.length];
-      }
-      // Restore counters that gate future chip updates so new barriers/needs slot correctly
-      if (typeof data.barrierCount === 'number') barrierCount = data.barrierCount;
-      if (typeof data.needCount    === 'number') needCount    = data.needCount;
-      // Restore confidence flags so recalculation is correct when new items are added after restore
-      if (typeof data.hasNeed                  === 'boolean') hasNeed                  = data.hasNeed;
-      if (typeof data.hasBarrier               === 'boolean') hasBarrier               = data.hasBarrier;
-      if (typeof data.hasLanguage              === 'boolean') hasLanguage              = data.hasLanguage;
-      if (typeof data.hasHousehold             === 'boolean') hasHousehold             = data.hasHousehold;
-      if (typeof data.hasTransparencyAddressed === 'boolean') hasTransparencyAddressed = data.hasTransparencyAddressed;
-
-      // Restore barrier-profile chip text values shown in the Output tab
-      if (data.chipPrimary)   { chipPrimary   = data.chipPrimary;   document.getElementById('chip-primary').textContent   = data.chipPrimary; }
-      if (data.chipSecondary) { chipSecondary = data.chipSecondary; document.getElementById('chip-secondary').textContent = data.chipSecondary; }
-      if (data.chipNeed)      { chipNeed      = data.chipNeed;      document.getElementById('chip-need').textContent      = data.chipNeed; }
-      if (data.chipLanguage)  { chipLanguage  = data.chipLanguage;  document.getElementById('chip-language').textContent  = data.chipLanguage; }
-
-      // Restore the Gemini session context string so the model doesn't repeat categories
-      if (typeof data.sessionContext === 'string') sessionContext = data.sessionContext;
-
-      // Restore worker notes; device-only field, never transmitted or logged
-      if (typeof data.workerNotes === 'string') {
-        var ta = document.querySelector('.worker-notes__textarea');
-        if (ta) ta.value = data.workerNotes;
-      }
-
-      // Re-render each saved logged item in the notes thread;
-      // the five hardcoded blocks are already present in the HTML — only new ones are stored
-      if (Array.isArray(data.loggedItems) && data.loggedItems.length > 0) {
-        data.loggedItems.forEach(function(item) { appendBlock(item.label || item.category, item.dot || 'consideration', '', null); });
-        // Replace empty array with the restored list so future saves include all items
-        loggedItems = data.loggedItems;
-      }
-    }
-
-    /* ── OPEN API-GENERATED PANEL ───────────────────────────────── */
-    function openApiPanel(result, cardEl) {
-      var meta = PANEL_META['api-generated'];
-
-      var textEl = cardEl.querySelector ? cardEl.querySelector('.block-text') : null;
-      var titleText = textEl ? textEl.textContent.trim() : (result.label || 'Logged item');
-      document.getElementById('panel-title').textContent = titleText;
-
-      var badgeClassMap = { barrier: 'panel-header__badge--barrier', need: 'panel-header__badge--need', household: 'panel-header__badge--household', consideration: 'panel-header__badge--consideration' };
-      var badge = document.getElementById('panel-badge');
-      badge.className = 'panel-header__badge ' + (badgeClassMap[result.category] || 'panel-header__badge--consideration');
-      badge.textContent = result.category + (result.subtype ? ' · ' + result.subtype : '');
-
-      document.getElementById('api-panel-note-text').textContent     = result.panel_note || '';
-      document.getElementById('api-panel-question-text').textContent  = result.clarifying_question || '';
-
-      var scriptBox = document.getElementById('api-panel-script');
-      if (result.transparency_script) {
-        document.getElementById('api-panel-script-text').textContent = result.transparency_script;
-        scriptBox.style.display = 'block';
-      } else {
-        scriptBox.style.display = 'none';
-      }
-
-      var eligBox = document.getElementById('api-panel-eligibility');
-      if (result.eligibility_note) {
-        document.getElementById('api-panel-eligibility-text').textContent = result.eligibility_note;
-        eligBox.style.display = 'block';
-      } else {
-        eligBox.style.display = 'none';
-      }
-
-      document.querySelectorAll('.panel-section').forEach(function(s) { s.classList.remove('active'); });
-      document.getElementById('panel-api-generated').classList.add('active');
-
-      var confirmBtn = document.getElementById('panel-confirm-btn');
-      confirmBtn.textContent = meta.confirmText;
-      confirmBtn.classList.remove('confirmed');
-
-      var src = document.getElementById('panel-source-below');
-      src.textContent = meta.sourceBelow;
-      src.style.display = meta.sourceBelow ? 'block' : 'none';
-
-      var sourceMap = {
-        barrier:       'Based on CMS 2022 · 805 UndocuFund model · if unusual confirm before referring',
-        need:          'Based on NILC · verified Apr 2025 · if situation is unusual confirm before referring',
-        household:     'Based on Morey 2012 · NILC · MOIA 2024',
-        consideration: 'Qualitative observation — not matched to a source'
-      };
-      var sourceEl = document.getElementById('api-panel-source');
-      if (sourceEl) sourceEl.textContent = sourceMap[result.category] || sourceMap.consideration;
-
-      document.getElementById('side-panel').classList.add('open');
-      document.getElementById('panel-overlay').classList.add('visible');
-    }
-
-    /* ── UNIFIED BLOCK PANEL ────────────────────────────────────── */
-    function openBlockPanel(data, block) {
-      var badgeClassMap = {
-        barrier:       'panel-header__badge--barrier',
-        need:          'panel-header__badge--need',
-        household:     'panel-header__badge--household',
-        consideration: 'panel-header__badge--consideration'
-      };
-
-      // Title from block text
-      var textEl = block.querySelector('.block-text');
-      var title = textEl ? textEl.textContent.trim() : (data.saved || 'Logged item');
-      document.getElementById('panel-title').textContent = title;
-
-      // Badge
-      var badge = document.getElementById('panel-badge');
-      badge.className = 'panel-header__badge ' + (badgeClassMap[data.category] || 'panel-header__badge--consideration');
-      badge.textContent = data.category + (data.subtype ? ' · ' + data.subtype : '');
-
-      // Hide all sections, show unified panel
-      document.querySelectorAll('.panel-section').forEach(function(s) { s.classList.remove('active'); });
-      document.getElementById('panel-api-generated').classList.add('active');
-
-      // Populate fields
-      var savedEl = document.getElementById('api-panel-saved');
-      if (savedEl) savedEl.textContent = data.saved || '';
-
-      var neededEl = document.getElementById('api-panel-needed');
-      if (neededEl) neededEl.textContent = data.needed || '';
-
-      var qEl = document.getElementById('api-panel-question-text');
-      if (qEl) qEl.textContent = data.clarifying_question || '';
-
-      var scriptBox = document.getElementById('api-panel-script');
-      var scriptText = document.getElementById('api-panel-script-text');
-      if (scriptBox && scriptText) {
-        if (data.transparency_script) {
-          scriptText.textContent = data.transparency_script;
-          scriptBox.style.display = 'block';
-        } else {
-          scriptBox.style.display = 'none';
-        }
-      }
-
-      var eligBox = document.getElementById('api-panel-eligibility');
-      var eligText = document.getElementById('api-panel-eligibility-text');
-      if (eligBox && eligText) {
-        if (data.eligibility_note) {
-          eligText.textContent = data.eligibility_note;
-          eligBox.style.display = 'block';
-        } else {
-          eligBox.style.display = 'none';
-        }
-      }
-
-      var sourceEl = document.getElementById('api-panel-source');
-      if (sourceEl) sourceEl.textContent = data.source || '';
-
-      // Reset confirm button
-      var confirmBtn = document.getElementById('panel-confirm-btn');
-      confirmBtn.textContent = 'Confirm + add to log';
-      confirmBtn.classList.remove('confirmed');
-      document.getElementById('panel-source-below').style.display = 'none';
-
-      // Open panel
-      document.getElementById('side-panel').classList.add('open');
-      document.getElementById('panel-overlay').classList.add('visible');
-    }
-
-    /* ── WORKER NOTES AUTOSAVE ──────────────────────────────────── */
-    // Save whenever the worker edits their local notes so changes survive a reload
-    document.querySelector('.worker-notes__textarea').addEventListener('input', function() {
-      saveSession();
-    });
-
-    /* ── LOAD SAVED SESSION ON STARTUP ─────────────────────────── */
-    // Runs once at page load; reads localStorage and restores state if a session was saved
-    loadSession();
-
-    /* ── NOTES DATE ─────────────────────────────────────────────── */
-    (function() {
-      var d = new Date();
-      document.getElementById('notes-date').textContent =
-        'Today · ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    })();
-
-    /* ── DELEGATED BLOCK TAP HANDLER ────────────────────────────── */
-    var BLOCK_SOURCE_MAP = {
-      barrier:       'Based on CMS 2022 · 805 UndocuFund model · if unusual confirm before referring',
-      need:          'Based on NILC · verified Apr 2025 · if situation is unusual confirm before referring',
-      household:     'Based on Morey 2012 · NILC · MOIA 2024',
-      consideration: 'Qualitative observation — not matched to a source'
-    };
-
-    document.getElementById('notes-thread').addEventListener('click', function(e) {
-      var block = e.target.closest('.note-block');
-      if (!block) return;
-
-      var panelId = block.dataset.panel;
-      var data;
-
-      if (panelId === 'api-generated' && block.dataset.apiResult) {
-        try {
-          var r = JSON.parse(block.dataset.apiResult);
-          data = {
-            category:            r.category,
-            subtype:             r.subtype,
-            panel_note:          r.panel_note || '',
-            clarifying_question: r.clarifying_question || '',
-            transparency_script: r.transparency_script || null,
-            eligibility_note:    r.eligibility_note || null,
-            source: BLOCK_SOURCE_MAP[r.category] || BLOCK_SOURCE_MAP.consideration
-          };
-        } catch(err) {
-          data = BLOCK_PANEL_DATA['consideration'];
-        }
-      } else {
-        data = BLOCK_PANEL_DATA[panelId] || BLOCK_PANEL_DATA['consideration'];
-      }
-
-      openBlockPanel(data, block);
-    });
-
-    /* ── ENTER TO LOG ───────────────────────────────────────────── */
-    var isPasted = false;
-
-    document.getElementById('block-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        var text = this.innerText.replace(/\n+$/, '').trim();
-        if (!text) return;
-        var useLLM = !isPasted || document.getElementById('llm-toggle').checked;
-        this.innerText = '';
-        document.getElementById('block-toggle-row').style.display = 'none';
-        document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
-        isPasted = false;
-        processBlock(text, useLLM);
-      }
-    });
-
-    /* ── PASTE DETECTION ─────────────────────────────────────────── */
-    document.getElementById('block-input').addEventListener('paste', function() {
-      isPasted = true;
-      setTimeout(function() {
-        document.getElementById('block-toggle-row').style.display = 'flex';
-        document.getElementById('llm-toggle').checked = false;
-        document.getElementById('notes-footer-hint').textContent = 'pasted content — toggle to process';
-      }, 50);
-    });
-
-    /* ── PROCESS BLOCK ───────────────────────────────────────────── */
-    async function processBlock(text, useLLM) {
+    handle.addEventListener('pointermove', function(e) {
+      if (!isDragging) return;
+      e.preventDefault();
       var thread = document.getElementById('notes-thread');
+      var blocks = Array.from(thread.querySelectorAll('.note-block:not(.block-dragging)'));
+      var my = e.clientY;
+      thread.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
+      var target = null;
+      for (var i = 0; i < blocks.length; i++) {
+        var r = blocks[i].getBoundingClientRect();
+        if (my < r.top + r.height / 2) { target = blocks[i]; break; }
+      }
+      var indicator = document.createElement('div');
+      indicator.className = 'drop-indicator';
+      var inputWrap = document.getElementById('block-input-wrap');
+      thread.insertBefore(indicator, target || inputWrap);
+    });
 
-      if (!useLLM) {
-        appendBlock(text, 'consideration', 'consideration', null);
+    handle.addEventListener('pointerup', function(e) {
+      clearTimeout(longPressTimer);
+      if (!isDragging) return;
+      var thread = document.getElementById('notes-thread');
+      var blocks = Array.from(thread.querySelectorAll('.note-block:not(.block-dragging)'));
+      var my = e.clientY;
+      var target = null;
+      for (var i = 0; i < blocks.length; i++) {
+        var r = blocks[i].getBoundingClientRect();
+        if (my < r.top + r.height / 2) { target = blocks[i]; break; }
+      }
+      var inputWrap = document.getElementById('block-input-wrap');
+      thread.insertBefore(block, target || inputWrap);
+      thread.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
+      block.classList.remove('block-dragging');
+      isDragging = false;
+    });
+
+    handle.addEventListener('pointercancel', function() {
+      clearTimeout(longPressTimer);
+      isDragging = false;
+      block.classList.remove('block-dragging');
+      document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
+    });
+  }
+
+  /* ── LOCALSTORAGE: SAVE / LOAD ──────────────────────────────── */
+  function saveSession() {
+    var data = {
+      confidence:      currentConfidence,
+      itemsAddedCount: itemsAddedCount,
+      barrierCount:    barrierCount,
+      needCount:       needCount,
+      chipPrimary:     chipPrimary,
+      chipSecondary:   chipSecondary,
+      chipNeed:        chipNeed,
+      chipLanguage:    chipLanguage,
+      sessionContext:  sessionContext,
+      loggedItems:       loggedItems,
+      barrierDepth:      barrierDepth,
+      needDepth:         needDepth,
+      householdDepth:    householdDepth,
+      languageDepth:     languageDepth,
+      transparencyDepth: transparencyDepth,
+      dataFearPresent:   dataFearPresent,
+      profileItems:      profileItems
+    };
+    try { localStorage.setItem('steadymode_session', JSON.stringify(data)); } catch(e) {}
+  }
+
+  function loadSession() {
+    var raw;
+    try { raw = localStorage.getItem('steadymode_session'); } catch(e) { return; }
+    if (!raw) return;
+
+    var data;
+    try { data = JSON.parse(raw); } catch(e) { return; }
+    if (!data) return;
+
+    if (typeof data.confidence === 'number') currentConfidence = data.confidence;
+    if (typeof data.itemsAddedCount === 'number') {
+      itemsAddedCount = data.itemsAddedCount;
+      document.getElementById('suggested-question').textContent =
+        QUESTION_CYCLE[itemsAddedCount % QUESTION_CYCLE.length];
+    }
+    if (typeof data.barrierCount   === 'number') barrierCount = data.barrierCount;
+    if (typeof data.needCount      === 'number') needCount    = data.needCount;
+    if (typeof data.barrierDepth      === 'number') barrierDepth      = data.barrierDepth;
+    if (typeof data.needDepth         === 'number') needDepth         = data.needDepth;
+    if (typeof data.householdDepth    === 'number') householdDepth    = data.householdDepth;
+    if (typeof data.languageDepth     === 'number') languageDepth     = data.languageDepth;
+    if (typeof data.transparencyDepth === 'number') transparencyDepth = data.transparencyDepth;
+    if (typeof data.dataFearPresent   === 'boolean') dataFearPresent  = data.dataFearPresent;
+    if (data.profileItems && typeof data.profileItems === 'object') profileItems = data.profileItems;
+
+    if (data.chipPrimary)   chipPrimary   = data.chipPrimary;
+    if (data.chipSecondary) chipSecondary = data.chipSecondary;
+    if (data.chipNeed)      chipNeed      = data.chipNeed;
+    if (data.chipLanguage)  chipLanguage  = data.chipLanguage;
+
+    if (typeof data.sessionContext === 'string') sessionContext = data.sessionContext;
+
+    if (Array.isArray(data.loggedItems) && data.loggedItems.length > 0) {
+      data.loggedItems.forEach(function(item) {
+        appendBlock(item.label || item.category, item.dot || 'consideration', '', null);
+      });
+      loggedItems = data.loggedItems;
+    }
+  }
+
+  /* ── RENDER PROFILE ─────────────────────────────────────────── */
+  function renderProfile() {
+    var container = document.getElementById('profile-dims');
+    if (!container) return;
+    container.innerHTML = '';
+
+    var dotColors = {
+      barrier:   'var(--color-ph-barrier-text)',
+      need:      'var(--color-ph-need-text)',
+      household: 'var(--color-ph-household-text)',
+      language:  'var(--color-ph-household-text)',
+      safety:    'var(--color-text-warning)'
+    };
+
+    var dims = [
+      { key: 'barrier',   label: 'Barrier',   items: profileItems.barrier,   emptyText: 'No barriers logged yet' },
+      { key: 'need',      label: 'Need',       items: profileItems.need,      emptyText: 'No needs logged yet' },
+      { key: 'household', label: 'Household',  items: profileItems.household, emptyText: 'No household context yet' },
+      { key: 'language',  label: 'Language',   items: profileItems.language,  emptyText: 'Language not yet confirmed' }
+    ];
+
+    if (dataFearPresent) {
+      var safetyItem = {
+        subtype: 'data fear',
+        label: transparencyDepth >= 2 ? 'Script delivered' : 'Script not yet delivered',
+        depth: transparencyDepth >= 2 ? 2 : 1,
+        needed: transparencyDepth < 2 ? 'Deliver the transparency script before naming any organization.' : null,
+        question: null,
+        eligibility: null,
+        transparency_script: transparencyDepth < 2 ? 'What you tell me stays here. We don\'t record your name or immigration status. We don\'t share anything with DHS or ICE. We only track what type of help people need — never who they are.' : null,
+        source: 'CMS 2022 · 805 UndocuFund model'
+      };
+      dims.push({ key: 'safety', label: 'Data Safety', items: [safetyItem], emptyText: '' });
+    }
+
+    dims.forEach(function(dim) {
+      var dimEl = document.createElement('div');
+      dimEl.className = 'profile-dim';
+
+      var countText = dim.items.length > 0 ? '<div class="profile-dim__count">' + dim.items.length + ' logged</div>' : '';
+      var header = document.createElement('div');
+      header.className = 'profile-dim__header';
+      header.innerHTML =
+        '<div class="profile-dim__dot" style="background:' + dotColors[dim.key] + '"></div>' +
+        '<div class="profile-dim__label">' + escapeHtml(dim.label.toUpperCase()) + '</div>' +
+        countText;
+      dimEl.appendChild(header);
+
+      if (!dim.items || dim.items.length === 0) {
+        var emptyEl = document.createElement('div');
+        emptyEl.className = 'profile-dim__empty';
+        emptyEl.textContent = dim.emptyText;
+        dimEl.appendChild(emptyEl);
+      } else {
+        dim.items.forEach(function(item) {
+          var itemEl = document.createElement('div');
+          itemEl.className = 'profile-item';
+
+          var itemDotColor;
+          if      (item.depth >= 2) itemDotColor = 'var(--color-text-success)';
+          else if (item.depth >= 1) itemDotColor = 'var(--color-text-warning)';
+          else                       itemDotColor = 'var(--color-text-tertiary)';
+
+          var depthClass, depthLabel;
+          if      (item.depth >= 2) { depthClass = 'depth--actionable'; depthLabel = 'Actionable'; }
+          else if (item.depth >= 1) { depthClass = 'depth--surface';    depthLabel = 'Surface'; }
+          else                       { depthClass = 'depth--unconfirmed'; depthLabel = 'Unconfirmed'; }
+
+          var bodyHtml =
+            '<div class="profile-item__name">' +
+              escapeHtml(item.subtype) +
+              '<span class="profile-item__depth ' + depthClass + '">' + depthLabel + '</span>' +
+            '</div>';
+
+          if (item.needed) {
+            bodyHtml += '<div class="profile-item__needed">' + escapeHtml(item.needed) + '</div>';
+          }
+          if (item.question) {
+            bodyHtml += '<div class="profile-item__question">Ask: “' + escapeHtml(item.question) + '”</div>';
+          }
+          if (item.eligibility) {
+            bodyHtml += '<div class="profile-item__eligibility">' + escapeHtml(item.eligibility) + '</div>';
+          }
+          if (item.transparency_script) {
+            bodyHtml += '<div class="profile-item__script">Say out loud: “' + escapeHtml(item.transparency_script) + '”</div>';
+          }
+
+          if (RESOURCE_MAP[item.subtype]) {
+            bodyHtml += '<div class="profile-resources">';
+            RESOURCE_MAP[item.subtype].forEach(function(res) {
+              bodyHtml +=
+                '<div class="profile-resource">' +
+                  '<div class="profile-resource__info">' +
+                    '<div class="profile-resource__name">' + escapeHtml(res.name) + '</div>' +
+                    '<div class="profile-resource__meta">' + escapeHtml(res.meta) + '</div>' +
+                    (res.phone ? '<div class="profile-resource__phone">' + escapeHtml(res.phone) + '</div>' : '') +
+                  '</div>' +
+                  '<div class="profile-resource__status profile-resource__status--' + res.status + '">' + escapeHtml(res.statusLabel) + '</div>' +
+                '</div>';
+            });
+            bodyHtml += '</div>';
+          }
+
+          if (item.source) {
+            bodyHtml += '<div class="profile-item__source">' + escapeHtml(item.source) + '</div>';
+          }
+
+          itemEl.innerHTML =
+            '<div class="profile-item__dot" style="background:' + itemDotColor + '"></div>' +
+            '<div class="profile-item__body">' + bodyHtml + '</div>';
+
+          dimEl.appendChild(itemEl);
+        });
+      }
+
+      container.appendChild(dimEl);
+    });
+  }
+
+  /* ── NEXT STEP ──────────────────────────────────────────────── */
+  function getNextStep() {
+    // Priority 1: data fear unaddressed — script must come first
+    if (dataFearPresent && transparencyDepth < 2) {
+      return 'Say the transparency script before naming any resource or organization.';
+    }
+    // Priority 2: first item below actionable that has a question
+    var dims = [profileItems.barrier, profileItems.need, profileItems.household, profileItems.language];
+    for (var d = 0; d < dims.length; d++) {
+      for (var i = 0; i < dims[d].length; i++) {
+        var item = dims[d][i];
+        if (item.depth < 2 && item.question) {
+          return 'Ask: “' + item.question + '”';
+        }
+      }
+    }
+    // Priority 3: first item's needed text
+    for (var d2 = 0; d2 < dims.length; d2++) {
+      for (var i2 = 0; i2 < dims[d2].length; i2++) {
+        var item2 = dims[d2][i2];
+        if (item2.depth < 2 && item2.needed) return item2.needed;
+      }
+    }
+    return null;
+  }
+
+  function updateNextStep() {
+    var bar    = document.getElementById('next-step-bar');
+    var textEl = document.getElementById('next-step-text');
+    if (!bar || !textEl) return;
+    var text = getNextStep();
+    if (text) {
+      textEl.textContent = text;
+      bar.style.display = '';
+    } else {
+      bar.style.display = 'none';
+    }
+  }
+
+  /* ── PROFILE CHIPS (chip label state) ───────────────────────── */
+  function updateProfileChips(result) {
+    if (!result) return;
+    if (result.category === 'barrier') {
+      if (barrierCount === 0)      chipPrimary   = result.subtype;
+      else if (barrierCount === 1) chipSecondary = result.subtype;
+      barrierCount++;
+    }
+    if (result.category === 'need' && needCount === 0) {
+      chipNeed = result.subtype;
+      needCount++;
+    }
+    if (result.category === 'household' && result.subtype === 'language preference') {
+      chipLanguage = result.label || result.subtype;
+    }
+  }
+
+  /* ── INCREMENT PROFILE ──────────────────────────────────────── */
+  /*
+   * Confidence formula — research-grounded (CMS 2022, Méndez 2020, Morey 2012, Frontiers 2024)
+   *
+   * Base 30   — minimum signal
+   * Need  +25 — eligibility pathway requires knowing what resource to match
+   *   surface +12, actionable +25
+   * Barrier +20 — match only works when actual barrier is known, not assumed
+   *   surface +8, actionable +20
+   * Language +10 — language mismatch breaks last-mile delivery (Méndez 2020)
+   * Household +10 — opens/closes eligibility pathways (Morey 2012)
+   *   mentioned +5, confirmed +10
+   * Transparency +5 — unaddressed data fear means match won't be used (CMS 2022)
+   *   logged not delivered: 0 (warning state, not credit)
+   *   script delivered: +5
+   *
+   * Cap 97 — the research is clear no tool closes the gap completely
+   */
+  function incrementProfile(result) {
+    itemsAddedCount++;
+
+    if (result) {
+      // Need depth + profileItems
+      if (result.category === 'need') {
+        var nd = result.subtype ? 2 : 1;
+        needDepth = Math.max(needDepth, nd);
+        needCount = Math.max(needCount, 1);
+        if (result.subtype) {
+          var alreadyNeed = profileItems.need.some(function(i) { return i.subtype === result.subtype; });
+          if (!alreadyNeed) {
+            profileItems.need.push({
+              subtype: result.subtype,
+              label: result.label || result.subtype,
+              depth: nd,
+              needed: result.panel_note || null,
+              question: result.clarifying_question || null,
+              eligibility: result.eligibility_note || null,
+              transparency_script: null,
+              source: 'Based on NILC · verified Apr 2025'
+            });
+          }
+        }
+      }
+
+      // Barrier depth + data fear + profileItems
+      if (result.category === 'barrier') {
+        var bd = result.subtype ? 2 : 1;
+        barrierDepth = Math.max(barrierDepth, bd);
+        if (result.subtype === 'data fear') {
+          dataFearPresent = true;
+          if (transparencyDepth < 1) transparencyDepth = 1;
+        }
+        if (result.transparency_script) transparencyDepth = 2;
+        barrierCount++;
+        if (barrierCount === 1) chipPrimary = result.subtype || result.category;
+        else if (barrierCount === 2) chipSecondary = result.subtype || '';
+        if (result.subtype) {
+          var alreadyBarrier = profileItems.barrier.some(function(i) { return i.subtype === result.subtype; });
+          if (!alreadyBarrier) {
+            profileItems.barrier.push({
+              subtype: result.subtype,
+              label: result.label || result.subtype,
+              depth: bd,
+              needed: result.panel_note || null,
+              question: result.clarifying_question || null,
+              eligibility: null,
+              transparency_script: result.transparency_script || null,
+              source: 'Based on CMS 2022 · 805 UndocuFund model'
+            });
+          }
+        }
+      }
+
+      // Household depth + profileItems
+      if (result.category === 'household') {
+        var confirmedSubtypes = ['citizen children','mixed-status family','family with children'];
+        if (confirmedSubtypes.indexOf(result.subtype) !== -1) {
+          householdDepth = 2;
+        } else if (result.subtype === 'language preference') {
+          languageDepth = 1;
+          chipLanguage = result.label || result.subtype;
+          householdDepth = Math.max(householdDepth, 1);
+        } else {
+          householdDepth = Math.max(householdDepth, 1);
+        }
+        if (result.subtype === 'language preference') {
+          var alreadyLang = profileItems.language.some(function(i) { return i.subtype === result.subtype; });
+          if (!alreadyLang) {
+            profileItems.language.push({
+              subtype: result.subtype,
+              label: result.label || result.subtype,
+              depth: 1,
+              needed: null,
+              question: result.clarifying_question || null,
+              eligibility: null,
+              transparency_script: null,
+              source: 'Based on Méndez 2020'
+            });
+          }
+        } else {
+          var alreadyHH = profileItems.household.some(function(i) { return i.subtype === result.subtype; });
+          if (!alreadyHH) {
+            profileItems.household.push({
+              subtype: result.subtype || 'household',
+              label: result.label || result.subtype,
+              depth: confirmedSubtypes.indexOf(result.subtype) !== -1 ? 2 : 1,
+              needed: result.panel_note || null,
+              question: result.clarifying_question || null,
+              eligibility: null,
+              transparency_script: null,
+              source: 'Based on Morey 2012 · NILC · MOIA 2024'
+            });
+          }
+        }
+      }
+
+      updateProfileChips(result);
+    }
+
+    // Recalculate confidence from scratch
+    var score = 30;
+    if      (needDepth >= 2) score += 25;
+    else if (needDepth >= 1) score += 12;
+
+    if      (barrierDepth >= 2) score += 20;
+    else if (barrierDepth >= 1) score += 8;
+
+    if (languageDepth >= 1) score += 10;
+
+    if      (householdDepth >= 2) score += 10;
+    else if (householdDepth >= 1) score += 5;
+
+    if (transparencyDepth >= 2) score += 5;
+    // transparencyDepth === 1 = amber warning, no points — fear logged but unaddressed
+
+    currentConfidence = Math.min(97, score);
+
+    var idx = itemsAddedCount % QUESTION_CYCLE.length;
+    document.getElementById('suggested-question').textContent = QUESTION_CYCLE[idx];
+
+    if (result) updateProfileChips(result);
+
+    renderProfile();
+    updateNextStep();
+    saveSession();
+  }
+
+  /* ── OPEN BLOCK PANEL ───────────────────────────────────────── */
+  function openBlockPanel(data, block) {
+    var badgeMap = { barrier:'badge--barrier', need:'badge--need', household:'badge--household', consideration:'badge--consideration' };
+    var dotColorMap = { barrier:'var(--color-ph-barrier-text)', need:'var(--color-ph-need-text)', household:'var(--color-ph-household-text)', consideration:'var(--color-ph-consideration-text)' };
+    var cat = data.category || 'consideration';
+    var sub = data.subtype || '';
+
+    // Header dot + badge
+    document.getElementById('panel-header-dot').style.background = dotColorMap[cat] || dotColorMap.consideration;
+    document.getElementById('panel-header-category').textContent = cat;
+    var badge = document.getElementById('panel-badge');
+    badge.className = 'panel-header__pill ' + (badgeMap[cat] || 'badge--consideration');
+    badge.textContent = sub || cat;
+
+    // Look up live profileItems entry for this subtype
+    var dimArr = cat === 'need' ? profileItems.need : cat === 'household' ? profileItems.household : cat === 'barrier' ? profileItems.barrier : [];
+    var entry = null;
+    for (var i = 0; i < dimArr.length; i++) {
+      if (dimArr[i].subtype === sub) { entry = dimArr[i]; break; }
+    }
+
+    var depth    = entry ? entry.depth    : (data.depth    || 0);
+    var needed   = entry ? entry.needed   : (data.needed   || '');
+    var question = entry ? entry.question : (data.clarifying_question || '');
+    var elig     = entry ? entry.eligibility        : (data.eligibility_note   || null);
+    var script   = entry ? entry.transparency_script: (data.transparency_script || null);
+    var source   = entry ? entry.source   : (data.source   || '');
+
+    // Subtype + depth pill
+    document.getElementById('panel-item-subtype').textContent = sub || cat;
+    var depthEl = document.getElementById('panel-item-depth');
+    if (depth >= 2)      { depthEl.textContent = 'Actionable'; depthEl.className = 'profile-item__depth depth--actionable'; }
+    else if (depth >= 1) { depthEl.textContent = 'Surface';    depthEl.className = 'profile-item__depth depth--surface'; }
+    else                 { depthEl.textContent = 'Unconfirmed';depthEl.className = 'profile-item__depth depth--unconfirmed'; }
+
+    // Needed
+    var nw = document.getElementById('panel-needed-wrap');
+    document.getElementById('panel-needed').textContent = needed;
+    nw.style.display = needed ? '' : 'none';
+
+    // Question
+    var qw = document.getElementById('panel-question-wrap');
+    document.getElementById('panel-question').textContent = question;
+    qw.style.display = question ? '' : 'none';
+
+    // Eligibility
+    var ew = document.getElementById('panel-eligibility-wrap');
+    document.getElementById('panel-eligibility').textContent = elig || '';
+    ew.style.display = elig ? 'block' : 'none';
+
+    // Transparency script
+    var sw = document.getElementById('panel-script-wrap');
+    document.getElementById('panel-script').textContent = script || '';
+    sw.style.display = script ? 'block' : 'none';
+
+    // Inline resources
+    var resEl = document.getElementById('panel-resources');
+    if (RESOURCE_MAP[sub]) {
+      var rHtml = '<div class="profile-resources">';
+      RESOURCE_MAP[sub].forEach(function(res) {
+        rHtml += '<div class="profile-resource">' +
+          '<div class="profile-resource__info">' +
+            '<div class="profile-resource__name">' + escapeHtml(res.name) + '</div>' +
+            '<div class="profile-resource__meta">' + escapeHtml(res.meta) + '</div>' +
+            (res.phone ? '<div class="profile-resource__phone">' + escapeHtml(res.phone) + '</div>' : '') +
+          '</div>' +
+          '<div class="profile-resource__status profile-resource__status--' + res.status + '">' + escapeHtml(res.statusLabel) + '</div>' +
+        '</div>';
+      });
+      resEl.innerHTML = rHtml + '</div>';
+    } else {
+      resEl.innerHTML = '';
+    }
+
+    document.getElementById('panel-source').textContent = source;
+
+    var btn = document.getElementById('panel-confirm-btn');
+    btn.textContent = 'Confirm + add to log';
+    btn.classList.remove('confirmed');
+
+    document.getElementById('side-panel').classList.add('open');
+    document.getElementById('panel-overlay').classList.add('visible');
+  }
+
+  function closePanel() {
+    document.getElementById('side-panel').classList.remove('open');
+    document.getElementById('panel-overlay').classList.remove('visible');
+  }
+
+  document.getElementById('panel-close').addEventListener('click', closePanel);
+  document.getElementById('panel-overlay').addEventListener('click', closePanel);
+  document.getElementById('panel-confirm-btn').addEventListener('click', function() {
+    this.textContent = 'Added ✓';
+    this.classList.add('confirmed');
+    incrementProfile(null);
+    setTimeout(closePanel, 600);
+  });
+
+  /* ── DELEGATED BLOCK TAP HANDLER ────────────────────────────── */
+  document.getElementById('notes-thread').addEventListener('click', function(e) {
+    var block = e.target.closest('.note-block');
+    if (!block) return;
+    var data;
+    if (block.dataset.apiResult) {
+      try {
+        var r = JSON.parse(block.dataset.apiResult);
+        data = {
+          category: r.category, subtype: r.subtype,
+          saved: r.panel_note || '',
+          needed: r.clarifying_question ? 'Consider asking: ' + r.clarifying_question : '',
+          clarifying_question: r.clarifying_question || '',
+          transparency_script: r.transparency_script || null,
+          eligibility_note: r.eligibility_note || null,
+          source: BLOCK_SOURCE_MAP[r.category] || BLOCK_SOURCE_MAP.consideration
+        };
+      } catch(err) { data = BLOCK_PANEL_DATA['consideration']; }
+    } else {
+      data = BLOCK_PANEL_DATA[block.dataset.panel] || BLOCK_PANEL_DATA['consideration'];
+    }
+    openBlockPanel(data, block);
+  });
+
+  /* ── PROCESS BLOCK ──────────────────────────────────────────── */
+  async function processBlock(text, useLLM) {
+    var thread = document.getElementById('notes-thread');
+
+    if (!useLLM) {
+      appendBlock(text, 'consideration', 'consideration', null);
+      return;
+    }
+
+    var procBlock = document.createElement('div');
+    procBlock.className = 'note-block';
+    procBlock.innerHTML =
+      '<div class="block-handle">⠿</div>' +
+      '<div class="block-content">' +
+        '<div class="block-text" style="opacity:0.45">' + escapeHtml(text) + '</div>' +
+        '<div class="block-processing-status" id="proc-status">' +
+          '<div class="block-spinner"></div>' +
+          '<span id="proc-status-text">' + getLoadingText(text) + '</span>' +
+        '</div>' +
+      '</div>';
+
+    var inputWrap = document.getElementById('block-input-wrap');
+    thread.insertBefore(procBlock, inputWrap);
+    thread.scrollTop = thread.scrollHeight;
+    document.getElementById('notes-footer-hint').textContent = 'processing…';
+
+    var latencyTimer = setTimeout(function() {
+      var st = document.getElementById('proc-status-text');
+      if (st) st.textContent = 'still reading…';
+    }, 5000);
+
+    var result = await callGemini(text, sessionContext);
+    clearTimeout(latencyTimer);
+    procBlock.remove();
+
+    if (result) {
+      sessionContext += ', ' + (result.subtype || result.category);
+      appendBlock(text, result.category, result.subtype, result);
+    } else {
+      var cat = categorize(text);
+      appendBlock(text, cat.dot === 'barrier' ? 'barrier' : cat.dot === 'need' ? 'need' : cat.dot === 'household' ? 'household' : 'consideration', '', null);
+    }
+
+    document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
+  }
+
+  /* ── EMPTY STATE ────────────────────────────────────────────── */
+  function hideEmptyState() {
+    var el = document.getElementById('session-empty');
+    if (el) el.style.display = 'none';
+  }
+
+  /* ── APPEND BLOCK ───────────────────────────────────────────── */
+  function appendBlock(text, category, subtype, apiResult) {
+    var thread = document.getElementById('notes-thread');
+    var inputWrap = document.getElementById('block-input-wrap');
+
+    var block = document.createElement('div');
+    block.className = 'note-block';
+    block.dataset.dynamic = '1';
+    block.dataset.category = category;
+    block.dataset.subtype = subtype || '';
+    block.dataset.panel = apiResult ? 'api-generated' : 'consideration';
+    if (apiResult) block.dataset.apiResult = JSON.stringify(apiResult);
+
+    hideEmptyState();
+    var highlightedText = buildHighlightedText(text, category, subtype, apiResult);
+    var badgeClass = 'badge-' + (category || 'consideration');
+
+    block.innerHTML =
+      '<div class="block-handle">⠿</div>' +
+      '<div class="block-content">' +
+        '<div class="block-row">' +
+          '<div class="block-text">' + highlightedText + '</div>' +
+          '<div class="block-badges"><span class="block-badge ' + badgeClass + '">×1</span></div>' +
+        '</div>' +
+      '</div>';
+
+    thread.insertBefore(block, inputWrap);
+
+    requestAnimationFrame(function() {
+      block.classList.add('flashing');
+      setTimeout(function() { block.classList.remove('flashing'); }, 400);
+    });
+
+    showBanner(category, subtype);
+
+    loggedItems.push({
+      label: text.slice(0, 60),
+      dot: category,
+      category: category + (subtype ? ' · ' + subtype : ''),
+      panel: block.dataset.panel
+    });
+
+    incrementProfile(apiResult);
+    addDragListeners(block);
+    saveSession();
+
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  /* ── SHOW BANNER ─────────────────────────────────────────────── */
+  function showBanner(category, subtype) {
+    var banner = document.getElementById('note-banner');
+    var label = subtype || category;
+    var segClass = 'banner-' + (category || 'consideration');
+    banner.innerHTML =
+      '<div class="banner-seg ' + segClass + '">' +
+        '<div class="banner-dot"></div>' +
+        '<span class="banner-label">' + escapeHtml(label) + ' added</span>' +
+      '</div>';
+    banner.classList.add('visible');
+    setTimeout(function() { banner.classList.remove('visible'); }, 2000);
+  }
+
+  /* ── ENTER / PASTE ──────────────────────────────────────────── */
+  var isPasted = false;
+
+  document.getElementById('block-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var text = this.innerText.replace(/\n+$/, '').trim();
+      if (!text) return;
+      var useLLM = !isPasted || document.getElementById('llm-toggle').checked;
+      this.innerText = '';
+      document.getElementById('block-toggle-row').style.display = 'none';
+      document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
+      isPasted = false;
+      processBlock(text, useLLM);
+    }
+  });
+
+  document.getElementById('block-input').addEventListener('paste', function() {
+    isPasted = true;
+    setTimeout(function() {
+      document.getElementById('block-toggle-row').style.display = 'flex';
+      document.getElementById('llm-toggle').checked = false;
+      document.getElementById('notes-footer-hint').textContent = 'pasted content — toggle to process';
+    }, 50);
+  });
+
+  /* ── TAB SWITCHING ──────────────────────────────────────────── */
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-content').forEach(function(c) {
+        c.classList.remove('active');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ── CLOCK ──────────────────────────────────────────────────── */
+  function updateClock() {
+    var t = new Date();
+    document.getElementById('status-time').textContent =
+      t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+
+  /* ── TOAST ──────────────────────────────────────────────────── */
+  var toastTimer;
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { toast.classList.remove('visible'); }, 2500);
+  }
+
+  /* ── NOTES DATE ─────────────────────────────────────────────── */
+  (function() {
+    var d = new Date();
+    document.getElementById('notes-date').textContent =
+      'Today · ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  })();
+
+  /* ── REVIEW / REFERRAL / CLOSE BUTTONS ──────────────────────── */
+  document.getElementById('review-btn').addEventListener('click', function() {
+    showToast('Review mode — coming soon');
+  });
+  document.getElementById('btn-reset-session').addEventListener('click', function() {
+    try { localStorage.removeItem('steadymode_session'); } catch(e) {}
+
+    // Reset all state to empty
+    sessionContext = ""; barrierCount = 0; needCount = 0;
+    chipPrimary = ""; chipSecondary = ""; chipNeed = ""; chipLanguage = "";
+    loggedItems = []; itemsAddedCount = 0; currentConfidence = 30;
+    barrierDepth = 0; needDepth = 0; householdDepth = 0;
+    languageDepth = 0; transparencyDepth = 0; dataFearPresent = false;
+    profileItems = { barrier: [], need: [], household: [], language: [] };
+
+    document.getElementById('suggested-question').textContent = QUESTION_CYCLE[0];
+
+    // Remove all dynamic blocks, restore empty state
+    document.querySelectorAll('#notes-thread .note-block[data-dynamic]').forEach(function(el) { el.remove(); });
+    var emptyEl = document.getElementById('session-empty');
+    if (emptyEl) emptyEl.style.display = '';
+
+    // Reset footer hint
+    document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
+
+    renderProfile();
+    updateNextStep();
+    showToast('Session reset');
+  });
+
+  document.getElementById('btn-reset-key').addEventListener('click', function() {
+    try { localStorage.removeItem('steady_api_key'); } catch(e) {}
+    activeApiKey = '';
+    var input = document.getElementById('api-key-input');
+    input.value = '';
+    document.getElementById('api-key-submit').disabled = true;
+    document.getElementById('intro-error').classList.remove('visible');
+    document.getElementById('intro-screen').classList.remove('hidden');
+  });
+
+  document.getElementById('btn-referral').addEventListener('click', function() {
+    showToast('Referral noted — session marked as referred');
+  });
+  document.getElementById('btn-close-session').addEventListener('click', function() {
+    showToast('Session closed');
+  });
+
+  /* ── API KEY / INTRO SCREEN ─────────────────────────────────── */
+  (function() {
+    var input  = document.getElementById('api-key-input');
+    var btn    = document.getElementById('api-key-submit');
+    var errEl  = document.getElementById('intro-error');
+    var screen = document.getElementById('intro-screen');
+
+    function isValidKey(k) { return k && k.length >= 20; }
+
+    input.addEventListener('input', function() {
+      btn.disabled = !isValidKey(this.value.trim());
+      errEl.classList.remove('visible');
+    });
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !btn.disabled) btn.click();
+    });
+
+    btn.addEventListener('click', function() {
+      var key = input.value.trim();
+      if (!isValidKey(key)) {
+        errEl.classList.add('visible');
         return;
       }
-
-      // Create processing block
-      var procBlock = document.createElement('div');
-      procBlock.className = 'note-block';
-      procBlock.innerHTML =
-        '<div class="block-handle">⠿</div>' +
-        '<div class="block-content">' +
-          '<div class="block-text" style="opacity:0.45">' + escapeHtml(text) + '</div>' +
-          '<div class="block-processing-status" id="proc-status">' +
-            '<div class="block-spinner"></div>' +
-            '<span id="proc-status-text">' + getLoadingText(text) + '</span>' +
-          '</div>' +
-        '</div>';
-
-      var inputWrap = document.getElementById('block-input-wrap');
-      thread.insertBefore(procBlock, inputWrap);
-      thread.scrollTop = thread.scrollHeight;
-      document.getElementById('notes-footer-hint').textContent = 'processing…';
-
-      // Long latency fallback
-      var latencyTimer = setTimeout(function() {
-        var st = document.getElementById('proc-status-text');
-        if (st) st.textContent = 'still reading…';
-      }, 5000);
-
-      var result = await callGemini(text, sessionContext);
-      clearTimeout(latencyTimer);
-      procBlock.remove();
-
-      if (result) {
-        sessionContext += ', ' + (result.subtype || result.category);
-        appendBlock(text, result.category, result.subtype, result);
-      } else {
-        var cat = categorize(text);
-        appendBlock(text, cat.dot === 'barrier' ? 'barrier' : cat.dot === 'need' ? 'need' : cat.dot === 'household' ? 'household' : 'consideration', '', null);
-      }
-
-      document.getElementById('notes-footer-hint').textContent = 'tap highlight to explore';
-    }
-
-    /* ── APPEND PROCESSED BLOCK ─────────────────────────────────── */
-    function appendBlock(text, category, subtype, apiResult) {
-      var thread = document.getElementById('notes-thread');
-      var inputWrap = document.getElementById('block-input-wrap');
-
-      var block = document.createElement('div');
-      block.className = 'note-block';
-      block.dataset.category = category;
-      block.dataset.subtype = subtype || '';
-      block.dataset.panel = apiResult ? 'api-generated' : 'consideration';
-      if (apiResult) block.dataset.apiResult = JSON.stringify(apiResult);
-
-      var highlightedText = buildHighlightedText(text, category, subtype, apiResult);
-      var badgeClass = 'badge-' + (category || 'consideration');
-
-      block.innerHTML =
-        '<div class="block-handle">⠿</div>' +
-        '<div class="block-content">' +
-          '<div class="block-row">' +
-            '<div class="block-text">' + highlightedText + '</div>' +
-            '<div class="block-badges"><span class="block-badge ' + badgeClass + '">×1</span></div>' +
-          '</div>' +
-        '</div>';
-
-      block.onclick = (function(result) {
-        return function() {
-          if (result) {
-            openBlockPanel({
-              category:            result.category,
-              subtype:             result.subtype,
-              panel_note:          result.panel_note || '',
-              clarifying_question: result.clarifying_question || '',
-              transparency_script: result.transparency_script || null,
-              eligibility_note:    result.eligibility_note || null,
-              source: BLOCK_SOURCE_MAP[result.category] || BLOCK_SOURCE_MAP.consideration
-            }, this);
-          } else {
-            openBlockPanel(BLOCK_PANEL_DATA['consideration'], this);
-          }
-        };
-      })(apiResult);
-
-      thread.insertBefore(block, inputWrap);
-
-      requestAnimationFrame(function() {
-        block.classList.add('flashing');
-        setTimeout(function() { block.classList.remove('flashing'); }, 400);
-      });
-
-      showBanner(category, subtype);
-
-      loggedItems.push({ label: text.slice(0, 60), dot: category, category: category + (subtype ? ' · ' + subtype : ''), panel: block.dataset.panel });
-
-      incrementProfile(apiResult);
-
-      addDragListeners(block);
-
-      thread.scrollTop = thread.scrollHeight;
-    }
-
-    /* ── BUILD HIGHLIGHTED TEXT ─────────────────────────────────── */
-    function buildHighlightedText(text, category, subtype, apiResult) {
-      var phClass = 'block-ph ph-' + (category || 'consideration');
-      var escaped = escapeHtml(text);
-
-      // Try to match apiResult.label first
-      if (apiResult && apiResult.label) {
-        var label = apiResult.label;
-        var escapedLabel = escapeHtml(label);
-        var idx = escaped.toLowerCase().indexOf(escapedLabel.toLowerCase());
-        if (idx !== -1) {
-          return escaped.slice(0, idx) +
-            '<span class="' + phClass + '">' +
-            escaped.slice(idx, idx + escapedLabel.length) +
-            '</span>' +
-            escaped.slice(idx + escapedLabel.length);
-        }
-      }
-
-      // Try to match subtype keywords in the text
-      var keywordMap = {
-        'data fear':    ['scared','fear','share','trust','ice','dhs','report','deport'],
-        'scheduling':   ['night','day','daytime','morning','evening','time','hours','schedule','appointment'],
-        'cost':         ['money','cost','pay','afford','insurance','fee','broke'],
-        'rent/housing': ['rent','housing','eviction','landlord','apartment','home'],
-        'food/supplies':['food','eat','hungry','pantry','groceries'],
-        'legal aid':    ['legal','lawyer','court','attorney','immigration'],
-        'healthcare':   ['health','doctor','hospital','sick','clinic','medical'],
-        'citizen children':['kids','children','born','citizen','family','daughter','son'],
-        'language preference':['spanish','language','dialect','mixtec','creole']
-      };
-
-      var keywords = keywordMap[subtype] || keywordMap[category] || [];
-      var lowerText = text.toLowerCase();
-
-      for (var i = 0; i < keywords.length; i++) {
-        var kw = keywords[i];
-        var ki = lowerText.indexOf(kw);
-        if (ki !== -1) {
-          var start = ki;
-          var end = ki + kw.length;
-          while (start > 0 && /\w/.test(text[start - 1])) start--;
-          while (end < text.length && /\w/.test(text[end])) end++;
-          var escapedFull = escapeHtml(text);
-          return escapedFull.slice(0, start) +
-            '<span class="' + phClass + '">' +
-            escapedFull.slice(start, end) +
-            '</span>' +
-            escapedFull.slice(end);
-        }
-      }
-
-      // Fallback — highlight first meaningful chunk (skip short words)
-      var words = text.split(' ');
-      var chunk = [];
-      for (var w = 0; w < words.length && chunk.length < 3; w++) {
-        if (words[w].length > 3) chunk.push(words[w]);
-      }
-      if (chunk.length > 0) {
-        var chunkStr = chunk.join(' ');
-        var chunkIdx = text.indexOf(chunkStr);
-        if (chunkIdx !== -1) {
-          var e = escapeHtml(text);
-          return e.slice(0, chunkIdx) +
-            '<span class="' + phClass + '">' +
-            e.slice(chunkIdx, chunkIdx + chunkStr.length) +
-            '</span>' +
-            e.slice(chunkIdx + chunkStr.length);
-        }
-      }
-
-      // Last resort — wrap everything
-      return '<span class="' + phClass + '">' + escaped + '</span>';
-    }
-
-    /* ── SHOW BANNER ─────────────────────────────────────────────── */
-    function showBanner(category, subtype) {
-      var banner = document.getElementById('note-banner');
-      var label = subtype || category;
-      var segClass = 'banner-' + (category || 'consideration');
-      banner.innerHTML =
-        '<div class="banner-seg ' + segClass + '">' +
-          '<div class="banner-dot"></div>' +
-          '<span class="banner-label">' + escapeHtml(label) + ' added</span>' +
-        '</div>';
-      banner.classList.add('visible');
-      setTimeout(function() { banner.classList.remove('visible'); }, 2000);
-    }
-
-    /* ── ESCAPE HTML HELPER ──────────────────────────────────────── */
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    /* ── DRAG TO REORDER ─────────────────────────────────────────── */
-    var dragSrc = null;
-
-    function addDragListeners(block) {
-      var handle = block.querySelector('.block-handle');
-      var longPressTimer;
-
-      handle.addEventListener('pointerdown', function(e) {
-        longPressTimer = setTimeout(function() {
-          dragSrc = block;
-          block.classList.add('block-dragging');
-          block.setAttribute('draggable', 'true');
-          block.dispatchEvent(new DragEvent('dragstart', { bubbles: true }));
-        }, 300);
-      });
-
-      handle.addEventListener('pointerup', function() { clearTimeout(longPressTimer); });
-      handle.addEventListener('pointercancel', function() { clearTimeout(longPressTimer); });
-
-      block.addEventListener('dragstart', function(e) { e.dataTransfer.effectAllowed = 'move'; });
-      block.addEventListener('dragend', function() {
-        block.classList.remove('block-dragging');
-        block.removeAttribute('draggable');
-        document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
-        dragSrc = null;
-      });
-      block.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        if (!dragSrc || dragSrc === block) return;
-        document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
-        var indicator = document.createElement('div');
-        indicator.className = 'drop-indicator';
-        block.parentNode.insertBefore(indicator, block);
-      });
-      block.addEventListener('drop', function(e) {
-        e.preventDefault();
-        if (!dragSrc || dragSrc === block) return;
-        document.querySelectorAll('.drop-indicator').forEach(function(el) { el.remove(); });
-        block.parentNode.insertBefore(dragSrc, block);
-      });
-    }
-
-    document.querySelectorAll('#notes-thread .note-block').forEach(addDragListeners);
-
-    /* ── SCROLL ON LOAD ──────────────────────────────────────────── */
-    (function() {
-      var thread = document.getElementById('notes-thread');
-      if (thread) thread.scrollTop = thread.scrollHeight;
-    })();
-
-    /* ── REVIEW WITH CLIENT ─────────────────────────────────────── */
-    document.getElementById('review-btn').addEventListener('click', function() {
-      showToast('Review mode — coming soon');
+      activeApiKey = key;
+      try { localStorage.setItem('steady_api_key', key); } catch(e) {}
+      screen.classList.add('hidden');
     });
 
-    /* ── WHATSAPP / PRINT / LOG ─────────────────────────────────── */
-    document.getElementById('btn-whatsapp').addEventListener('click', function() {
-      var msg = 'Ayuda disponible ahora: renta/vivienda. Sin documentos requeridos. Make the Road NY — (718) 418-7690. Evening hours available. Comparte.';
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(msg).catch(function() {});
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = msg;
-        ta.style.position = 'fixed';
-        ta.style.opacity  = '0';
-        document.body.appendChild(ta);
-        ta.focus(); ta.select();
-        try { document.execCommand('copy'); } catch(e) {}
-        document.body.removeChild(ta);
-      }
-      showToast('Message copied — paste into WhatsApp');
+    var saved = '';
+    try { saved = localStorage.getItem('steady_api_key') || ''; } catch(e) {}
+    if (saved && isValidKey(saved)) {
+      activeApiKey = saved;
+      // stay hidden
+    } else {
+      screen.classList.remove('hidden');
+    }
+  })();
+
+  /* ── SESSION STARTERS ───────────────────────────────────────── */
+  document.querySelectorAll('.session-starter').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      processBlock(this.dataset.text, true);
     });
+  });
 
-    document.getElementById('btn-print').addEventListener('click', function() {
-      window.print();
-    });
+  /* ── INIT ───────────────────────────────────────────────────── */
+  document.querySelectorAll('#notes-thread .note-block').forEach(addDragListeners);
+  loadSession();
+  renderProfile();
+  updateNextStep();
 
-    document.getElementById('btn-log-session').addEventListener('click', function() {
-      this.textContent = 'Logged ✓';
-      this.disabled = true;
-      showToast('Session logged — no personal data recorded');
-    });
-
-    document.getElementById('btn-discard').addEventListener('click', function() {
-      // Remove the saved session so the next page load starts from scratch
-      localStorage.removeItem('steadymode_session');
-
-      // Reset all state variables to their original defaults
-      currentConfidence        = 75;
-      itemsAddedCount          = 0;
-      barrierCount             = 2;
-      needCount                = 1;
-      chipPrimary              = 'Data fear';
-      chipSecondary            = 'Scheduling';
-      chipNeed                 = 'Rent / housing';
-      chipLanguage             = 'Spanish';
-      sessionContext           = 'data fear, scheduling, rent/housing, citizen children';
-      loggedItems              = [];
-      hasNeed                  = true;
-      hasBarrier               = true;
-      hasLanguage              = false;
-      hasHousehold             = false;
-      hasTransparencyAddressed = false;
-
-      // Reset Output tab UI to match the defaults above
-      document.getElementById('confidence-fill').style.width    = '75%';
-      document.getElementById('confidence-pct').textContent     = '75%';
-      var headerEl = document.getElementById('header-confidence-pct');
-      headerEl.textContent = '75%';
-      headerEl.parentElement.classList.toggle('confident', true);
-      document.getElementById('suggested-question').textContent = QUESTION_CYCLE[0];
-      document.getElementById('chip-primary').textContent       = 'Data fear';
-      document.getElementById('chip-secondary').textContent     = 'Scheduling';
-      document.getElementById('chip-need').textContent          = 'Rent / housing';
-      document.getElementById('chip-language').textContent      = 'Spanish';
-
-      // Clear worker notes
-      var ta = document.querySelector('.worker-notes__textarea');
-      if (ta) ta.value = '';
-
-      // Remove all dynamically added chat turns; hardcoded five items have no data-dynamic attr
-      document.querySelectorAll('#chat-thread [data-dynamic]').forEach(function(el) { el.remove(); });
-      // Clear any generated transparency scripts appended to the Output tab
-      document.getElementById('generated-scripts-container').innerHTML = '';
-
-      showToast('Session discarded');
-    });
-
-  </script>
+  (function() {
+    var thread = document.getElementById('notes-thread');
+    if (thread) thread.scrollTop = thread.scrollHeight;
+  })();
+</script>
 </body>
 </html>
